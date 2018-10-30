@@ -4,7 +4,10 @@
 @import "normalize";
 
 // Variables
-$tablet: 35em;
+$tablet: 42em;
+$white: #fff;
+$offwhite: whitesmoke;
+$black: #16161d;
 
 // Reset
 h1,
@@ -30,13 +33,11 @@ h3 {
 
 // Base Styles
 body {
-	font: 100%/1.3 sans-serif;
-	font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial,
-		"Lucida Grande", sans-serif;
-	background: white;
+	font: 100%/1.3 "Helvetica Neue", Helvetica, sans-serif;
+	background: $offwhite;
 
 	@media (min-width: $tablet) {
-		padding-right: 100vh;
+		padding-right: calc(100% - 20em);
 	}
 }
 
@@ -52,20 +53,24 @@ body {
 	z-index: 10;
 }
 
+.header-wrapper,
+.main-wrapper {
+	min-width: 20em;
+	outline: thin solid lime;
+}
+
 // Brain wrapper
 .brain-wrapper {
 	width: 100%;
 	height: 100vw;
-	background: lightgray;
-	box-shadow: inset 0 0 1em lime;
+	background: $white;
 
 	@media (min-width: $tablet) {
 		position: fixed;
 		right: 0;
 		bottom: 0;
-		width: 100vh;
+		width: calc(100% - 20em);
 		height: 100vh;
 		z-index: 0;
 	}
 }
-
