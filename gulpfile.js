@@ -61,7 +61,31 @@ gulp.task("scss", function() {
         path.extname = ".css";
       })
     )
-    .pipe(gulp.dest("./dist"))
+    .pipe(gulp.dest("./dist/css"))
+    .pipe(
+      browserSync.reload({
+        stream: true
+      })
+    );
+});
+
+// Move JS
+gulp.task("js", function() {
+  return gulp
+    .src("src/js/*.js")
+    .pipe(gulp.dest("./dist/js"))
+    .pipe(
+      browserSync.reload({
+        stream: true
+      })
+    );
+});
+
+// Move gltf
+gulp.task("gltf", function() {
+  return gulp
+    .src("src/models/*.gltf")
+    .pipe(gulp.dest("./dist/models"))
     .pipe(
       browserSync.reload({
         stream: true
@@ -78,5 +102,13 @@ gulp.task("default", function() {
 
   gulp.watch("src/scss/*.scss", function() {
     return gulp.run("scss");
+  });
+
+  gulp.watch("src/js/*.js", function() {
+    return gulp.run("js");
+  });
+
+  gulp.watch("src/models/*.gltf", function() {
+    return gulp.run("gltf");
   });
 });

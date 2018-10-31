@@ -1,15 +1,33 @@
+// Charset =====================================================================
 @charset "UTF-8";
 
-// Normalize
+// Normalize ===================================================================
 @import "normalize";
+@import "extensions";
+@import "functions";
 
-// Variables
-$tablet: 42em;
+// Variables ===================================================================
 $white: #fff;
-$offwhite: whitesmoke;
 $black: #16161d;
 
-// Reset
+$h: 20;
+$s: 30%;
+
+$offwhite: hsl($h, $s, 90%);
+
+$blue: #2c6bff;
+$purple: #5f4bb2;
+
+$radius: 4px;
+$shadow: 0 1px 2px rgba($black, 0.15);
+$shadow: none;
+
+$padding: 1rem;
+
+$sidebar-width: 25em;
+$tablet: 42em;
+
+// Reset =======================================================================
 h1,
 h2,
 h3,
@@ -18,9 +36,10 @@ h5,
 h6,
 p {
 	margin: 0;
+	line-height: 1;
 }
 
-// Typography
+// Typography ==================================================================
 h1 {
 	font-size: 1.3em;
 }
@@ -28,49 +47,95 @@ h2 {
 	font-size: 1.2em;
 }
 h3 {
-	font-size: 1.1em;
+	font-weight: 500;
+	font-size: 1.3em;
 }
 
-// Base Styles
-body {
-	font: 100%/1.3 "Helvetica Neue", Helvetica, sans-serif;
-	background: $offwhite;
+p {
+	line-height: 1.3;
 
-	@media (min-width: $tablet) {
-		padding-right: calc(100% - 20em);
+	h3 + &,
+	& + & {
+		margin-top: $padding/2;
 	}
 }
 
-// Structural Styles
+a {
+	color: $blue;
+
+	&:hover {
+		color: shade($blue, 20%);
+	}
+
+	&:not(.site-link):visited {
+		color: $purple;
+	}
+}
+
+// Base Styles =================================================================
+body {
+	font: 100%/1.3 Niramit, Helvetica Neue, Helvetica, sans-serif;
+	background: $offwhite;
+
+	@media (min-width: $tablet) {
+		padding-right: calc(100% - #{$sidebar-width});
+	}
+}
+
+// Structural Styles ===========================================================
 .container {
-	padding: 1em;
+	margin: $padding;
 }
 
-.header-wrapper,
-.main-wrapper,
-.footer-wrapper {
-	position: relative;
-	z-index: 10;
-}
-
-.header-wrapper,
 .main-wrapper {
-	min-width: 20em;
-	outline: thin solid lime;
+	min-height: 100vh;
 }
 
-// Brain wrapper
+.box {
+	background: $white;
+	border-radius: $radius;
+	box-shadow: $shadow;
+	padding: $padding;
+}
+
+// Header ======================================================================
+.site-logo,
+.site-name {
+	display: inline-block;
+	line-height: 1;
+}
+
+.site-logo {
+	width: 1.5em;
+	height: 1.5em;
+	margin-right: 0.5em;
+	vertical-align: middle;
+}
+
+.site-link {
+	font-weight: 500;
+	color: $black;
+	text-decoration: none;
+}
+
+// Brain wrapper ===============================================================
 .brain-wrapper {
 	width: 100%;
 	height: 100vw;
 	background: $white;
+	box-shadow: $shadow;
 
 	@media (min-width: $tablet) {
 		position: fixed;
 		right: 0;
 		bottom: 0;
-		width: calc(100% - 20em);
+		width: calc(100% - #{$sidebar-width});
 		height: 100vh;
 		z-index: 0;
 	}
+}
+
+// Footer ======================================================================
+.footer-wrapper {
+	opacity: 0.5;
 }
