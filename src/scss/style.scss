@@ -10,17 +10,19 @@
 $white: #fff;
 $black: #16161d;
 
-$h: 20;
-$s: 30%;
-
-$offwhite: hsl($h, $s, 90%);
+$offwhite: whitesmoke;
 
 $blue: #2c6bff;
 $purple: #5f4bb2;
 
-$radius: 4px;
+$heading_wrapper_background: white;
+$summary_wrapper_background: mix($black, $white, 10%);
+$settings_wrapper_background: mix($black, $white, 80%);
+$footer_wrapper_background: mix($black, $white, 90%);
+$brain_wrapper_background: $black;
+
+$radius: 3px;
 $shadow: 0 1px 2px rgba($black, 0.15);
-$shadow: none;
 
 $padding: 1rem;
 
@@ -39,12 +41,30 @@ p {
 	line-height: 1;
 }
 
+// Base Styles =================================================================
+body {
+	font: 100%/1.3 Merriweather Sans, Helvetica Neue, Helvetica, sans-serif;
+	background: $offwhite;
+
+	@media (min-width: $tablet) {
+		padding-right: calc(100% - #{$sidebar-width});
+	}
+}
+
 // Typography ==================================================================
+h1,
+h2,
+h3 {
+	font-family: Merriweather Sans;
+	font-weight: 900;
+}
+
 h1 {
-	font-size: 1.3em;
+	font-size: 1.8em;
 }
 h2 {
 	font-size: 1.2em;
+	font-weight: 800;
 }
 h3 {
 	font-weight: 500;
@@ -52,7 +72,8 @@ h3 {
 }
 
 p {
-	line-height: 1.3;
+	font-size: 0.85em;
+	line-height: 1.5;
 
 	h3 + &,
 	& + & {
@@ -72,19 +93,9 @@ a {
 	}
 }
 
-// Base Styles =================================================================
-body {
-	font: 100%/1.3 Niramit, Helvetica Neue, Helvetica, sans-serif;
-	background: $offwhite;
-
-	@media (min-width: $tablet) {
-		padding-right: calc(100% - #{$sidebar-width});
-	}
-}
-
 // Structural Styles ===========================================================
 .container {
-	margin: $padding;
+	padding: $padding;
 }
 
 .main-wrapper {
@@ -92,13 +103,23 @@ body {
 }
 
 .box {
+	position: relative;
 	background: $white;
 	border-radius: $radius;
-	box-shadow: $shadow;
 	padding: $padding;
+	box-shadow: $shadow;
+
+	.settings-wrapper & {
+		background: $black;
+		color: $offwhite;
+	}
 }
 
 // Header ======================================================================
+.header-wrapper {
+	background: $heading_wrapper_background;
+}
+
 .site-logo,
 .site-name {
 	display: inline-block;
@@ -113,17 +134,15 @@ body {
 }
 
 .site-link {
-	font-weight: 500;
 	color: $black;
 	text-decoration: none;
 }
 
 // Brain wrapper ===============================================================
 .brain-wrapper {
+	background: $brain_wrapper_background;
 	width: 100%;
 	height: 100vw;
-	background: $white;
-	box-shadow: $shadow;
 
 	@media (min-width: $tablet) {
 		position: fixed;
@@ -135,7 +154,27 @@ body {
 	}
 }
 
+// Summary wrapper ============================================================
+.summary-wrapper {
+	background: $summary_wrapper_background;
+
+	.box {
+		border-left: 0.5em solid tomato;
+	}
+}
+
+// Settings wrapper ============================================================
+.settings-wrapper {
+	background: $settings_wrapper_background;
+	min-height: 50vh;
+}
+
 // Footer ======================================================================
 .footer-wrapper {
-	opacity: 0.5;
+	background: $footer_wrapper_background;
+	color: $offwhite;
+}
+
+.dg.main.a {
+	display: none !important;
 }

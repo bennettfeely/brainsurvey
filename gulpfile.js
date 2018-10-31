@@ -85,6 +85,11 @@ gulp.task("js", function() {
 gulp.task("gltf", function() {
   return gulp
     .src("src/models/*.gltf")
+    .pipe(
+      rename(function(path) {
+        path.extname = ".json";
+      })
+    )
     .pipe(gulp.dest("./dist/models"))
     .pipe(
       browserSync.reload({
