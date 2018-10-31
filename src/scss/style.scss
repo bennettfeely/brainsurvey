@@ -8,6 +8,7 @@
 
 // Variables ===================================================================
 $white: #fff;
+$gray: #caccc9;
 $black: #16161d;
 
 $offwhite: whitesmoke;
@@ -16,9 +17,9 @@ $blue: #2c6bff;
 $purple: #5f4bb2;
 
 $heading_wrapper_background: white;
-$summary_wrapper_background: mix($black, $white, 10%);
-$settings_wrapper_background: mix($black, $white, 80%);
-$footer_wrapper_background: mix($black, $white, 90%);
+$summary_wrapper_background: mix($black, $gray, 10%);
+$settings_wrapper_background: mix($black, $gray, 80%);
+$footer_wrapper_background: mix($black, $gray, 90%);
 $brain_wrapper_background: $black;
 
 $radius: 3px;
@@ -26,7 +27,7 @@ $shadow: 0 1px 2px rgba($black, 0.15);
 
 $padding: 1rem;
 
-$sidebar-width: 25em;
+$sidebar-width: 20em;
 $tablet: 42em;
 
 // Reset =======================================================================
@@ -172,7 +173,7 @@ a {
 // Footer ======================================================================
 .footer-wrapper {
 	background: $footer_wrapper_background;
-	color: $offwhite;
+	color: $gray;
 }
 
 .dg.main.a {
