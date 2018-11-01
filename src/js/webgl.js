@@ -9,25 +9,28 @@ init();
 animate();
 
 function init() {
-	var three_canvas = document.createElement("div");
+	// var three_canvas = document.createElement("div");
 	var brain_wrapper = document.querySelector(".brain-wrapper");
 	var brain_wrapper_size = brain_wrapper.getBoundingClientRect();
 
-	brain_wrapper.appendChild(three_canvas);
+	// brain_wrapper.appendChild(three_canvas);
 
 	var canvasWidth = brain_wrapper_size.width;
 	var canvasHeight = brain_wrapper_size.height;
 
 	camera = new THREE.PerspectiveCamera(
-		45,
-		window.innerWidth / window.innerHeight,
+		50,
+		canvasWidth / canvasHeight,
 		0.25,
 		20
 	);
-	camera.position.set(-1.8, 0.9, 2.7);
+	camera.position.set(2, 2, 2);
 
-	controls = new THREE.OrbitControls(camera);
-	controls.target.set(0, -0.2, -0.2);
+	var container = brain_wrapper;
+	controls = new THREE.OrbitControls(camera, container);
+
+	// Origin (x, y, z)
+	controls.target.set(0, 0.666, 0);
 	controls.update();
 
 	// envmap
@@ -43,7 +46,7 @@ function init() {
 	// ]);
 
 	scene = new THREE.Scene();
-	scene.background = null;
+	scene.background = "#fff";
 
 	light = new THREE.HemisphereLight(0xbbbbff, 0x444422);
 	light.position.set(0, 1, 0);
@@ -52,43 +55,54 @@ function init() {
 	// model
 	var loader = new THREE.GLTFLoader();
 	loader.load(
-		"models/DamagedHelmet.gltf",
+		"models/duck/duck.gltf",
 		function(gltf) {
 			gltf.scene.traverse(function(child) {
 				if (child.isMesh) {
-					child.material.envMap = envMap;
+					// child.material.envMap = envMap;
 				}
 			});
 
 			scene.add(gltf.scene);
 		},
-		undefined,
-		function(e) {
-			console.error(e);
+		function(xhr) {
+			console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+		},
+		function(error) {
+			console.log("An error happened");
 		}
 	);
 
-	renderer = new THREE.WebGLRenderer({ antialias: true });
+	renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 	renderer.setPixelRatio(window.devicePixelRatio);
-	renderer.setSize(window.innerWidth, window.innerHeight);
+
+	camera.aspect = canvasWidth / canvasHeight;
+	camera.updateProjectionMatrix();
+
+	renderer.setSize(canvasWidth, canvasHeight);
+	renderer.setClearColor(0xffffff, 0);
 	renderer.gammaOutput = true;
 	brain_wrapper.appendChild(renderer.domElement);
 
 	window.addEventListener("resize", onWindowResize, false);
 
 	// stats
-	stats = new Stats();
-	brain_wrapper.appendChild(stats.dom);
+	// stats = new Stats();
+	// brain_wrapper.appendChild(stats.dom);
 }
 
 function onWindowResize() {
-	camera.aspect = window.innerWidth / window.innerHeight;
+	var brain_wrapper = document.querySelector(".brain-wrapper");
+	var brain_wrapper_size = brain_wrapper.getBoundingClientRect();
+
+	var canvasWidth = brain_wrapper_size.width;
+	var canvasHeight = brain_wrapper_size.height;
+
+	camera.aspect = canvasWidth / canvasHeight;
 	camera.updateProjectionMatrix();
 
-	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.setSize(canvasWidth, canvasHeight);
 }
-
-//
 
 function animate() {
 	requestAnimationFrame(animate);

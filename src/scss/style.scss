@@ -37,7 +37,7 @@ p {
 
 // Base Styles =================================================================
 body {
-	font: 85%/1.3 Merriweather Sans, Helvetica Neue, Helvetica, sans-serif;
+	font: 90%/1.3 Merriweather Sans, Helvetica Neue, Helvetica, sans-serif;
 	background: $white;
 	color: $grey-900;
 
@@ -184,7 +184,7 @@ small {
 
 // Brain wrapper ===============================================================
 .brain-wrapper {
-	background: $black;
+	background: $grey-900;
 	width: 100%;
 	height: 100vw;
 
@@ -219,7 +219,7 @@ small {
 
 // Settings wrapper ============================================================
 .settings-wrapper {
-	background: $grey-900;
+	background: $grey-800;
 	color: $grey-100;
 	min-height: 60vh;
 
