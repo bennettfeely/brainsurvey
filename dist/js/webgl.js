@@ -6,15 +6,16 @@ var container, stats, controls;
 var camera, scene, renderer, light;
 
 init();
-animate();
 
 function init() {
-	// var three_canvas = document.createElement("div");
 	var brain_wrapper = document.querySelector(".brain-wrapper");
+	var message_wrapper = document.querySelector(".message-wrapper");
+	var message = document.querySelector(".message .container");
+
+	// Display the loading indicator
+	message_wrapper.classList.add("is-visible");
+
 	var brain_wrapper_size = brain_wrapper.getBoundingClientRect();
-
-	// brain_wrapper.appendChild(three_canvas);
-
 	var canvasWidth = brain_wrapper_size.width;
 	var canvasHeight = brain_wrapper_size.height;
 
@@ -28,8 +29,15 @@ function init() {
 
 	var container = brain_wrapper;
 	controls = new THREE.OrbitControls(camera, container);
+	controls.enableZoom = false;
+	controls.autoRotate = true;
 
-	// Origin (x, y, z)
+	// Stop autorotating the brain when there is an interaction
+	controls.addEventListener("start", function() {
+		controls.autoRotate = false;
+	});
+
+	// Set xyz origin
 	controls.target.set(0, 0.666, 0);
 	controls.update();
 
@@ -63,10 +71,21 @@ function init() {
 				}
 			});
 
+			// Hide the loading indicator
+			setTimeout(function() {
+				message_wrapper.classList.remove("is-visible");
+			}, 1000);
+
 			scene.add(gltf.scene);
+
+			animate();
 		},
 		function(xhr) {
 			console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+
+			// Update the loading indicator text
+			message.innerHTML =
+				"Loading " + (xhr.loaded / xhr.total) * 100 + "%";
 		},
 		function(error) {
 			console.log("An error happened");
@@ -107,7 +126,7 @@ function onWindowResize() {
 function animate() {
 	requestAnimationFrame(animate);
 
-	renderer.render(scene, camera);
+	controls.update();
 
-	stats.update();
+	renderer.render(scene, camera);
 }
