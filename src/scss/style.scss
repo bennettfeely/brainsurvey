@@ -12,9 +12,10 @@ $shadow: 0 1px 2px rgba($grey-900, 0.15);
 $shadow-hover: 0 2px 4px rgba($grey-900, 0.3);
 $shadow-focus: 0 3px 6px rgba($grey-900, 0.45);
 
-// $shadow: 0 0.5rem 1rem rgba($grey-900, 0.15);
-// $shadow-hover: 0 1rem 2rem rgba($grey-900, 0.3);
-// $shadow-focus: 0 1.5rem 3rem rgba($grey-900, 0.45);
+$s: 0.5rem;
+$shadow: 0 $s $s * 2 rgba($grey-900, 0.1);
+$shadow-hover: 0 $s * 2 $s * 4 rgba($grey-900, 0.2);
+$shadow-focus: 0 $s * 3 $s * 6 rgba($grey-900, 0.3);
 
 $padding: 1rem;
 
@@ -25,18 +26,18 @@ $white: white;
 $black: black;
 
 :root {
-	--root-size: 80%;
+	--root-size: 90%;
 	--padding: 0.75rem;
 	--padding-medium: 0.5rem;
 	--padding-small: 0.25rem;
 	--transition: 0.4s;
-	--transition-hover: 0.2s;
+	--transition-hover: 0.1s;
 	--radius: 4px;
 }
 
 @media (min-width: $tablet) {
 	:root {
-		--root-size: 90%;
+		--root-size: 100%;
 		--padding: 1.25rem;
 		--padding-medium: 0.75rem;
 		--padding-small: 0.5rem;
@@ -57,10 +58,10 @@ p {
 // Base Styles =================================================================
 body {
 	font-size: var(--root-size);
-	font-family: PT Sans, Helvetica Neue, Helvetica, sans-serif;
+	font-family: Muktha Mahee, Helvetica Neue, Helvetica, sans-serif;
 	line-height: 1.5;
 	background: $white;
-	color: $grey-900;
+	color: $blue-grey-900;
 
 	@media (min-width: $tablet) {
 		padding-right: calc(100% - #{$sidebar-width});
@@ -70,10 +71,6 @@ body {
 header,
 footer {
 	@extend %no-select;
-}
-
-summary:focus {
-	outline: 0;
 }
 
 // Typography ==================================================================
@@ -91,13 +88,14 @@ h2 {
 	font-size: 1.4em;
 }
 h3 {
-	font-size: 1.1em;
+	font-size: 1em;
+	font-weight: 500;
 }
 h4 {
 	font-weight: 400;
-	font-size: 1em;
-	color: $blue-grey;
-	line-height: 1.2;
+	font-size: 0.9em;
+	color: $blue-grey-700;
+	line-height: 1;
 }
 p {
 	font-size: 1em;
@@ -126,28 +124,30 @@ small {
 // Box =========================================================================
 .box-wrapper {
 	position: relative;
+	margin: var(--padding-medium) 0;
 }
 
 .box {
+	display: block;
 	position: relative;
 	background-color: $white;
-	border-radius: var(--radius);
 	box-shadow: $shadow;
-	transition: box-shadow var(--transition);
-	margin-top: var(--padding-small);
-
-	&:hover {
-		transition-duration: var(--transition-hover);
-		box-shadow: $shadow-hover;
-	}
-
-	&:focus-within {
-		box-shadow: $shadow-focus;
-	}
 }
 
-.box-content {
-	border-top: thin solid $grey-300;
+.box-link {
+	background: $blue-grey-50;
+	text-decoration: none;
+	color: $black;
+	box-shadow: $shadow;
+
+	&:hover {
+		background: $white;
+		color: $black;
+	}
+
+	.container {
+		padding: var(--padding-medium);
+	}
 }
 
 // Header ======================================================================
@@ -163,22 +163,14 @@ small {
 	// }
 }
 
-.site-logo,
 .site-name {
 	display: inline-block;
 	line-height: 1;
 }
 
-.site-logo {
-	width: 1.5em;
-	height: 1.5em;
-	margin-right: 0.5em;
-	vertical-align: middle;
-}
-
 .site-link {
 	text-decoration: none;
-	color: $black;
+	color: $blue-grey-900;
 }
 
 // Brain wrapper ===============================================================
@@ -188,16 +180,9 @@ small {
 	height: 100vw;
 	overflow: hidden;
 	background-color: $blue-grey-50;
-	background-image: linear-gradient($blue-grey-400, $blue-grey-50)// // Grabby cursors
-		// cursor: move;
-		// cursor: -moz-grab;
-		// cursor: -webkit-grab;
-		// &:active {
-		// 	cursor: grabbing;
-		// 	cursor: -moz-grabbing;
-		// 	cursor: -webkit-grabbing;
-		// }
-		@media(min-width: $tablet) {
+	background: linear-gradient($blue-grey-900, $grey-900);
+
+	@media (min-width: $tablet) {
 		position: fixed;
 		right: 0;
 		bottom: 0;
@@ -233,19 +218,13 @@ small {
 .regions-wrapper {
 	background-color: $blue-grey-100;
 
-	.box {
-		border-left: var(--padding-medium) solid var(--region-color);
+	.box-link {
+		border-left: var(--padding-small) solid var(--region-color);
 	}
+}
 
-	summary {
-		display: flex;
-		align-items: center;
-		padding: 0 $padding;
-
-		.container {
-			padding: $padding var(--padding-small);
-		}
-	}
+.regions-card-wrapper {
+	margin-top: var(--padding-small);
 }
 
 // Settings wrapper ============================================================
@@ -253,11 +232,6 @@ small {
 	background-color: $blue-grey-200;
 	color: $black;
 	min-height: 60vh;
-
-	.box {
-		background: $white;
-		color: $grey-300;
-	}
 }
 
 // Footer ======================================================================

@@ -1,38 +1,51 @@
-regions_list = [
-    {
-        acronym: "lifg",
-        data: {
-            common_name: "Broca's Area",
-            full_name: "Left Middle and Superior Frontal Gyrus",
-            path: "left-middle-and-superior-frontal-gyrus",
-            color: "tomato",
-            summary:
-                "<strong>Broca’s area</strong> is typically located in the left inferior frontal gyrus, and supports language production, especially the production of whole sentences. When working with patients in the lead up to a surgery in the area of this brain region, we pay particular attention to mapping language and motor abilities using functional MRI."
-        }
+regions_obj = {
+    lifg: {
+        full_name: "Left Inferior Frontal Gyrus",
+        common_name: "Broca's Area",
+        color: "dodgerblue",
+        summary:
+            "Broca’s area is typically located in the left inferior frontal gyrus, and supports language production, especially the production of whole sentences. When working with patients in the lead up to a surgery in the area of this brain region, we pay particular attention to mapping language and motor abilities using functional MRI."
     },
-    {
-        acronym: "rpcg",
-        data: {
-            common_name: "Motor Cortex",
-            full_name: "Right Pre-Central Gyrus",
-            path: "right-pre-central-gyrus",
-            color: "gold",
-            summary:
-                "The <strong>primary motor cortex</strong> controls movements of the opposite side of the body. Tumors in motor cortex present special challenges. Our mapping program uses high resolution functional mapping and intraoperative stimulation to confirm the location of motor cortex and to preserve those critical functions during tumor removal."
-        }
+    lipl: {
+        full_name: "Left Inferior Parietal Lobule",
+        common_name: undefined,
+        color: "tomato",
+        summary:
+            "The left inferior parietal lobe supports many critical functions related to language, memory, attention and skilled use of the hands. Patients with tumors in this brain region undergo functional MRI mapping to identify motor and language areas of the brain."
     },
-    {
-        acronym: "lipl",
-        data: {
-            common_name: undefined,
-            full_name: "Left Inferior Parietal Lobule",
-            path: "left-inferior-parietal-lobule",
-            color: "dodgerblue",
-            summary:
-                "The <strong>Left Inferior Parietal Lobe</strong> supports many critical functions related to language, memory, attention and skilled use of the hands. Patients with tumors in this brain region undergo functional MRI mapping to identify motor and language areas of the brain."
-        }
+    litg: {
+        full_name: "Left Inferior Temporal Gyrus",
+        common_name: undefined,
+        color: "gold",
+        summary: undefined
+    },
+    lmsfg: {
+        full_name: "Left Middle Superior Frontal Gyrus",
+        common_name: undefined,
+        color: "forestgreen",
+        summary:
+            "The middle and superior frontal gyri in the left hemisphere can support important language and motor function. Functional MRI can be used prior to surgery to assist in determining whether those structures represent language."
+    },
+    lstg: {
+        full_name: "Left Superior Temporal Gyrus",
+        common_name: undefined,
+        color: "sienna",
+        summary: undefined
+    },
+    rpcg: {
+        full_name: "Right Pre-Central Gyrus",
+        common_name: "Motor Cortex",
+        color: "crimson",
+        summary:
+            "Primary motor cortex controls movements of the opposite side of the body. Tumors in motor cortex present special challenges. Our mapping program uses high resolution functional mapping and intraoperative stimulation to confirm the location of motor cortex and to preserve those critical functions during tumor removal."
+    },
+    rstg: {
+        full_name: "Right Superior Temporal Gyrus",
+        common_name: undefined,
+        color: "darkorchid",
+        summary: undefined
     }
-];
+};
 
 init();
 
@@ -45,51 +58,32 @@ function init() {
 function initRegions() {
     console.log("initRegions();");
 
-    var id;
-    for (id = 0; id < regions_list.length; ++id) {
-        createCard(regions_list[id], id);
-    }
-
-    // Fetch all the details element.
-    var details = Array.from(document.querySelectorAll("details"));
-
-    // Add the onclick listeners.
-    var clicked;
-    for (clicked = 0; clicked < details.length; ++clicked) {
-        details[clicked].addEventListener("click", function() {
-            // Close all the details that are not targetDetail.
-            var others;
-            for (others = 0; others < details.length; ++others) {
-                if (details[others] !== details[clicked]) {
-                    details[others].removeAttribute("open");
-                } else {
-                    // if (details[clicked].hasAttribute("open") {
-                    //     details[clicked].removeAttribute("open");
-                    // }
-                }
-            }
-        });
+    let key;
+    for (key in regions_obj) {
+        createCard(key, regions_obj[key]);
     }
 }
 
-function createCard(region, id) {
-    if (region.data.common_name !== undefined) {
-        // prettier-ignore
-        var hgroup = '<h3>' + region.data.full_name + '</h3>'
-                + '<h4>' + region.data.common_name + '</h4>';
+function createCard(path, obj) {
+    if (obj.full_name !== undefined) {
+        var full_name = "<h3>" + obj.full_name + "</h3>";
     } else {
-        var hgroup = "<h3>" + region.data.full_name + "</h3>";
+        var full_name = "";
+    }
+
+    if (obj.common_name !== undefined) {
+        var common_name = "<h4>" + obj.common_name + "</h4>";
+    } else {
+        var common_name = "";
     }
 
     // prettier-ignore
-    var card = '<details style="--region-color: ' + region.data.color + '" class="box ' + region.data.path + '" data-id="' + id + '">'
-        + '<summary>'
-            + '<header class="container">' + hgroup + '</header>'
-        + '</summary>'
-        + '<div class="container box-content">'
-            + '<p>' + region.data.summary + '</p>'
-        + '</div>'
-    + '</details>';
+    var card = '<a href="/' + path + '" style="--region-color: ' + obj.color + '" class="box box-link region-' + path + '">'
+            + '<div class="container">'
+                + full_name
+                + common_name
+            + '</div>'
+        + '</a>';
 
-    document.querySelector(".regions-wrapper .container").innerHTML += card;
+    document.querySelector(".regions-wrapper .box-wrapper").innerHTML += card;
 }
