@@ -12,12 +12,10 @@ $shadow: 0 1px 2px rgba($grey-900, 0.15);
 $shadow-hover: 0 2px 4px rgba($grey-900, 0.3);
 $shadow-focus: 0 3px 6px rgba($grey-900, 0.45);
 
-$s: 0.5rem;
+$s: 0.5em;
 $shadow: 0 $s $s * 2 rgba($grey-900, 0.1);
 $shadow-hover: 0 $s * 2 $s * 4 rgba($grey-900, 0.2);
 $shadow-focus: 0 $s * 3 $s * 6 rgba($grey-900, 0.3);
-
-$padding: 1rem;
 
 $sidebar-width: 24em;
 $tablet: 42em;
@@ -27,18 +25,18 @@ $black: black;
 
 :root {
 	--root-size: 90%;
-	--padding: 0.75rem;
+	--padding-large: 0.75rem;
 	--padding-medium: 0.5rem;
 	--padding-small: 0.25rem;
-	--transition: 0.4s;
-	--transition-hover: 0.1s;
-	--radius: 4px;
+	--transition: 0.15s;
+	--transition-hover: 0.075s;
+	--radius: 0.25rem;
 }
 
 @media (min-width: $tablet) {
 	:root {
 		--root-size: 100%;
-		--padding: 1.25rem;
+		--padding-large: 1.25rem;
 		--padding-medium: 0.75rem;
 		--padding-small: 0.5rem;
 	}
@@ -58,7 +56,7 @@ p {
 // Base Styles =================================================================
 body {
 	font-size: var(--root-size);
-	font-family: Muktha Mahee, Helvetica Neue, Helvetica, sans-serif;
+	font-family: Catamaran, Helvetica Neue, Helvetica, sans-serif;
 	line-height: 1.5;
 	background: $white;
 	color: $blue-grey-900;
@@ -81,6 +79,7 @@ h3 {
 }
 
 h1 {
+	font-weight: 600;
 	font-size: 1.6em;
 }
 h2 {
@@ -88,8 +87,8 @@ h2 {
 	font-size: 1.4em;
 }
 h3 {
-	font-size: 1em;
 	font-weight: 500;
+	font-size: 1em;
 }
 h4 {
 	font-weight: 400;
@@ -110,6 +109,10 @@ a {
 		color: $blue-400;
 		transition-duration: var(--transition-hover);
 	}
+
+	&:active {
+		transition-duration: 0s;
+	}
 }
 
 small {
@@ -118,49 +121,12 @@ small {
 
 // Structural Styles ===========================================================
 .container {
-	padding: var(--padding);
-}
-
-// Box =========================================================================
-.box-wrapper {
-	position: relative;
-	margin: var(--padding-medium) 0;
-}
-
-.box {
-	display: block;
-	position: relative;
-	background-color: $white;
-	box-shadow: $shadow;
-}
-
-.box-link {
-	background: $blue-grey-50;
-	text-decoration: none;
-	color: $black;
-	box-shadow: $shadow;
-
-	&:hover {
-		background: $white;
-		color: $black;
-	}
-
-	.container {
-		padding: var(--padding-medium);
-	}
+	padding: var(--padding-large);
 }
 
 // Header ======================================================================
 .header-wrapper {
 	background-color: $white;
-
-	// br {
-	// 	display: none;
-
-	// 	@media (min-width: $tablet) {
-	// 		display: block;
-	// 	}
-	// }
 }
 
 .site-name {
@@ -173,14 +139,26 @@ small {
 	color: $blue-grey-900;
 }
 
+// Browser issues wrapper ============================================================
+.browser-issues-wrapper {
+	background-color: $red-900;
+	color: $white;
+	text-align: center;
+
+	a {
+		font-weight: 700;
+		color: $white;
+	}
+}
+
 // Brain wrapper ===============================================================
 .brain-wrapper {
 	position: relative;
 	width: 100%;
 	height: 100vw;
 	overflow: hidden;
-	background-color: $blue-grey-50;
-	background: linear-gradient($blue-grey-900, $grey-900);
+	background-color: $grey-800;
+	background: linear-gradient($blue-grey-900, $grey-1000);
 
 	@media (min-width: $tablet) {
 		position: fixed;
@@ -219,7 +197,11 @@ small {
 	background-color: $blue-grey-100;
 
 	.box-link {
-		border-left: var(--padding-small) solid var(--region-color);
+		border-left: var(--padding-medium) solid var(--region-color);
+
+		&:active {
+			background-color: var(--region-color);
+		}
 	}
 }
 
@@ -231,6 +213,7 @@ small {
 .settings-wrapper {
 	background-color: $blue-grey-200;
 	color: $black;
+
 	min-height: 60vh;
 }
 
@@ -238,4 +221,94 @@ small {
 .footer-wrapper {
 	background-color: $blue-grey-300;
 	color: $black;
+}
+
+// Box =========================================================================
+.box-wrapper {
+	position: relative;
+	margin: var(--padding-medium) 0;
+
+	.box {
+		box-shadow: inset 0 -1px $blue-grey-100;
+	}
+}
+
+.box {
+	display: block;
+	position: relative;
+	background: $blue-grey-50;
+	box-shadow: $shadow;
+	transition: background var(--transition), transform var(--transition);
+	color: $black;
+
+	&.container {
+		padding: var(--padding-medium);
+	}
+
+	// &:first-child {
+	// 	border-top-left-radius: var(--radius);
+	// 	border-top-right-radius: var(--radius);
+	// }
+	// &:last-child {
+	// 	border-bottom-left-radius: var(--radius);
+	// 	border-bottom-right-radius: var(--radius);
+	// }
+
+	&:hover,
+	&:focus {
+		background: $white;
+		color: $black;
+		z-index: 1;
+	}
+}
+
+.box-link {
+	@extend %no-select;
+	text-decoration: none;
+}
+
+.box-toggle {
+	@extend %no-select;
+
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+
+	input[type="checkbox"] {
+		display: none;
+
+		&:checked + .toggle {
+			background: $light-blue-300;
+
+			&:before {
+				transform: translateX(100%);
+				background: $light-blue-700;
+			}
+		}
+	}
+}
+
+.toggle {
+	$size: 1.5rem;
+
+	width: $size * 2;
+	height: $size;
+	margin-right: var(--padding-medium);
+	background: $blue-grey-200;
+	border-radius: $size;
+	transition: background var(--transition);
+	opacity: 0.75;
+
+	&:hover {
+		opacity: 1;
+	}
+
+	&:before {
+		@extend %psuedo;
+		width: $size;
+		height: $size;
+		background: $blue-grey-400;
+		border-radius: $size;
+		transition: transform var(--transition), background var(--transition);
+	}
 }

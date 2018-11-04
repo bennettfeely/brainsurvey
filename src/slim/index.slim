@@ -8,7 +8,7 @@ html lang="en"
 		meta name="theme-color" content="#ffffff"
 		meta name="description" content="XXXXXX"
 		link href="css/style.min.css" rel="stylesheet" type="text/css"
-		link href="https://fonts.googleapis.com/css?family=Mukta+Mahee:300,400,500" rel="stylesheet"
+		link href="https://fonts.googleapis.com/css?family=Catamaran:400,500,600" rel="stylesheet"
 		link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png"
 		link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png"
 		link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png"
@@ -23,13 +23,17 @@ html lang="en"
 							| Brain&nbsp;
 							br
 							| Map
+			noscript
+				section.browser-issues-wrapper
+					.container
+						h2 You need to enable javascript in your web browser to view this website.
+						a href="https://www.enable-javascript.com/" Learn how &rarr;
 			section.brain-wrapper
 				.message-wrapper
 					.container
 						.message
 							.container
 								p Loading...
-
 			section.regions-wrapper
 				.container
 					h2 Regions
@@ -37,9 +41,11 @@ html lang="en"
 			section.settings-wrapper
 				.container
 					h2 Settings
-					/ .box
-					/ 	.container
-					/ 		h3 Settings
+					.box-wrapper.orbit
+						label.box.box-toggle.container
+							input type="checkbox" checked="true"
+							.toggle
+							h3 Orbit
 						
 		footer.footer-wrapper
 			.container

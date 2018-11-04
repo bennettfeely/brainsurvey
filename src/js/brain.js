@@ -32,10 +32,13 @@ function init() {
 	controls.enableZoom = false;
 	controls.enablePan = false;
 	controls.autoRotate = true;
+	controls.autoRotateSpeed = 6; // = 6 rotations per min
 
 	// Stop autorotating when there is an interaction
 	controls.addEventListener("start", function() {
 		controls.autoRotate = false;
+
+		document.querySelector(".orbit input").checked = false;
 	});
 
 	// Origin

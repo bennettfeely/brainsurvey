@@ -53,6 +53,7 @@ function init() {
     console.log("init();");
 
     initRegions();
+    initSettings();
 }
 
 function initRegions() {
@@ -78,12 +79,24 @@ function createCard(path, obj) {
     }
 
     // prettier-ignore
-    var card = '<a href="/' + path + '" style="--region-color: ' + obj.color + '" class="box box-link region-' + path + '">'
-            + '<div class="container">'
-                + full_name
-                + common_name
-            + '</div>'
+    var card = '<a href="/' + path + '" style="--region-color: ' + obj.color + '" class="box box-link container region-' + path + '">'
+            + full_name
+            + common_name
         + '</a>';
 
     document.querySelector(".regions-wrapper .box-wrapper").innerHTML += card;
+}
+
+function initSettings() {
+    // Orbit Toggle
+    var orbit_toggle = document.querySelector(".orbit input");
+    orbit_toggle.addEventListener("change", function() {
+        if (orbit_toggle.checked) {
+            console.log("checked!");
+            controls.autoRotate = true;
+        } else {
+            console.log("not checked!");
+            controls.autoRotate = false;
+        }
+    });
 }
