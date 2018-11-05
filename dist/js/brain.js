@@ -9,15 +9,8 @@ init();
 
 function init() {
 	var brain_wrapper = document.querySelector(".brain-wrapper");
-	var message_wrapper = document.querySelector(".message-wrapper");
-	var message = document.querySelector(".message .container");
-
-	// Display the loading indicator
-	message_wrapper.classList.add("is-visible");
-
-	var brain_wrapper_size = brain_wrapper.getBoundingClientRect();
-	var canvasWidth = brain_wrapper_size.width;
-	var canvasHeight = brain_wrapper_size.height;
+	var canvasWidth = brain_wrapper.offsetWidth;
+	var canvasHeight = brain_wrapper.offsetHeight;
 
 	camera = new THREE.PerspectiveCamera(
 		50,
@@ -25,14 +18,14 @@ function init() {
 		0.25,
 		20
 	);
-	camera.position.set(2, 2, 2);
+	camera.position.set(1, 1, 2);
 
 	var container = brain_wrapper;
 	controls = new THREE.OrbitControls(camera, container);
 	controls.enableZoom = false;
 	controls.enablePan = false;
 	controls.autoRotate = true;
-	controls.autoRotateSpeed = 6; // = 6 rotations per min
+	controls.autoRotateSpeed = 4; // = 4 rotations per min
 
 	// Stop autorotating when there is an interaction
 	controls.addEventListener("start", function() {
@@ -42,22 +35,22 @@ function init() {
 	});
 
 	// Origin
-	controls.target.set(0, 0.666, 0);
+	controls.target.set(0, 0.5, 0);
 	controls.update();
 
 	// Set the scene
 	scene = new THREE.Scene();
 
 	// Lighting
-	var light = new THREE.HemisphereLight(0xffffff, 1);
+	var light = new THREE.HemisphereLight(0xfa8072, 1);
 	scene.add(light);
-	var directionalLight = new THREE.DirectionalLight(0xffffff, 0.75);
+	var directionalLight = new THREE.DirectionalLight(0xffffff, 0.25);
 	scene.add(directionalLight);
 
 	// Model
 	var loader = new THREE.GLTFLoader();
 	loader.load(
-		"models/duck/duck.gltf",
+		"models/brain_areas/scene.gltf",
 		function(gltf) {
 			gltf.scene.traverse(function(child) {
 				// if (child.isMesh) {
@@ -67,16 +60,10 @@ function init() {
 
 			scene.add(gltf.scene);
 			animate();
-
-			// Hide the loading indicator when brain is loaded
-			setTimeout(function() {
-				message_wrapper.classList.remove("is-visible");
-			}, 1000);
 		},
 		function(xhr) {
 			// Update the loading indicator text
-			message.innerHTML =
-				"Loading " + (xhr.loaded / xhr.total) * 100 + "%";
+			console.log("Loading " + (xhr.loaded / xhr.total) * 100 + "%");
 		},
 		function(error) {
 			console.log("An error happened");
@@ -98,10 +85,8 @@ function init() {
 
 function onWindowResize() {
 	var brain_wrapper = document.querySelector(".brain-wrapper");
-	var brain_wrapper_size = brain_wrapper.getBoundingClientRect();
-
-	var canvasWidth = brain_wrapper_size.width;
-	var canvasHeight = brain_wrapper_size.height;
+	var canvasWidth = brain_wrapper.offsetWidth;
+	var canvasHeight = brain_wrapper.offsetHeight;
 
 	camera.aspect = canvasWidth / canvasHeight;
 	camera.updateProjectionMatrix();

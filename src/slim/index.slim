@@ -1,39 +1,44 @@
 doctype html
 html lang="en"
 	head
-		/ Essentials
 		meta charset="utf-8"
 		meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"
 		title Human Brain Map
 		meta name="theme-color" content="#ffffff"
 		meta name="description" content="XXXXXX"
-		link href="css/style.min.css" rel="stylesheet" type="text/css"
+		link href="css/style.min.css" rel="stylesheet"
 		link href="https://fonts.googleapis.com/css?family=Catamaran:400,500,600" rel="stylesheet"
 		link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png"
 		link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png"
 		link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png"
-	body
-		main.main-wrapper
-			header.header-wrapper
+	body.has-content
+		header.header-wrapper.mobile-only
 				.container
 					h1.site-name 
 						a.site-link href=""
-							| Human&nbsp;
-							br
-							| Brain&nbsp;
-							br
-							| Map
+							span Human
+							span Brain
+							span Map
+		.main-wrapper
+			section.brain-wrapper
+			section.content-wrapper
+				.container
+					h2 Left Inferior Frontal Gyrus
+			      	p <strong>Broca’s area</strong> is typically located in the left inferior frontal gyrus, and supports language production, especially the production of whole sentences. When working with patients in the lead up to a surgery in the area of this brain region, we pay particular attention to mapping language and motor abilities using functional MRI.
+			      	p Language processing has been linked to Broca's area since Pierre Paul Broca reported impairments in two patients. They had lost the ability to speak after injury to the posterior inferior frontal gyrus of the brain. Since then, the approximate region he identified has become known as Broca's area, and the deficit in language production as Broca's aphasia, also called expressive aphasia. Broca's area is now typically defined in terms of the pars opercularis and pars triangularis of the inferior frontal gyrus, represented in Brodmann's cytoarchitectonic map as areas 44 and 45 of the dominant hemisphere. Studies of chronic aphasia have implicated an essential role of Broca's area in various speech and language functions. Further, fMRI studies have also identified activation patterns in Broca's area associated with various language tasks. However, slow destruction of the Broca's area by brain tumors can leave speech relatively intact, suggesting its functions can shift to nearby areas in the brain.
+		.side-wrapper
+			header.header-wrapper.desktop-only
+				.container
+					h1.site-name 
+						a.site-link href=""
+							span Human
+							span Brain
+							span Map
 			noscript
 				section.browser-issues-wrapper
 					.container
 						h2 You need to enable javascript in your web browser to view this website.
 						a href="https://www.enable-javascript.com/" Learn how &rarr;
-			section.brain-wrapper
-				.message-wrapper
-					.container
-						.message
-							.container
-								p Loading...
 			section.regions-wrapper
 				.container
 					h2 Regions
@@ -43,16 +48,15 @@ html lang="en"
 					h2 Settings
 					.box-wrapper.orbit
 						label.box.box-toggle.container
+							h3 Orbit
 							input type="checkbox" checked="true"
 							.toggle
-							h3 Orbit
-						
-		footer.footer-wrapper
-			.container
-				small &copy;2018 Brad Mahon
-		script type="text/javascript" src="https://threejs.org/build/three.js"
-		script type="text/javascript" src="js/GLTFLoader.js"
-		script type="text/javascript" src="https://threejs.org/examples/js/controls/OrbitControls.js"
-		script type="text/javascript" src="https://threejs.org/examples/js/WebGL.js"
-		script type="text/javascript" src="js/brain.js"
-		script type="text/javascript" src="js/script.js"
+			footer.footer-wrapper
+				.container
+					small &copy;2018 Brad Mahon
+		script src="https://threejs.org/build/three.js"
+		script src="js/GLTFLoader.js"
+		script src="https://threejs.org/examples/js/controls/OrbitControls.js"
+		script src="https://threejs.org/examples/js/WebGL.js"
+		script src="js/brain.js"
+		script src="js/script.js"
