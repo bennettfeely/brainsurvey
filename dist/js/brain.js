@@ -44,7 +44,7 @@ function init() {
 	// Lighting
 	var light = new THREE.HemisphereLight(0xfa8072, 1);
 	scene.add(light);
-	var directionalLight = new THREE.DirectionalLight(0xffffff, 0.25);
+	var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 	scene.add(directionalLight);
 
 	// Model

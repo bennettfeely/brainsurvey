@@ -70,6 +70,19 @@ function initRegions() {
     for (key in regions_obj) {
         createCard(key, regions_obj[key]);
     }
+
+    // window.addEventListener("popstate", function(event) {
+    //     console.log("POPSTATE");
+    //     var data = event.state;
+    //     reportEvent(event);
+    //     reportData(
+    //         event.state || {
+    //             url: "unknown",
+    //             name: "undefined",
+    //             location: "undefined"
+    //         }
+    //     );
+    // });
 }
 
 function createCard(path, obj) {
@@ -86,12 +99,53 @@ function createCard(path, obj) {
     }
 
     // prettier-ignore
-    var card = '<a href="/' + path + '" style="--color: ' + obj.color + '" class="box box-link container region-' + path + '">'
-            + full_name
-            + common_name
-        + '</a>';
+    var card = document.createElement("a");
+    card.id = path;
+    card.href = path;
+    card.className = "box box-link region-link container";
+    card.style = "--color: " + obj.color;
+    card.innerHTML += full_name + common_name;
 
-    document.querySelector(".regions-wrapper .box-wrapper").innerHTML += card;
+    document.querySelector(".regions-wrapper .box-wrapper").appendChild(card);
+
+    // Attach click event listener
+    card.addEventListener(
+        "click",
+        function(e) {
+            e.preventDefault();
+
+            switchRegion(e.currentTarget.id);
+        },
+        false
+    );
+}
+
+function switchRegion(region_id) {
+    var target_obj = regions_obj[region_id];
+
+    // Change the URL
+    history.pushState(null, null, "/" + region_id);
+
+    // Change class of selected region box-link
+    // e.currentTarget.classList.add("is-selected");
+
+    // Set content of content wrapper
+    var full_name = "<h2>" + target_obj.full_name + "</h2>";
+
+    if (target_obj.intro !== undefined) {
+        var intro = "<p>" + target_obj.intro + "</p>";
+    } else {
+        var intro =
+            "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
+    }
+
+    // prettier-ignore
+    var content = '<div class="container">'
+        + full_name
+        + intro
+    + '</div>';
+
+    document.querySelector(".content-wrapper").innerHTML = content;
 }
 
 function initSettings() {

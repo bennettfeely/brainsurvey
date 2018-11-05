@@ -198,7 +198,12 @@ body {
 	overflow: hidden;
 
 	@media (min-width: $tablet) {
-		height: 40vw;
+		height: 50vh;
+		border-bottom: thin solid $blue-grey-900;
+
+		canvas {
+			transform: scale(1.25);
+		}
 	}
 
 	@media (min-width: $desktop) {
@@ -208,17 +213,16 @@ body {
 		width: calc(100% - #{$sidebar-width});
 		height: 100vh;
 		z-index: 10;
+		border-bottom: 0;
 
 		.has-content & {
 			transform: scale(1) translateX(25%);
 			transform-origin: calc(100% - var(--padding-large))
 				var(--padding-large);
-			// border: 1px solid $blue-grey-800;
-			// right: calc(var(--padding-large) * 2);
-			// top: calc(var(--padding-large) * 2);
-			// border-radius: $radius;
-			// box-shadow: inset $shadow;
-			// background: linear-gradient($blue-grey-900, transparent);
+
+			canvas {
+				transform: scale(1);
+			}
 		}
 	}
 }
@@ -239,6 +243,10 @@ body {
 	}
 
 	@media (min-width: $desktop) {
+		h2 {
+			font-size: 2em;
+			line-height: 1.1;
+		}
 		.container {
 			width: 50%;
 		}
@@ -314,6 +322,10 @@ body {
 		background: $white;
 		color: $black;
 		z-index: 1;
+	}
+
+	&.is-selected {
+		border-left-width: 1.5em;
 	}
 }
 
