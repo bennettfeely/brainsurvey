@@ -150,8 +150,8 @@ function switchRegion(region_id) {
     // document.querySelector(".content-wrapper").appendChild(back_button);
 
     // prettier-ignore
-    var content = '<div class="container">' 
-            + '<button class="back-button">&larr; Back</button>'
+    var content = '<button class="back-button">&larr; Back</button>'
+        + '<div class="container">' 
             + full_name 
             + intro 
         + "</div>";

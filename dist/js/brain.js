@@ -64,7 +64,14 @@ function init() {
 		},
 		function(xhr) {
 			// Update the loading indicator text
-			console.log("Loading " + (xhr.loaded / xhr.total) * 100 + "%");
+			var pct = (xhr.loaded / xhr.total) * 100;
+
+			if (pct < 100) {
+				document.querySelector(".loading-status").style.width =
+					pct + "%";
+			} else {
+				document.querySelector("html").classList.add("is-loaded-brain");
+			}
 		},
 		function(error) {
 			console.log("An error happened");

@@ -132,10 +132,6 @@ button {
 
 	&:hover {
 		opacity: 1;
-		transition: opacity var(--transition-hover);
-	}
-	&:active {
-		background: $blue-grey-800;
 	}
 	&:focus {
 		outline: none;
@@ -249,12 +245,49 @@ body {
 	}
 }
 
+// Loading indicator ===========================================================
+.loading-wrapper {
+	position: absolute;
+	top: var(--padding-large);
+	right: var(--padding-large);
+	z-index: 10;
+	pointer-events: none;
+	transition: opacity var(--transition-decorative)
+		var(--transition-decorative);
+	animation: load-delay var(--transition) both;
+
+	@keyframes load-delay {
+		from {
+			opacity: 0;
+		}
+	}
+
+	.is-loaded-brain & {
+		opacity: 0;
+	}
+}
+
+.loading-indicator {
+	width: 10em;
+	height: var(--padding-small);
+	background: $blue-grey;
+	border-radius: 1em;
+	box-shadow: $shadow;
+}
+
+.loading-status {
+	height: var(--padding-small);
+	background: $white;
+	border-radius: 1em;
+}
+
 // Content Wrapper =============================================================
 .content-wrapper {
 	color: $blue-grey-100;
 
 	h2 {
 		margin-bottom: var(--padding-small);
+		color: $blue-grey-50;
 	}
 
 	@media (min-width: $tablet) {
@@ -271,6 +304,22 @@ body {
 		}
 		.container {
 			width: 50%;
+			animation: load 1s;
+		}
+	}
+}
+
+.has-content {
+	.content-wrapper {
+		.container {
+			animation: load 1s;
+
+			@keyframes load {
+				0% {
+					transform: translateY(2em);
+					opacity: 0;
+				}
+			}
 		}
 	}
 }
@@ -344,17 +393,16 @@ body {
 		color: $black;
 		z-index: 1;
 	}
-
-	&:active {
-		background-color: $blue-grey-200;
-		color: $blue-grey-700;
-		transition: 0s;
-	}
 }
 
 .box-link {
 	@extend %no-select;
 	text-decoration: none;
+
+	&:active {
+		opacity: 0.5;
+		transition: 0s;
+	}
 }
 
 .box-toggle {
