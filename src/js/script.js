@@ -78,19 +78,6 @@ function initRegions() {
     for (key in regions_obj) {
         createCard(key, regions_obj[key]);
     }
-
-    // window.addEventListener("popstate", function(event) {
-    //     console.log("POPSTATE");
-    //     var data = event.state;
-    //     reportEvent(event);
-    //     reportData(
-    //         event.state || {
-    //             url: "unknown",
-    //             name: "undefined",
-    //             location: "undefined"
-    //         }
-    //     );
-    // });
 }
 
 function createCard(path, obj) {
@@ -134,6 +121,15 @@ function switchRegion(region_id) {
     // Change the URL
     history.pushState(null, null, "/" + region_id);
 
+    // Change page class
+    document.querySelector("html").classList.add("has-content");
+
+    // Rerender the page
+    renderer.render(scene, camera);
+
+    // Scroll to top of page
+    window.scroll(0, 0);
+
     // Change class of selected region box-link
     // e.currentTarget.classList.add("is-selected");
 
@@ -147,13 +143,42 @@ function switchRegion(region_id) {
             "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
     }
 
+    // Add a back button
+    // var back_button = document.createElement("button");
+    // back_button.id = "back";
+    // back_button.innerHTML = "Back";
+    // document.querySelector(".content-wrapper").appendChild(back_button);
+
     // prettier-ignore
-    var content = '<div class="container">'
-        + full_name
-        + intro
-    + '</div>';
+    var content = '<div class="container">' 
+            + '<button class="back-button">&larr; Back</button>'
+            + full_name 
+            + intro 
+        + "</div>";
 
     document.querySelector(".content-wrapper").innerHTML = content;
+
+    document
+        .querySelector(".back-button")
+        .addEventListener("click", function() {
+            reset();
+        });
+}
+
+function reset() {
+    console.log("reset();");
+
+    // Re-render the brain
+    renderer.render(scene, camera);
+
+    // Scroll to top of page
+    window.scroll(0, 0);
+
+    // Remove has content class from html
+    document.querySelector("html").classList.remove("has-content");
+
+    // Empty the content wrapper
+    document.querySelector(".content-wrapper").innerHTML = "";
 }
 
 function initSettings() {

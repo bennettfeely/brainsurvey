@@ -2,8 +2,7 @@ if (WEBGL.isWebGLAvailable() === false) {
 	document.body.appendChild(WEBGL.getWebGLErrorMessage());
 }
 
-var container, stats, controls;
-var camera, scene, renderer, light;
+var controls, camera, scene, renderer, light;
 
 init();
 
@@ -18,14 +17,15 @@ function init() {
 		0.25,
 		20
 	);
-	camera.position.set(1, 1, 2);
+	camera.position.set(0, 0, 2);
 
-	var container = brain_wrapper;
-	controls = new THREE.OrbitControls(camera, container);
+	controls = new THREE.OrbitControls(camera, brain_wrapper);
 	controls.enableZoom = false;
+	// controls.minDistance = 1.5;
+	// controls.maxDistance = 2.5;
 	controls.enablePan = false;
-	controls.autoRotate = true;
-	controls.autoRotateSpeed = 4; // = 4 rotations per min
+	controls.autoRotate = false;
+	controls.autoRotateSpeed = 4; // 4 rotations per min
 
 	// Stop autorotating when there is an interaction
 	controls.addEventListener("start", function() {
@@ -35,16 +35,17 @@ function init() {
 	});
 
 	// Origin
-	controls.target.set(0, 0.5, 0);
+	controls.target.set(0, 0.6, 0);
 	controls.update();
 
 	// Set the scene
 	scene = new THREE.Scene();
 
 	// Lighting
-	var light = new THREE.HemisphereLight(0xfa8072, 1);
+	var light = new THREE.HemisphereLight(0xff9999, 0.5);
 	scene.add(light);
-	var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+	var directionalLight = new THREE.DirectionalLight(0xffffff, 0.25);
+	directionalLight.position.set(0, 5, 0);
 	scene.add(directionalLight);
 
 	// Model
