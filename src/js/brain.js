@@ -24,7 +24,7 @@ function init() {
 	// controls.minDistance = 1.5;
 	// controls.maxDistance = 2.5;
 	controls.enablePan = false;
-	controls.autoRotate = false;
+	controls.autoRotate = true;
 	controls.autoRotateSpeed = 4; // 4 rotations per min
 
 	// Stop autorotating when there is an interaction

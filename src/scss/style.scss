@@ -15,25 +15,29 @@ $black: black;
 $tablet: 44em;
 $desktop: 66em;
 
-$s: 0.5em;
+$s: 0.25em;
 $shadow: 0 $s $s * 2 rgba($grey-800, 0.1);
 $shadow-focus: 0 $s * 2 $s * 3 rgba($grey-800, 0.1);
 $shadow-hover: 0 $s * 3 $s * 4 rgba($grey-800, 0.1);
 
 :root {
 	--root-size: 90%;
+
 	--padding-large: 0.75rem;
 	--padding-medium: 0.5rem;
 	--padding-small: 0.25rem;
-	--transition-decorative: 0.8s;
+
 	--transition: 0.15s;
 	--transition-hover: 0.075s;
+	--transition-decorative: 0.8s;
+
 	--radius: 0.25rem;
 
 	--sidebar-width: 22em;
 
 	@media (min-width: $tablet) {
 		--root-size: 100%;
+
 		--padding-large: 1rem;
 		--padding-medium: 0.75rem;
 		--padding-small: 0.5rem;
@@ -283,10 +287,6 @@ body {
 
 	.box-link {
 		border-left: var(--padding-medium) solid var(--color);
-
-		&:active {
-			background-image: linear-gradient(var(--color), transparent);
-		}
 	}
 }
 
@@ -313,10 +313,6 @@ body {
 
 	.box {
 		box-shadow: inset 0 -1px $blue-grey-100, $shadow;
-
-		&:last-child {
-			box-shadow: $shadow;
-		}
 	}
 }
 
@@ -330,7 +326,7 @@ body {
 	color: $black;
 
 	&.container {
-		padding: var(--padding-large);
+		padding: var(--padding-medium);
 	}
 
 	&:first-child {
@@ -349,8 +345,10 @@ body {
 		z-index: 1;
 	}
 
-	&.is-selected {
-		border-left-width: 1.5em;
+	&:active {
+		background-color: $blue-grey-200;
+		color: $blue-grey-700;
+		transition: 0s;
 	}
 }
 
