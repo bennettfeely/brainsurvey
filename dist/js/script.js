@@ -59,6 +59,14 @@ init();
 function init() {
     console.log("init();");
 
+    // Switch data to appropriate url if necessary
+    window.addEventListener("popstate", function(e) {
+        console.log("popstate!");
+
+        console.log(e.state);
+        switchRegion("rstg");
+    });
+
     initRegions();
     initSettings();
 }
