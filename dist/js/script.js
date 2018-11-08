@@ -176,11 +176,9 @@ function reset() {
 }
 
 function initSettings() {
-    console.log(default_settings);
-
     // Orbit Toggle
     var orbit_toggle = document.querySelector(".orbit input");
-    orbit_toggle.checked = default_settings.orbit;
+    orbit_toggle.checked = settings.orbit;
     orbit_toggle.addEventListener("change", function() {
         if (orbit_toggle.checked) {
             controls.autoRotate = true;
@@ -192,8 +190,8 @@ function initSettings() {
     // Square Grid Toggle
     var square_grid_toggle = document.querySelector(".square-grid input");
     var squareGridHelper = new THREE.GridHelper(20, 10);
-    square_grid_toggle.checked = default_settings.square_grid;
-    if (default_settings.square_grid == true) {
+    square_grid_toggle.checked = settings.square_grid;
+    if (settings.square_grid == true) {
         scene.add(squareGridHelper);
     } else {
         scene.remove(squareGridHelper);
@@ -210,15 +208,15 @@ function initSettings() {
     // Polar Grid Toggle
     var polar_grid_toggle = document.querySelector(".polar-grid input");
     var polarGridHelper = new THREE.PolarGridHelper(
-        30,
         10,
         8,
-        64,
+        5,
+        32,
         0x777777,
         0x777777
     );
-    polar_grid_toggle.checked = default_settings.polar_grid;
-    if (default_settings.polar_grid == true) {
+    polar_grid_toggle.checked = settings.polar_grid;
+    if (settings.polar_grid == true) {
         scene.add(polarGridHelper);
     } else {
         scene.remove(polarGridHelper);
@@ -236,8 +234,8 @@ function initSettings() {
     var axes_toggle = document.querySelector(".axes input");
     var axesHelper = new THREE.AxesHelper(10);
 
-    axes_toggle.checked = default_settings.axes;
-    if (default_settings.axes == true) {
+    axes_toggle.checked = settings.axes;
+    if (settings.axes == true) {
         scene.add(axesHelper);
     } else {
         scene.remove(axesHelper);

@@ -3,16 +3,20 @@ if (WEBGL.isWebGLAvailable() === false) {
 }
 
 var controls, camera, scene, renderer, light;
-var default_settings = {
+var settings = {
 	orbit: true,
 	orbit_speed: 4,
+	axes: false,
+	polar_grid: false,
+	square_grid: false,
 
 	pan: false,
 	zoom: false,
 
-	axes: true,
-	polar_grid: false,
-	square_grid: false
+	explode_regions: 0.8,
+
+	// Shouldn't need this eventually
+	y_offset: -12
 };
 
 init();
@@ -33,12 +37,12 @@ function init() {
 	camera.position.set(0, 10, 30);
 
 	controls = new THREE.OrbitControls(camera, brain_wrapper);
-	controls.enableZoom = default_settings.zoom;
+	controls.enableZoom = settings.zoom;
 	// controls.minDistance = 1.5;
 	// controls.maxDistance = 2.5;
-	controls.enablePan = default_settings.pan;
-	controls.autoRotate = default_settings.orbit;
-	controls.autoRotateSpeed = default_settings.orbit_speed;
+	controls.enablePan = settings.pan;
+	controls.autoRotate = settings.orbit;
+	controls.autoRotateSpeed = settings.orbit_speed;
 
 	// Stop autorotating when there is an interaction
 	controls.addEventListener("start", function() {
@@ -67,12 +71,27 @@ function init() {
 		"models/Brain_01/Geometry/Brain_01.gltf",
 		function(gltf) {
 			gltf.scene.traverse(function(child) {
-				// if (child.isMesh) {
-				// 	// child.material.envMap = envMap;
-				// }
+				if (child.isMesh) {
+					// Explode brain regions
+					if (settings.explode_regions > 0) {
+						child.geometry.computeBoundingSphere();
+
+						var x = child.geometry.boundingSphere.center.x;
+						var y = child.geometry.boundingSphere.center.y;
+						var z = child.geometry.boundingSphere.center.z;
+
+						var explode = 0.5;
+
+						child.position.set(
+							x * explode,
+							y * explode,
+							z * explode
+						);
+					}
+				}
 			});
 
-			gltf.scene.position.set(0, -12, 0);
+			gltf.scene.position.set(0, settings.y_offset, 0);
 			scene.add(gltf.scene);
 			animate();
 		},
@@ -80,7 +99,7 @@ function init() {
 			// Update the loading indicator text
 			var pct = (xhr.loaded / xhr.total) * 100;
 
-			console.log("loading: " + pct);
+			console.log("Loading: " + pct + "%");
 
 			if (pct < 100) {
 				loading_status.style.width = pct + "%";
