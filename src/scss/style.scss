@@ -16,9 +16,13 @@ $tablet: 44em;
 $desktop: 66em;
 
 $s: 2px;
-$shadow: 0 $s $s * 2 rgba($grey-800, 0.1);
-$shadow-focus: 0 $s * 2 $s * 3 rgba($grey-800, 0.1);
-$shadow-hover: 0 $s * 3 $s * 4 rgba($grey-800, 0.1);
+$shadow: 0 $s * 1 $s * 2 rgba($grey-800, 0.2);
+$shadow-hover: 0 $s * 2 $s * 4 rgba($grey-800, 0.2);
+$shadow-focus: 0 $s * 3 $s * 6 rgba($grey-800, 0.2);
+
+$shadow: none;
+$shadow-focus: none;
+$shadow-hover: none;
 
 :root {
 	--root-size: 90%;
@@ -27,13 +31,13 @@ $shadow-hover: 0 $s * 3 $s * 4 rgba($grey-800, 0.1);
 	--padding-medium: 0.5rem;
 	--padding-small: 0.25rem;
 
-	--transition: 0.15s;
-	--transition-hover: 0.075s;
+	--transition: 0s;
+	--transition-hover: 0s;
 	--transition-decorative: 0.8s;
 
 	--radius: 0.25rem;
 
-	--sidebar-width: 22em;
+	--sidebar-width: 20em;
 
 	@media (min-width: $tablet) {
 		--root-size: 100%;
@@ -120,19 +124,15 @@ button {
 	@extend %no-select;
 
 	font-weight: bold;
-	color: inherit;
-	padding: 0 var(--padding-large);
-	line-height: 3rem;
-	border: 1px solid transparent;
-	background: transparent;
-	opacity: 0.5;
-	transition: opacity var(--transition);
+	padding: var(--padding-medium);
+	line-height: 1;
 	cursor: pointer;
 	border-radius: var(--radius);
 
-	&:hover {
-		opacity: 1;
+	&:active {
+		transform: scale(1.02);
 	}
+
 	&:focus {
 		outline: none;
 	}
@@ -158,8 +158,7 @@ body {
 	width: 100%;
 	min-width: 100px;
 	min-height: 100px;
-	background-color: $grey-800;
-	background: linear-gradient($blue-grey-900, $grey-1000 66%);
+	background-color: mix($blue-grey-900, $black);
 
 	@media (min-width: $tablet) {
 		flex: 1;
@@ -239,45 +238,22 @@ body {
 		transform-origin: center center;
 
 		.has-content & {
-			transform: translateX(25%) scale(0.9);
+			transform: translateX(25%);
 		}
 	}
 }
 
 // Loading indicator ===========================================================
 .loading-wrapper {
-	position: absolute;
-	top: var(--padding-large);
-	right: var(--padding-large);
-	z-index: 10;
-	pointer-events: none;
-	transition: opacity var(--transition-decorative)
-		var(--transition-decorative);
-	animation: load-delay var(--transition) both;
-
-	@keyframes load-delay {
-		from {
-			opacity: 0;
-		}
-	}
-
-	.is-loaded-brain & {
-		opacity: 0;
-	}
-}
-
-.loading-indicator {
-	width: 10em;
+	width: 100%;
 	height: var(--padding-small);
-	background: $blue-grey;
-	border-radius: 1em;
-	box-shadow: $shadow;
+	background: $blue-grey-50;
 }
 
 .loading-status {
+	transition: var(--transition-decorative);
+	background: $light-blue;
 	height: var(--padding-small);
-	background: $white;
-	border-radius: 1em;
 }
 
 // Content Wrapper =============================================================
@@ -295,7 +271,7 @@ body {
 	}
 
 	@media (min-width: $desktop) {
-		margin-top: 3rem;
+		margin-top: var(--padding-large);
 
 		h2 {
 			font-size: 2em;
@@ -308,25 +284,31 @@ body {
 	}
 }
 
-.has-content {
-	.content-wrapper {
-		.container {
-			animation: load 1s;
-
-			@keyframes load {
-				0% {
-					transform: translateY(2em);
-					opacity: 0;
-				}
-			}
-		}
-	}
-}
-
 .back-button {
-	position: absolute;
-	top: var(--padding-large);
-	left: var(--padding-large);
+	color: $blue-grey-100;
+	border: 2px solid $blue-grey-200;
+	background: transparent;
+	margin: 0 var(--padding-large);
+	transition: opacity var(--transition);
+	opacity: 0.5;
+
+	&:hover {
+		transition-duration: var(--transition-hover);
+		opacity: 1;
+	}
+	&:active {
+		transform: scale(1.02);
+		background: $blue-grey-700;
+		color: $white;
+		border-color: $white;
+	}
+
+	@media (min-width: $desktop) {
+		margin: 0 var(--padding-large) var(--padding-large);
+		// position: absolute;
+		// top: var(--padding-large);
+		// left: var(--padding-large);
+	}
 }
 
 // Regions wrapper =============================================================
@@ -334,7 +316,7 @@ body {
 	background-color: $blue-grey-100;
 
 	.box-link {
-		border-left: var(--padding-medium) solid var(--color);
+		border-left: var(--padding-small) solid var(--color);
 	}
 }
 
@@ -360,8 +342,6 @@ body {
 	margin: var(--padding-medium) 0;
 
 	.box-link {
-		margin-bottom: 0.25rem;
-
 		&:last-child {
 			margin-bottom: 0;
 		}
@@ -372,8 +352,7 @@ body {
 	display: block;
 	position: relative;
 	background: $blue-grey-50;
-	// box-shadow: $shadow;
-	border-radius: var(--radius);
+	box-shadow: $shadow;
 	transition: box-shadow var(--transition), background var(--transition),
 		transform var(--transition);
 	color: $black;
@@ -382,20 +361,24 @@ body {
 		padding: var(--padding-medium);
 	}
 
-	// &:first-child {
-	// 	border-top-left-radius: var(--radius);
-	// 	border-top-right-radius: var(--radius);
-	// }
-	// &:last-child {
-	// 	border-bottom-left-radius: var(--radius);
-	// 	border-bottom-right-radius: var(--radius);
-	// }
+	&:first-child {
+		border-top-left-radius: var(--radius);
+		border-top-right-radius: var(--radius);
+	}
+	&:last-child {
+		border-bottom-left-radius: var(--radius);
+		border-bottom-right-radius: var(--radius);
+	}
 
 	&:hover,
 	&:focus {
 		background: $white;
 		color: $black;
 		z-index: 1;
+	}
+
+	&:active {
+		transform: scale(1.02);
 	}
 }
 

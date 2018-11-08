@@ -13,14 +13,11 @@ html lang="en"
 		link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png"
 	body
 		header.header-wrapper.mobile-only
-				.container
-					h1.site-name 
-						a.site-link href="/" Human Brain Map
+			.container
+				h1.site-name 
+					a.site-link href="/" Human Brain Map
 		.main-wrapper
 			section.brain-wrapper
-				.loading-wrapper
-					.loading-indicator
-						.loading-status
 			section.content-wrapper
 		.side-wrapper
 			header.header-wrapper.desktop-only
@@ -30,6 +27,8 @@ html lang="en"
 							span Human
 							span Brain
 							span Map
+			.loading-wrapper
+				.loading-status
 			noscript
 				section.browser-issues-wrapper
 					.container
@@ -42,10 +41,23 @@ html lang="en"
 			section.settings-wrapper
 				.container
 					h2 Settings
-					.box-wrapper.orbit
-						label.box.box-toggle.container
+					.box-wrapper
+						label.orbit.box.box-toggle.container
 							h3 Orbit
-							input type="checkbox" checked="true"
+							input type="checkbox"
+							.toggle
+					.box-wrapper
+						label.square-grid.box.box-toggle.container
+							h3 Square Grid
+							input type="checkbox"
+							.toggle
+						label.polar-grid.box.box-toggle.container
+							h3 Polar Grid
+							input type="checkbox"
+							.toggle
+						label.axes.box.box-toggle.container
+							h3 Axes
+							input type="checkbox"
 							.toggle
 			footer.footer-wrapper
 				.container

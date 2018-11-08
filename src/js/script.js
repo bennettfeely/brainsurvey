@@ -143,12 +143,6 @@ function switchRegion(region_id) {
             "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
     }
 
-    // Add a back button
-    // var back_button = document.createElement("button");
-    // back_button.id = "back";
-    // back_button.innerHTML = "Back";
-    // document.querySelector(".content-wrapper").appendChild(back_button);
-
     // prettier-ignore
     var content = '<button class="back-button">&larr; Back</button>'
         + '<div class="container">' 
@@ -182,13 +176,78 @@ function reset() {
 }
 
 function initSettings() {
+    console.log(default_settings);
+
     // Orbit Toggle
     var orbit_toggle = document.querySelector(".orbit input");
+    orbit_toggle.checked = default_settings.orbit;
     orbit_toggle.addEventListener("change", function() {
         if (orbit_toggle.checked) {
             controls.autoRotate = true;
         } else {
             controls.autoRotate = false;
+        }
+    });
+
+    // Square Grid Toggle
+    var square_grid_toggle = document.querySelector(".square-grid input");
+    var squareGridHelper = new THREE.GridHelper(20, 10);
+    square_grid_toggle.checked = default_settings.square_grid;
+    if (default_settings.square_grid == true) {
+        scene.add(squareGridHelper);
+    } else {
+        scene.remove(squareGridHelper);
+    }
+
+    square_grid_toggle.addEventListener("change", function() {
+        if (square_grid_toggle.checked) {
+            scene.add(squareGridHelper);
+        } else {
+            scene.remove(squareGridHelper);
+        }
+    });
+
+    // Polar Grid Toggle
+    var polar_grid_toggle = document.querySelector(".polar-grid input");
+    var polarGridHelper = new THREE.PolarGridHelper(
+        30,
+        10,
+        8,
+        64,
+        0x777777,
+        0x777777
+    );
+    polar_grid_toggle.checked = default_settings.polar_grid;
+    if (default_settings.polar_grid == true) {
+        scene.add(polarGridHelper);
+    } else {
+        scene.remove(polarGridHelper);
+    }
+
+    polar_grid_toggle.addEventListener("change", function() {
+        if (polar_grid_toggle.checked) {
+            scene.add(polarGridHelper);
+        } else {
+            scene.remove(polarGridHelper);
+        }
+    });
+
+    // Axes Toggle
+    var axes_toggle = document.querySelector(".axes input");
+    var axesHelper = new THREE.AxesHelper(10);
+
+    axes_toggle.checked = default_settings.axes;
+    if (default_settings.axes == true) {
+        scene.add(axesHelper);
+    } else {
+        scene.remove(axesHelper);
+    }
+
+    axes_toggle.addEventListener("change", function() {
+        if (axes_toggle.checked) {
+            scene.add(axesHelper);
+        } else {
+            scene.remove(axesHelper);
         }
     });
 }
