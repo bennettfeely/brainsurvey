@@ -229,8 +229,8 @@ body {
 	}
 
 	@media (min-width: $desktop) {
-		width: calc(100% - var(--sidebar-width));
 		position: fixed;
+		width: calc(100% - var(--sidebar-width));
 		right: 0;
 		top: 0;
 		bottom: 0;
