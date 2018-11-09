@@ -152,11 +152,9 @@ function switchRegion(region_id) {
 
     document.querySelector(".content-wrapper").innerHTML = content;
 
-    document
-        .querySelector(".back-button")
-        .addEventListener("click", function() {
-            reset();
-        });
+    document.querySelector(".back-button").addEventListener("click", function() {
+        reset();
+    });
 }
 
 function reset() {
@@ -189,7 +187,10 @@ function initSettings() {
 
     // Square Grid Toggle
     var square_grid_toggle = document.querySelector(".square-grid input");
-    var squareGridHelper = new THREE.GridHelper(20, 10);
+    var squareGridHelper = new THREE.GridHelper(
+        settings.grid_size * 2,
+        settings.grid_size / 2
+    );
     square_grid_toggle.checked = settings.square_grid;
     if (settings.square_grid == true) {
         scene.add(squareGridHelper);
@@ -208,10 +209,10 @@ function initSettings() {
     // Polar Grid Toggle
     var polar_grid_toggle = document.querySelector(".polar-grid input");
     var polarGridHelper = new THREE.PolarGridHelper(
-        10,
+        settings.grid_size,
         8,
         5,
-        32,
+        64,
         0x777777,
         0x777777
     );
@@ -232,7 +233,7 @@ function initSettings() {
 
     // Axes Toggle
     var axes_toggle = document.querySelector(".axes input");
-    var axesHelper = new THREE.AxesHelper(10);
+    var axesHelper = new THREE.AxesHelper(settings.grid_size);
 
     axes_toggle.checked = settings.axes;
     if (settings.axes == true) {

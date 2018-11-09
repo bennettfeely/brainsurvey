@@ -14,17 +14,18 @@ var settings = {
 	orbit_speed: 4,
 
 	// Helpers
-	square_grid: false,
-	polar_grid: false,
-	axes: false,
+	grid_size: 10,
+	square_grid: true,
+	polar_grid: true,
+	axes: true,
 
 	// Interactions
 	pan: false,
 	zoom: false,
 
 	// Materials
-	roughness: 0.6,
-	metalness: 0.4,
+	roughness: 0.9,
+	metalness: 0.1,
 	wireframe: false,
 
 	// Displays
@@ -78,8 +79,13 @@ function init() {
 	// Lighting
 	var light = new THREE.HemisphereLight(0xff9999, 0.5);
 	scene.add(light);
-	var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-	directionalLight.position.set(0, 2, 0);
+
+	var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+	directionalLight.position.set(0, 10, 0);
+	scene.add(directionalLight);
+
+	var directionalLight = new THREE.DirectionalLight(0xffffff, 0.05);
+	directionalLight.position.set(0, -10, 0);
 	scene.add(directionalLight);
 
 	// Model
@@ -90,20 +96,27 @@ function init() {
 			i = 0;
 			gltf.scene.traverse(function(child) {
 				if (child.isMesh) {
-					console.log(child);
-
 					// Create separate material instance
 					child.material.roughness = settings.roughness;
 					child.material.metalness = settings.metalness;
 					child.material.wireframe = settings.wireframe;
 
+					console.log(child);
+
 					child.material = child.material.clone();
 
 					// D3 color scales
 					// https://github.com/d3/d3-scale-chromatic
-					child.material.color.r = Math.random();
-					child.material.color.g = Math.random();
-					child.material.color.b = Math.random();
+					// var bounds = [0.1, 0.1];
+					// child.material.color.r = Math.random() * bounds[1] + bounds[0];
+					// child.material.color.g = Math.random() * bounds[1] + bounds[0];
+					// child.material.color.b = Math.random() * bounds[1] + bounds[0];
+
+					var h = Math.random();
+					var s = 1;
+					var l = 0.5;
+
+					child.material.color.setHSL(h, s, l);
 
 					// Explode brain regions
 					if (settings.explode > 0) {

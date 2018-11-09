@@ -159,6 +159,7 @@ body {
 	min-width: 100px;
 	min-height: 100px;
 	background-color: mix($blue-grey-900, $black);
+	background-image: linear-gradient($blue-grey-900, mix($blue-grey-900, $black));
 
 	@media (min-width: $tablet) {
 		flex: 1;
