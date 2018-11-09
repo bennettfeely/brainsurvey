@@ -6,19 +6,36 @@ var mouse = new THREE.Vector2(),
 	INTERSECTED;
 var camera, controls, light, raycaster, renderer, scene;
 var settings = {
-	orbit: true,
-	orbit_speed: 4,
-	square_grid: true,
-	polar_grid: false,
-	axes: true,
-	pan: false,
-	zoom: false,
-	explode: 0,
+	// Models
 	model_path: "models/Brain_02/Geometry/Brain_02.gltf",
 
+	// Animations
+	orbit: true,
+	orbit_speed: 4,
+
+	// Helpers
+	square_grid: false,
+	polar_grid: false,
+	axes: false,
+
+	// Interactions
+	pan: false,
+	zoom: false,
+
+	// Materials
+	roughness: 0.6,
+	metalness: 0.4,
+	wireframe: false,
+
+	// Displays
+	explode: 0,
+
 	// Shouldn't need this eventually
-	x_offset: -1.5,
-	y_offset: -11.5
+	offset: {
+		x: -1.5,
+		y: -11.5,
+		z: 0
+	}
 };
 
 init();
@@ -73,67 +90,20 @@ function init() {
 			i = 0;
 			gltf.scene.traverse(function(child) {
 				if (child.isMesh) {
-					console.log(i++);
+					console.log(child);
+
 					// Create separate material instance
+					child.material.roughness = settings.roughness;
+					child.material.metalness = settings.metalness;
+					child.material.wireframe = settings.wireframe;
+
 					child.material = child.material.clone();
 
 					// D3 color scales
 					// https://github.com/d3/d3-scale-chromatic
-
-					var colors = [
-						"#1f77b4",
-						"#ff7f0e",
-						"#2ca02c",
-						"#d62728",
-						"#9467bd",
-						"#8c564b",
-						"#e377c2",
-						"#7f7f7f",
-						"#bcbd22",
-						"#17becf"
-					];
-
-					var colors = [
-						"tomato",
-						"mediumseagreen",
-						"orange",
-						"dodgerblue",
-						"orchid",
-						"lightgray",
-						"darkturquoise",
-						"palevioletred",
-						"khaki",
-						"limegreen",
-						"coral",
-						"slateblue",
-						"indianred",
-						"gray",
-						"plum",
-						"olivedrab",
-						"lightgreen",
-						"lightsalmon",
-						"gold",
-						"peru",
-						"royalblue",
-						"sandybrown",
-						"lightseagreen",
-						"blueviolet",
-						"tomato",
-						"goldenrod",
-						"limegreen"
-					];
-
-					child.material.color.set(colors[i]);
-
 					child.material.color.r = Math.random();
 					child.material.color.g = Math.random();
 					child.material.color.b = Math.random();
-
-					// child.scale.x = Math.random() * 4;
-					// child.scale.y = Math.random() * 4;
-					// child.scale.z = Math.random() * 4;
-
-					console.log(child);
 
 					// Explode brain regions
 					if (settings.explode > 0) {
@@ -153,9 +123,9 @@ function init() {
 			});
 
 			gltf.scene.position.set(
-				settings.x_offset,
-				settings.y_offset * (1 + settings.explode),
-				0
+				settings.offset.x * (1 + settings.explode),
+				settings.offset.y * (1 + settings.explode),
+				settings.offset.z
 			);
 			scene.add(gltf.scene);
 
