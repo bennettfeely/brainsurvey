@@ -93,6 +93,18 @@ gulp.task("models", function() {
     );
 });
 
+// Move _redirects
+gulp.task("redirects", function() {
+  return gulp
+    .src("src/_redirects")
+    .pipe(gulp.dest("./dist"))
+    .pipe(
+      browserSync.reload({
+        stream: true
+      })
+    );
+});
+
 gulp.task("default", function() {
   gulp.run("sync");
 
@@ -110,5 +122,9 @@ gulp.task("default", function() {
 
   gulp.watch("src/models/*", function() {
     return gulp.run("models");
+  });
+
+  gulp.watch("src/_redirects", function() {
+    return gulp.run("redirects");
   });
 });

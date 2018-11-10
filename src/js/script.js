@@ -57,15 +57,8 @@ regions_obj = {
 init();
 
 function init() {
-    console.log("init();");
-
-    // Switch data to appropriate url if necessary
-    window.addEventListener("popstate", function(e) {
-        console.log("popstate!");
-
-        console.log(e.state);
-        switchRegion("rstg");
-    });
+    // Load any settings in localstorage
+    load();
 
     initRegions();
     initSettings();
@@ -76,11 +69,11 @@ function initRegions() {
 
     let key;
     for (key in regions_obj) {
-        createCard(key, regions_obj[key]);
+        createRegionLinks(key, regions_obj[key]);
     }
 }
 
-function createCard(path, obj) {
+function createRegionLinks(path, obj) {
     if (obj.full_name !== undefined) {
         var full_name = "<h3>" + obj.full_name + "</h3>";
     } else {
@@ -153,36 +146,26 @@ function switchRegion(region_id) {
     document.querySelector(".content-wrapper").innerHTML = content;
 
     document.querySelector(".back-button").addEventListener("click", function() {
-        reset();
+        resetRegion();
     });
-}
-
-function reset() {
-    console.log("reset();");
-
-    // Re-render the brain
-    renderer.render(scene, camera);
-
-    // Scroll to top of page
-    window.scroll(0, 0);
-
-    // Remove has content class from html
-    document.querySelector("html").classList.remove("has-content");
-
-    // Empty the content wrapper
-    document.querySelector(".content-wrapper").innerHTML = "";
 }
 
 function initSettings() {
     // Orbit Toggle
+    console.log(settings.orbit);
+
     var orbit_toggle = document.querySelector(".orbit input");
     orbit_toggle.checked = settings.orbit;
     orbit_toggle.addEventListener("change", function() {
         if (orbit_toggle.checked) {
+            settings.orbit = true;
             controls.autoRotate = true;
         } else {
+            settings.orbit = false;
             controls.autoRotate = false;
         }
+
+        save();
     });
 
     // Square Grid Toggle
@@ -200,10 +183,14 @@ function initSettings() {
 
     square_grid_toggle.addEventListener("change", function() {
         if (square_grid_toggle.checked) {
+            settings.square_grid = true;
             scene.add(squareGridHelper);
         } else {
+            settings.square_grid = false;
             scene.remove(squareGridHelper);
         }
+
+        save();
     });
 
     // Polar Grid Toggle
@@ -225,10 +212,14 @@ function initSettings() {
 
     polar_grid_toggle.addEventListener("change", function() {
         if (polar_grid_toggle.checked) {
+            settings.polar_grid = true;
             scene.add(polarGridHelper);
         } else {
+            settings.polar_grid = false;
             scene.remove(polarGridHelper);
         }
+
+        save();
     });
 
     // Axes Toggle
@@ -244,9 +235,48 @@ function initSettings() {
 
     axes_toggle.addEventListener("change", function() {
         if (axes_toggle.checked) {
+            settings.axes = true;
             scene.add(axesHelper);
         } else {
+            settings.axes = false;
             scene.remove(axesHelper);
         }
+
+        save();
     });
+}
+
+function load() {
+    console.log("load();");
+
+    // Load localstorage
+    if (localStorage.getItem("hbrmap")) {
+        console.log("WE GOT IT!");
+        settings = JSON.parse(localStorage.getItem("hbrmap"));
+
+        console.log(settings);
+    }
+}
+
+function save() {
+    console.log("save();");
+
+    // Save to localstorage
+    localStorage.setItem("hbrmap", JSON.stringify(settings));
+}
+
+function resetRegion() {
+    console.log("resetRegion();");
+
+    // Re-render the brain
+    renderer.render(scene, camera);
+
+    // Scroll to top of page
+    window.scroll(0, 0);
+
+    // Remove has content class from html
+    document.querySelector("html").classList.remove("has-content");
+
+    // Empty the content wrapper
+    document.querySelector(".content-wrapper").innerHTML = "";
 }

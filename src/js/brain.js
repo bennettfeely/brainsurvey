@@ -5,7 +5,7 @@ if (WEBGL.isWebGLAvailable() === false) {
 var mouse = new THREE.Vector2(),
 	INTERSECTED;
 var camera, controls, light, raycaster, renderer, scene;
-var settings = {
+settings = {
 	// Models
 	model_path: "models/Brain_02/Geometry/Brain_02.gltf",
 
@@ -38,6 +38,8 @@ var settings = {
 		z: 0
 	}
 };
+
+console.log(settings);
 
 init();
 
@@ -102,7 +104,7 @@ function init() {
 					child.material.wireframe = settings.wireframe;
 					child.material.color.set("salmon");
 
-					console.log(child);
+					// console.log(child);
 
 					child.material = child.material.clone();
 
