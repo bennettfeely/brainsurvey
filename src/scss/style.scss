@@ -31,9 +31,9 @@ $shadow-hover: none;
 	--padding-medium: 0.5rem;
 	--padding-small: 0.25rem;
 
-	--transition: 0s;
-	--transition-hover: 0s;
-	--transition-decorative: 0.8s;
+	--transition: 0.2s;
+	--transition-hover: 0.1s;
+	--transition-decorative: 0.9s;
 
 	--radius: 0.25rem;
 
@@ -95,7 +95,6 @@ h4 {
 }
 p {
 	font-size: 1em;
-	line-height: 1.5;
 
 	& + p {
 		margin-top: var(--padding-large);
@@ -103,11 +102,11 @@ p {
 }
 
 a {
-	color: $blue;
+	color: $light-blue;
 	transition: color var(--transition);
 
 	&:hover {
-		color: $blue-400;
+		color: $light-blue-400;
 		transition-duration: var(--transition-hover);
 	}
 
@@ -159,7 +158,6 @@ body {
 	min-width: 100px;
 	min-height: 100px;
 	background-color: mix($blue-grey-900, $black);
-	background-image: linear-gradient($blue-grey-900, mix($blue-grey-900, $black));
 
 	@media (min-width: $tablet) {
 		flex: 1;
@@ -225,7 +223,7 @@ body {
 		transform: scale(1);
 
 		.has-content & {
-			transform: scale(0.5);
+			transform: scale(0.75);
 		}
 	}
 
@@ -247,14 +245,14 @@ body {
 // Loading indicator ===========================================================
 .loading-wrapper {
 	width: 100%;
-	height: var(--padding-small);
 	background: $blue-grey-50;
 }
 
 .loading-status {
+	width: 0;
+	height: 0.25rem;
 	transition: var(--transition-decorative);
 	background: $light-blue;
-	height: var(--padding-small);
 }
 
 // Content Wrapper =============================================================
@@ -350,13 +348,15 @@ body {
 }
 
 .box {
+	@extend %no-tap;
 	display: block;
 	position: relative;
 	background: $blue-grey-50;
 	box-shadow: $shadow;
-	transition: box-shadow var(--transition), background var(--transition),
-		transform var(--transition);
+	transition: background-color var(--transition), transform var(--transition);
 	color: $black;
+	box-shadow: inset 0 -1px rgba($black, 0.1);
+	transition: transform var(--transition);
 
 	&.container {
 		padding: var(--padding-medium);
@@ -369,6 +369,7 @@ body {
 	&:last-child {
 		border-bottom-left-radius: var(--radius);
 		border-bottom-right-radius: var(--radius);
+		box-shadow: none;
 	}
 
 	&:hover,
@@ -379,6 +380,7 @@ body {
 	}
 
 	&:active {
+		transition: 0s;
 		transform: scale(1.02);
 	}
 }
@@ -386,6 +388,7 @@ body {
 .box-link {
 	@extend %no-select;
 	text-decoration: none;
+	cursor: pointer;
 
 	&:active {
 		background: $blue-grey-200;
@@ -423,7 +426,7 @@ body {
 	margin-left: var(--padding-medium);
 	background: $blue-grey-200;
 	border-radius: $size;
-	transition: opacity var(--transition), background var(--transition);
+	transition: background var(--transition);
 	opacity: 0.75;
 	box-shadow: inset $shadow;
 
