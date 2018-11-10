@@ -119,11 +119,11 @@ function init() {
 					// var s = 0.6;
 					// var l = 0.5;
 
-					// var h = Math.random();
-					// var s = 0.85;
-					// var l = 0.4;
+					var h = Math.random();
+					var s = 0.85;
+					var l = 0.4;
 
-					// child.material.color.setHSL(h, s, l);
+					child.material.color.setHSL(h, s, l);
 
 					// Explode brain regions
 					if (settings.explode > 0) {
