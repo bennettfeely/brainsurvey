@@ -58,7 +58,7 @@ init();
 
 function init() {
     // Load any settings in localstorage
-    load();
+    // load();
 
     initRegions();
     initSettings();

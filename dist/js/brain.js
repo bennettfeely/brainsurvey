@@ -15,7 +15,7 @@ settings = {
 
 	// Helpers
 	grid_size: 10,
-	square_grid: false,
+	square_grid: true,
 	polar_grid: false,
 	axes: false,
 
@@ -144,7 +144,7 @@ function init() {
 
 			gltf.scene.position.set(
 				settings.offset.x * (1 + settings.explode),
-				settings.offset.y * (1 + settings.explode),
+				settings.offset.y * (1 - settings.explode),
 				settings.offset.z
 			);
 			scene.add(gltf.scene);
