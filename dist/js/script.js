@@ -289,8 +289,12 @@ function save() {
 function resetRegion() {
     console.log("resetRegion();");
 
+    // Change the URL
+    history.pushState(null, null, "/");
+
     // Re-render the brain
-    renderer.render(scene, camera);
+    // TODO: Is this needed?
+    // renderer.render(scene, camera);
 
     // Scroll to top of page
     window.scroll(0, 0);
