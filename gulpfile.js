@@ -42,6 +42,31 @@ gulp.task("slim", function() {
     );
 });
 
+// Compile HTML from a subfolder
+gulp.task("slim-subfolder", function() {
+  return gulp
+    .src("src/slim/*/*.slim")
+    .pipe(
+      slim({
+        pretty: true
+      })
+    )
+    .pipe(
+      htmlmin({
+        collapseWhitespace: true,
+        removeComments: true,
+        minifyCSS: true,
+        minifyJS: true
+      })
+    )
+    .pipe(gulp.dest("./dist/"))
+    .pipe(
+      browserSync.reload({
+        stream: true
+      })
+    );
+});
+
 // Compile SCSS
 gulp.task("scss", function() {
   return gulp
@@ -110,6 +135,10 @@ gulp.task("default", function() {
 
   gulp.watch("src/slim/*.slim", function() {
     return gulp.run("slim");
+  });
+
+  gulp.watch("src/slim/*/*.slim", function() {
+    return gulp.run("slim-subfolder");
   });
 
   gulp.watch("src/scss/*.scss", function() {
