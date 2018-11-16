@@ -57,13 +57,21 @@ regions_obj = {
 init();
 
 function init() {
+    // Navigate to correct page
+    route();
+
     // Load any settings in localstorage
     load();
 
+    initRegions();
+    initSettings();
+}
+
+function route() {
     var path_name = window.location.pathname;
     if (path_name !== "/") {
         if (path_name == "/team") {
-            console.log('team page!');
+            console.log("team page!");
         } else {
             for (key in regions_obj) {
                 if (path_name == "/" + key) {
@@ -71,15 +79,8 @@ function init() {
                     break;
                 }
             }
-        } else {
-            console.log('404!');
         }
     }
-
-    console.log(window.location.pathname);
-
-    initRegions();
-    initSettings();
 }
 
 function initRegions() {
