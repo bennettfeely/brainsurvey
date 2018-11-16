@@ -58,7 +58,25 @@ init();
 
 function init() {
     // Load any settings in localstorage
-    // load();
+    load();
+
+    var path_name = window.location.pathname;
+    if (path_name !== "/") {
+        if (path_name == "/team") {
+            console.log('team page!');
+        } else {
+            for (key in regions_obj) {
+                if (path_name == "/" + key) {
+                    switchRegion(key);
+                    break;
+                }
+            }
+        } else {
+            console.log('404!');
+        }
+    }
+
+    console.log(window.location.pathname);
 
     initRegions();
     initSettings();
@@ -145,9 +163,11 @@ function switchRegion(region_id) {
 
     document.querySelector(".content-wrapper").innerHTML = content;
 
-    document.querySelector(".back-button").addEventListener("click", function() {
-        resetRegion();
-    });
+    document
+        .querySelector(".back-button")
+        .addEventListener("click", function() {
+            resetRegion();
+        });
 }
 
 function initSettings() {
