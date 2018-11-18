@@ -10,8 +10,22 @@ h4,
 h5,
 h6,
 button,
+ul,
+ol,
+li,
+details,
+summary,
+blockquote,
+q,
 p {
 	margin: 0;
+}
+
+ul,
+ol,
+li,
+blockquote {
+	padding: 0;
 }
 
 body {

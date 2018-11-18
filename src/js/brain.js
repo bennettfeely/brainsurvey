@@ -39,18 +39,23 @@ settings = {
 	}
 };
 
-console.log(settings);
-
 init();
 
 function init() {
+	updateStatus("Loading model");
+
 	var html = document.querySelector("html");
-	var loading_status = document.querySelector(".loading-status");
+	// var loading_status = document.querySelector(".loading-status");
 	var brain_wrapper = document.querySelector(".brain-wrapper");
 	var canvasWidth = brain_wrapper.offsetWidth;
 	var canvasHeight = brain_wrapper.offsetHeight;
 
-	camera = new THREE.PerspectiveCamera(50, canvasWidth / canvasHeight, 0.1, 1000);
+	camera = new THREE.PerspectiveCamera(
+		50,
+		canvasWidth / canvasHeight,
+		0.1,
+		1000
+	);
 	camera.position.set(0, 5, 25);
 
 	controls = new THREE.OrbitControls(camera, brain_wrapper);
@@ -95,6 +100,7 @@ function init() {
 	loader.load(
 		"models/Brain_02/Geometry/Brain_02.gltf",
 		function(gltf) {
+			updateStatus("Rendering model");
 			i = 0;
 			gltf.scene.traverse(function(child) {
 				if (child.isMesh) {
@@ -154,10 +160,11 @@ function init() {
 		function(xhr) {
 			// Update the loading indicator text
 			var pct = (xhr.loaded / xhr.total) * 100;
-			loading_status.style.width = pct + "%";
+			// loading_status.style.width = pct + "%";
+			updateStatus("Loading model " + pct + "%");
 		},
 		function(error) {
-			console.log("An error happened");
+			updateStatus("Error loading model");
 		}
 	);
 
@@ -194,4 +201,10 @@ function animate() {
 	controls.update();
 
 	renderer.render(scene, camera);
+}
+
+function updateStatus(status) {
+	console.log(status + "...");
+
+	document.querySelector(".loading-status").innerHTML = status + "...";
 }

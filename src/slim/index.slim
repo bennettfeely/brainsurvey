@@ -12,24 +12,25 @@ html lang="en"
 		link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png"
 		link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png"
 	body.home
-		header.header-wrapper.mobile-only
-			.container
-				h1.site-name 
-					a.site-link href="/" Human Brain Map
+		/ header.header-wrapper.mobile-only
+		/ 	.container
+		/ 		h1.site-name 
+		/ 			a.site-link href="/" Human Brain Map
+		/ 		a.team-link href="" Our Team
 		.main-wrapper
 			section.brain-wrapper
 			section.content-wrapper
 		.side-wrapper
-			header.header-wrapper.desktop-only
-				.container
-					h1.site-name 
-						// img.site-logo src="img/logo_200x200.png" width="200" height="200" alt="Logo"
-						a.site-link href="/"
-							span Human
-							span Brain
-							span Map
+			header.header-wrapper.container
+				h1.site-logo 
+					a href="/" Human Brain Map
+				ul.site-links
+					li.site-link
+						a href="" Our Team
+					li.site-link
+						a href="" For Patients
 			.loading-wrapper
-				.loading-status
+				.loading-status.container
 			noscript
 				section.browser-issues-wrapper
 					.container
@@ -37,29 +38,33 @@ html lang="en"
 						a href="https://www.enable-javascript.com/" Learn how &rarr;
 			section.regions-wrapper
 				.container
-					h2 Regions
-					.box-wrapper
+					details(open)
+						summary
+							h2 Regions
+						.box-wrapper
 			section.settings-wrapper
 				.container
-					h2 Settings
-					.box-wrapper
-						label.orbit.box.box-toggle.container
-							h3 Orbit
-							input type="checkbox"
-							.toggle
-					.box-wrapper
-						label.square-grid.box.box-toggle.container
-							h3 Square Grid
-							input type="checkbox"
-							.toggle
-						label.polar-grid.box.box-toggle.container
-							h3 Polar Grid
-							input type="checkbox"
-							.toggle
-						label.axes.box.box-toggle.container
-							h3 Axes
-							input type="checkbox"
-							.toggle
+					details(open)
+						summary 
+							h2 Settings
+						.box-wrapper
+							label.orbit.box.box-toggle.container
+								h3 Orbit
+								input type="checkbox"
+								.toggle
+						.box-wrapper
+							label.square-grid.box.box-toggle.container
+								h3 Square Grid
+								input type="checkbox"
+								.toggle
+							label.polar-grid.box.box-toggle.container
+								h3 Polar Grid
+								input type="checkbox"
+								.toggle
+							label.axes.box.box-toggle.container
+								h3 Axes
+								input type="checkbox"
+								.toggle
 			footer.footer-wrapper
 				.container
 					small &copy;2018 Brad Mahon
