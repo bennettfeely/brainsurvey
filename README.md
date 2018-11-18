@@ -4,12 +4,12 @@
 
 ### High priority
 
--   404 Page routing
 -   IE Support for GTLF
+-   Meet the Team page
+-   ~Page routing~~
 
 ### Medium priority
 
--   ~~LocalStorage save default settings~~
 -   Views shortcut (Top, Side, etc)
 -   Zoom buttons
 -   Head optimization, page description
@@ -19,6 +19,7 @@
 -   Loading indicator testing
 -   Get content
 -   Logo/Icons/Favicons
+-   ~~LocalStorage save default settings~~
 
 ### Low priority
 
