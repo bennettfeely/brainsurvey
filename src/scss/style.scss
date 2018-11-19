@@ -288,13 +288,21 @@ body {
 }
 
 // Loading indicator ===========================================================
-.loading-status {
-	display: none;
-	background: mix($blue-grey-900, $black);
-	background: $blue-grey-50;
+.loading-wrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+	color: $blue-grey-50;
+	font-weight: 500;
+}
 
-	&.container {
-		padding: var(--padding-small) var(--padding-large);
+.loading-status {
+	animation: fade 1s 1s both;
+
+	@keyframes fade {
+		to {
+			opacity: 0;
+		}
 	}
 }
 

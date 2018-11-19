@@ -1,4 +1,3 @@
-var camera, controls, light, raycaster, renderer, scene;
 settings = {
 	// Models
 	model_path: "models/Brain_04/Brain_004.gltf",
@@ -329,30 +328,61 @@ regions_obj = {
 	}
 };
 
+var html = document.querySelector("html");
+var brain_wrapper = document.querySelector(".brain-wrapper");
+
 init();
 
 function init() {
 	updateStatus("Loading model");
 
+	// Navigate to correct page
+	route();
+
+	// Load any settings in localstorage
+	loadSettings();
+
+	initBrain();
+
+	initRegions();
+	initSettings();
+}
+
+function route() {
+	var path_name = window.location.pathname;
+	if (path_name !== "/") {
+		if (path_name == "/team") {
+			console.log("team page!");
+		} else {
+			for (key in regions_obj) {
+				if (path_name == "/" + key) {
+					switchRegion(key);
+					break;
+				}
+			}
+		}
+	}
+}
+
+function initBrain() {
 	// If we don't have WebGL
 	if (WEBGL.isWebGLAvailable() === false) {
 		document.body.appendChild(WEBGL.getWebGLErrorMessage());
 	}
 
-	var html = document.querySelector("html");
-	// var loading_status = document.querySelector(".loading-status");
-	var brain_wrapper = document.querySelector(".brain-wrapper");
 	var canvasWidth = brain_wrapper.offsetWidth;
 	var canvasHeight = brain_wrapper.offsetHeight;
 
+	// Setup Camera
 	camera = new THREE.PerspectiveCamera(
 		50,
-		canvasWidth / canvasHeight,
+		brain_wrapper.offsetWidth / brain_wrapper.offsetHeight,
 		0.1,
 		1000
 	);
 	camera.position.set(0, 5, 25);
 
+	// Setup controls
 	controls = new THREE.OrbitControls(camera, brain_wrapper);
 	controls.enableZoom = settings.zoom;
 	// controls.minDistance = 1.5;
@@ -375,20 +405,12 @@ function init() {
 	// Set the scene
 	scene = new THREE.Scene();
 
-	// Setup raycaster for click detection
-	// raycaster = new THREE.Raycaster();
-
 	// Lighting
 	var light = new THREE.HemisphereLight(0xff9999, 0.8);
 	scene.add(light);
-
 	var directionalLight = new THREE.DirectionalLight(0xafbfff, 0.5);
 	directionalLight.position.set(0, 10, 0);
 	scene.add(directionalLight);
-
-	// var directionalLight = new THREE.DirectionalLight(0xffffff, 0.05);
-	// directionalLight.position.set(0, -10, 0);
-	// scene.add(directionalLight);
 
 	// Model
 	var loader = new THREE.GLTFLoader();
@@ -401,35 +423,19 @@ function init() {
 				if (child.isMesh) {
 					console.log(child.name);
 
-					// Create separate material instance
+					// Global mesh styles
 					child.material.roughness = settings.roughness;
 					child.material.metalness = settings.metalness;
 					child.material.wireframe = settings.wireframe;
-					// child.material.color.set("salmon");
 
-					// console.log(child);
-
+					// Create separate material instance and local mesh styles
 					child.material = child.material.clone();
 
-					// D3 color scales
-					// https://github.com/d3/d3-scale-chromatic
-					var bounds = [0.1, 0.9];
-					child.material.color.r =
-						Math.random() * bounds[1] + bounds[0];
-					child.material.color.g =
-						Math.random() * bounds[1] + bounds[0];
-					child.material.color.b =
-						Math.random() * bounds[1] + bounds[0];
-
-					// var h = Math.random();
-					// var s = 0.6;
-					// var l = 0.5;
-
-					// var h = Math.random();
-					// var s = 0.85;
-					// var l = 0.4;
-
-					// child.material.color.setHSL(h, s, l);
+					// Set random color for each mesh
+					var r = [0.05, 0.95];
+					child.material.color.r = Math.random() * r[1] + r[0];
+					child.material.color.g = Math.random() * r[1] + r[0];
+					child.material.color.b = Math.random() * r[1] + r[0];
 
 					// Explode brain regions
 					if (settings.explode > 0) {
@@ -448,6 +454,7 @@ function init() {
 				}
 			});
 
+			// Set position of brain with offsets
 			gltf.scene.position.set(
 				settings.offset.x,
 				settings.offset.y,
@@ -458,9 +465,7 @@ function init() {
 			animate();
 		},
 		function(xhr) {
-			// Update the loading indicator text
 			var pct = (xhr.loaded / xhr.total) * 100;
-			// loading_status.style.width = pct + "%";
 			updateStatus("Loading model " + pct + "%");
 		},
 		function(error) {
@@ -471,37 +476,25 @@ function init() {
 	renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 	renderer.setPixelRatio(window.devicePixelRatio);
 
-	camera.aspect = canvasWidth / canvasHeight;
-	camera.updateProjectionMatrix();
+	setCanvasSize();
 
-	renderer.setSize(canvasWidth, canvasHeight);
+	// Make canvas background transparent
 	renderer.gammaOutput = true;
 
 	// Add canvas to page
 	brain_wrapper.appendChild(renderer.domElement);
 
 	// Detect window resizing and resize canvas
-	window.addEventListener("resize", onWindowResize, false);
-
-	// Navigate to correct page
-	route();
-
-	// Load any settings in localstorage
-	// load();
-
-	initRegions();
-	initSettings();
+	window.addEventListener("resize", setCanvasSize, false);
 }
 
-function onWindowResize() {
+function setCanvasSize() {
 	var brain_wrapper = document.querySelector(".brain-wrapper");
-	var canvasWidth = brain_wrapper.offsetWidth;
-	var canvasHeight = brain_wrapper.offsetHeight;
 
-	camera.aspect = canvasWidth / canvasHeight;
+	camera.aspect = brain_wrapper.offsetWidth / brain_wrapper.offsetHeight;
 	camera.updateProjectionMatrix();
 
-	renderer.setSize(canvasWidth, canvasHeight);
+	renderer.setSize(brain_wrapper.offsetWidth, brain_wrapper.offsetHeight);
 }
 
 function animate() {
@@ -510,28 +503,6 @@ function animate() {
 	controls.update();
 
 	renderer.render(scene, camera);
-}
-
-function updateStatus(status) {
-	console.log(status + "...");
-
-	document.querySelector(".loading-status").innerHTML = status + "...";
-}
-
-function route() {
-	var path_name = window.location.pathname;
-	if (path_name !== "/") {
-		if (path_name == "/team") {
-			console.log("team page!");
-		} else {
-			for (key in regions_obj) {
-				if (path_name == "/" + key) {
-					switchRegion(key);
-					break;
-				}
-			}
-		}
-	}
 }
 
 function initRegions() {
@@ -637,7 +608,7 @@ function initSettings() {
 			controls.autoRotate = false;
 		}
 
-		save();
+		saveSettings();
 	});
 
 	// Square Grid Toggle
@@ -662,7 +633,7 @@ function initSettings() {
 			scene.remove(squareGridHelper);
 		}
 
-		save();
+		saveSettings();
 	});
 
 	// Polar Grid Toggle
@@ -691,7 +662,7 @@ function initSettings() {
 			scene.remove(polarGridHelper);
 		}
 
-		save();
+		saveSettings();
 	});
 
 	// Axes Toggle
@@ -714,27 +685,29 @@ function initSettings() {
 			scene.remove(axesHelper);
 		}
 
-		save();
+		saveSettings();
 	});
 }
 
-function load() {
-	console.log("load();");
+function updateStatus(status) {
+	var message =
+		'<div class="loading-status container">' + status + "...</div>";
 
-	// Load localstorage
-	if (localStorage.getItem("hbrmap")) {
-		console.log("WE GOT IT!");
-		settings = JSON.parse(localStorage.getItem("hbrmap"));
+	document.querySelector(".loading-wrapper").innerHTML = message;
+}
 
-		console.log(settings);
+function loadSettings() {
+	// Load settings obj saved in localstorage if there is one
+
+	if (localStorage.getItem("hbr_settings")) {
+		settings = JSON.parse(localStorage.getItem("hbr_settings"));
 	}
 }
 
-function save() {
-	console.log("save();");
+function saveSettings() {
+	// Save our settings object saved in localStorage
 
-	// Save to localstorage
-	localStorage.setItem("hbrmap", JSON.stringify(settings));
+	localStorage.setItem("hbr_settings", JSON.stringify(settings));
 }
 
 function resetRegion() {
@@ -742,10 +715,6 @@ function resetRegion() {
 
 	// Change the URL
 	history.pushState(null, null, "/");
-
-	// Re-render the brain
-	// TODO: Is this needed?
-	// renderer.render(scene, camera);
 
 	// Scroll to top of page
 	window.scroll(0, 0);
