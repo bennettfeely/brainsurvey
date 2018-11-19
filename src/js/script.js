@@ -61,7 +61,7 @@ function init() {
     route();
 
     // Load any settings in localstorage
-    load();
+    // load();
 
     initRegions();
     initSettings();

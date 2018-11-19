@@ -195,10 +195,14 @@ body {
 
 // Header ======================================================================
 .header-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
 	background-color: $white;
 
-	a {
-		display: inline-block;
+	@media (min-width: $tablet) {
+		display: block;
 	}
 }
 
@@ -213,32 +217,26 @@ body {
 
 .site-links {
 	display: inline-block;
-	font-size: 1em;
 	list-style: none;
-	margin-top: var(--padding-small);
-	margin-left: var(--padding-medium);
-	vertical-align: baseline;
 
 	@media (min-width: $tablet) {
-		margin-left: 0;
+		margin-top: var(--padding-small);
 	}
 }
 
 .site-link {
 	display: inline-block;
-	margin-right: var(--padding-small);
+	margin: 0 0 0 var(--padding-medium);
+
+	&:first-child {
+		margin-left: 0;
+	}
 
 	a {
-		padding: var(--padding-small);
-		display: inline-block;
-		border: 1px solid;
-		border-radius: var(--radius);
+		font-size: 1em;
+		border-bottom: thin solid;
 		font-weight: 500;
 		text-decoration: none;
-
-		@media (min-width: $tablet) {
-			padding: 0 var(--padding-small);
-		}
 	}
 }
 

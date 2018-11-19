@@ -7,7 +7,7 @@ var mouse = new THREE.Vector2(),
 var camera, controls, light, raycaster, renderer, scene;
 settings = {
 	// Models
-	model_path: "models/Brain_02/Geometry/Brain_02.gltf",
+	model_path: "models/Brain_04/Brain_004.gltf",
 
 	// Animations
 	orbit: true,
@@ -33,8 +33,8 @@ settings = {
 
 	// Shouldn't need this eventually
 	offset: {
-		x: -1.5,
-		y: -11.5,
+		x: -1.55,
+		y: 0,
 		z: 0
 	}
 };
@@ -98,7 +98,7 @@ function init() {
 	// Model
 	var loader = new THREE.GLTFLoader();
 	loader.load(
-		"models/Brain_02/Geometry/Brain_02.gltf",
+		settings.model_path,
 		function(gltf) {
 			updateStatus("Rendering model");
 			i = 0;
@@ -149,8 +149,8 @@ function init() {
 			});
 
 			gltf.scene.position.set(
-				settings.offset.x * (1 + settings.explode),
-				settings.offset.y * (1 - settings.explode),
+				settings.offset.x,
+				settings.offset.y,
 				settings.offset.z
 			);
 			scene.add(gltf.scene);

@@ -6,7 +6,7 @@
 
 -   IE Support for GTLF
 -   Meet the Team page
--   ~Page routing~~
+-   ~~Page routing~~
 
 ### Medium priority
 
