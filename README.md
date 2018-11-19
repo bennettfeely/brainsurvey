@@ -4,6 +4,7 @@
 
 ### High priority
 
+-   Use jade instead of slim
 -   IE Support for GTLF
 -   Meet the Team page
 -   ~~Page routing~~
