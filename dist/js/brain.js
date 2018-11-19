@@ -15,7 +15,8 @@ settings = {
 
 	// Helpers
 	grid_size: 10,
-	square_grid: true,
+
+	square_grid: false,
 	polar_grid: false,
 	axes: false,
 
@@ -104,11 +105,13 @@ function init() {
 			i = 0;
 			gltf.scene.traverse(function(child) {
 				if (child.isMesh) {
+					console.log(child.name);
+
 					// Create separate material instance
 					child.material.roughness = settings.roughness;
 					child.material.metalness = settings.metalness;
 					child.material.wireframe = settings.wireframe;
-					child.material.color.set("salmon");
+					// child.material.color.set("salmon");
 
 					// console.log(child);
 
@@ -116,10 +119,13 @@ function init() {
 
 					// D3 color scales
 					// https://github.com/d3/d3-scale-chromatic
-					// var bounds = [0.1, 0.9];
-					// child.material.color.r = Math.random() * bounds[1] + bounds[0];
-					// child.material.color.g = Math.random() * bounds[1] + bounds[0];
-					// child.material.color.b = Math.random() * bounds[1] + bounds[0];
+					var bounds = [0.1, 0.9];
+					child.material.color.r =
+						Math.random() * bounds[1] + bounds[0];
+					child.material.color.g =
+						Math.random() * bounds[1] + bounds[0];
+					child.material.color.b =
+						Math.random() * bounds[1] + bounds[0];
 
 					// var h = Math.random();
 					// var s = 0.6;

@@ -245,7 +245,7 @@ function initSettings() {
 
     // Axes Toggle
     var axes_toggle = document.querySelector(".axes input");
-    var axesHelper = new THREE.AxesHelper(settings.grid_size);
+    var axesHelper = new THREE.AxesHelper(settings.grid_size * 1.25);
 
     axes_toggle.checked = settings.axes;
     if (settings.axes == true) {
