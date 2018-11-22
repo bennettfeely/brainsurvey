@@ -1,4 +1,6 @@
 settings = {
+	autosave: false,
+
 	// Models
 	model_path: "models/Brain_04/Brain_004.gltf",
 
@@ -340,11 +342,11 @@ function init() {
 	route();
 
 	// Load any settings in localstorage
-	loadSettings();
+	if (settings.autosave == true) {
+		loadSettings();
+	}
 
 	initBrain();
-
-	initRegions();
 	initSettings();
 }
 
@@ -418,39 +420,43 @@ function initBrain() {
 		settings.model_path,
 		function(gltf) {
 			updateStatus("Rendering model");
-			i = 0;
-			gltf.scene.traverse(function(child) {
-				if (child.isMesh) {
-					console.log(child.name);
-
+			first = true;
+			gltf.scene.traverse(function(mesh) {
+				if (mesh.isMesh) {
 					// Global mesh styles
-					child.material.roughness = settings.roughness;
-					child.material.metalness = settings.metalness;
-					child.material.wireframe = settings.wireframe;
+					if (first) {
+						mesh.material.roughness = settings.roughness;
+						mesh.material.metalness = settings.metalness;
+						mesh.material.wireframe = settings.wireframe;
+					}
 
 					// Create separate material instance and local mesh styles
-					child.material = child.material.clone();
+					mesh.material = mesh.material.clone();
 
 					// Set random color for each mesh
-					var r = [0.05, 0.95];
-					child.material.color.r = Math.random() * r[1] + r[0];
-					child.material.color.g = Math.random() * r[1] + r[0];
-					child.material.color.b = Math.random() * r[1] + r[0];
+					var r = Math.random();
+					var g = Math.random();
+					var b = Math.random();
+
+					mesh.material.color.setRGB(r, g, b);
 
 					// Explode brain regions
 					if (settings.explode > 0) {
-						child.geometry.computeBoundingSphere();
+						mesh.geometry.computeBoundingSphere();
 
-						var x = child.geometry.boundingSphere.center.x;
-						var y = child.geometry.boundingSphere.center.y;
-						var z = child.geometry.boundingSphere.center.z;
+						var x = mesh.geometry.boundingSphere.center.x;
+						var y = mesh.geometry.boundingSphere.center.y;
+						var z = mesh.geometry.boundingSphere.center.z;
 
-						child.position.set(
+						mesh.position.set(
 							x * settings.explode,
 							y * settings.explode,
 							z * settings.explode
 						);
 					}
+
+					// Add region link to regions list
+					addRegionLink(mesh, r, g, b);
 				}
 			});
 
@@ -460,9 +466,12 @@ function initBrain() {
 				settings.offset.y,
 				settings.offset.z
 			);
+
 			scene.add(gltf.scene);
 
 			animate();
+
+			initRegions();
 		},
 		function(xhr) {
 			var pct = (xhr.loaded / xhr.total) * 100;
@@ -505,55 +514,25 @@ function animate() {
 	renderer.render(scene, camera);
 }
 
-function initRegions() {
-	console.log("initRegions();");
+function addRegionLink(child, r, g, b) {
+	var regions_list = document.querySelector(".regions-list");
 
-	let key;
-	for (key in regions_obj) {
-		createRegionLinks(key, regions_obj[key]);
-	}
-}
+	// Add mesh object to regions object
+	regions_obj[child.name].mesh = child;
 
-function createRegionLinks(path, obj) {
-	if (obj.full_name !== undefined) {
-		var full_name = "<h3>" + obj.full_name + "</h3>";
-	} else {
-		var full_name = "";
-	}
-
-	if (obj.common_name !== undefined) {
-		var common_name = "<h4>" + obj.common_name + "</h4>";
-	} else {
-		var common_name = "";
-	}
-
+	// Append region link to regions list
 	// prettier-ignore
-	var card = document.createElement("a");
-	card.id = path;
-	card.href = path;
-	card.className = "box box-link region-link container";
-	card.style = "--color: " + obj.color;
-	card.innerHTML += full_name + common_name;
-
-	document.querySelector(".regions-wrapper .box-wrapper").appendChild(card);
-
-	// Attach click event listener
-	card.addEventListener(
-		"click",
-		function(e) {
-			e.preventDefault();
-
-			switchRegion(e.currentTarget.id);
-		},
-		false
-	);
+	var region_link = '<li onClick="switchRegion(\'' + child.name + '\')" style="--color: rgb(' + r*255 + ',' + g*255 + ',' + b*255 + ')" class="box box-link region-link container is-hidden">'
+			+ "<h3>" + regions_obj[child.name].full_name + "</h3>" +
+		"</li>";
+	regions_list.innerHTML += region_link;
 }
 
 function switchRegion(region_id) {
 	var target_obj = regions_obj[region_id];
 
 	// Change the URL
-	history.pushState(null, null, "/" + target_obj.path);
+	// history.pushState(null, null, "/" + target_obj.path);
 
 	// Change page class
 	document.querySelector("html").classList.add("has-content");
@@ -564,8 +543,36 @@ function switchRegion(region_id) {
 	// Scroll to top of page
 	window.scroll(0, 0);
 
-	// Change class of selected region box-link
-	// e.currentTarget.classList.add("is-selected");
+	console.log("target_obj.mesh");
+	console.log(target_obj.mesh);
+
+	// Make all other regions transparent
+	scene.traverse(function(mesh) {
+		if (mesh.isMesh) {
+			// Return all regions to opaque state first
+			mesh.visible = true;
+			mesh.material.transparent = true;
+			mesh.material.opacity = 1;
+
+			if (mesh.name == region_id) {
+				mesh.visible = true;
+
+				mesh.geometry.computeBoundingSphere();
+
+				var x = mesh.geometry.boundingSphere.center.x;
+				var y = mesh.geometry.boundingSphere.center.y;
+				var z = mesh.geometry.boundingSphere.center.z;
+
+				// Set origin to center of region
+				controls.target.set(x, y, z);
+				controls.update();
+			} else {
+				mesh.visible = false;
+				mesh.material.transparent = true;
+				mesh.material.opacity = 0.1;
+			}
+		}
+	});
 
 	// Set content of content wrapper
 	var full_name = "<h2>" + target_obj.full_name + "</h2>";
@@ -595,8 +602,6 @@ function switchRegion(region_id) {
 
 function initSettings() {
 	// Orbit Toggle
-	console.log(settings.orbit);
-
 	var orbit_toggle = document.querySelector(".orbit input");
 	orbit_toggle.checked = settings.orbit;
 	orbit_toggle.addEventListener("change", function() {
@@ -718,6 +723,19 @@ function resetRegion() {
 
 	// Scroll to top of page
 	window.scroll(0, 0);
+
+	// Return origin to center of model
+	controls.target.set(0, 0, 0);
+	controls.update();
+
+	// Make all regions opaque again
+	scene.traverse(function(mesh) {
+		if (mesh.isMesh) {
+			mesh.visible = true;
+			mesh.material.transparent = true;
+			mesh.material.opacity = 1;
+		}
+	});
 
 	// Remove has content class from html
 	document.querySelector("html").classList.remove("has-content");

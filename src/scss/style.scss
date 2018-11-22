@@ -139,6 +139,12 @@ button {
 	}
 }
 
+input {
+	display: block;
+	font: inherit;
+	border: 0;
+}
+
 summary {
 	&:focus {
 		outline: 0;
@@ -366,14 +372,20 @@ body {
 // Regions wrapper =============================================================
 .regions-wrapper {
 	background-color: $blue-grey-100;
-
-	.box-link {
-		border-left: var(--padding-small) solid var(--color);
-	}
 }
 
-.regions-card-wrapper {
-	margin-top: var(--padding-small);
+.regions-filter {
+	width: 100%;
+	font-size: 1em;
+	font-weight: 500;
+	line-height: 1.25;
+	padding: var(--padding-medium);
+	margin: var(--padding-medium) 0 0;
+	border-radius: var(--radius);
+}
+
+.region-link {
+	border-left: var(--padding-small) solid var(--color);
 }
 
 // Settings wrapper ============================================================
@@ -519,4 +531,8 @@ body {
 	@media (min-width: $tablet) {
 		display: block;
 	}
+}
+
+.is-hidden {
+	// display: none;
 }

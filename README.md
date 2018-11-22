@@ -4,6 +4,20 @@
 
 ### High priority
 
+#
+
+#
+
+#
+
+# Add region link at same time adding region mesh
+
+# And add event listener at that point too
+
+# See what happens
+
+#
+
 -   Use jade instead of slim
 -   IE Support for GTLF
 -   Meet the Team page
