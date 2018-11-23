@@ -1,14 +1,14 @@
-// Charset =====================================================================
+// Charset ===============================================================================
 @charset "UTF-8";
 
-// Normalize ===================================================================
+// Normalize =============================================================================
 @import "normalize";
 @import "reset";
 @import "extensions";
 @import "functions";
 @import "palette";
 
-// Variables ===================================================================
+// Variables =============================================================================
 $white: white;
 $black: black;
 
@@ -54,7 +54,7 @@ $shadow-hover: none;
 	}
 }
 
-// Base Styles =================================================================
+// Base Styles ===========================================================================
 body {
 	font-size: var(--root-size);
 	font-family: Catamaran, Helvetica Neue, Helvetica, sans-serif;
@@ -68,7 +68,7 @@ footer {
 	@extend %no-select;
 }
 
-// Typography ==================================================================
+// Typography ============================================================================
 h1,
 h2,
 h3 {
@@ -131,7 +131,7 @@ button {
 	border-radius: var(--radius);
 
 	&:active {
-		transform: scale(1.02);
+		transform: scale3d(1.02, 1.02, 1.02);
 	}
 
 	&:focus {
@@ -161,7 +161,7 @@ summary {
 	}
 }
 
-// Structural Styles ===========================================================
+// Structural Styles =====================================================================
 .container {
 	padding: var(--padding-large);
 }
@@ -199,7 +199,7 @@ body {
 	}
 }
 
-// Header ======================================================================
+// Header ================================================================================
 .header-wrapper {
 	display: flex;
 	align-items: center;
@@ -246,7 +246,7 @@ body {
 	}
 }
 
-// Browser issues wrapper ======================================================
+// Browser issues wrapper ================================================================
 .browser-issues-wrapper {
 	background-color: $red-900;
 	color: $white;
@@ -258,7 +258,7 @@ body {
 	}
 }
 
-// Brain wrapper ===============================================================
+// Brain wrapper =========================================================================
 .brain-wrapper {
 	position: relative;
 	width: 100%;
@@ -270,11 +270,10 @@ body {
 		display: block;
 		height: 100vh;
 		transform-origin: center top;
-		transform: scale(1);
+		transform: scale3d(1, 1, 1);
 
 		.has-content & {
-			transform: scale(0.75);
-			transform: translateY(-25%);
+			transform: translate3d(0, -25%, 0);
 		}
 	}
 
@@ -288,12 +287,12 @@ body {
 		transform-origin: center center;
 
 		.has-content & {
-			transform: translateX(25%);
+			transform: translate3d(25%, 0, 0);
 		}
 	}
 }
 
-// Loading indicator ===========================================================
+// Loading indicator =====================================================================
 .loading-wrapper {
 	position: absolute;
 	top: 0;
@@ -312,7 +311,7 @@ body {
 	}
 }
 
-// Content Wrapper =============================================================
+// Content Wrapper =======================================================================
 .content-wrapper {
 	color: $blue-grey-100;
 
@@ -355,7 +354,7 @@ body {
 		opacity: 1;
 	}
 	&:active {
-		transform: scale(1.02);
+		transform: scale3d(1.02, 1.02, 1.02);
 		background: $blue-grey-700;
 		color: $white;
 		border-color: $white;
@@ -363,15 +362,14 @@ body {
 
 	@media (min-width: $desktop) {
 		margin: 0 var(--padding-large) var(--padding-large);
-		// position: absolute;
-		// top: var(--padding-large);
-		// left: var(--padding-large);
 	}
 }
 
-// Regions wrapper =============================================================
+// Regions wrapper =======================================================================
 .regions-wrapper {
 	background-color: $blue-grey-100;
+	max-height: 50vh;
+	overflow-y: auto;
 }
 
 .regions-filter {
@@ -388,19 +386,19 @@ body {
 	border-left: var(--padding-small) solid var(--color);
 }
 
-// Settings wrapper ============================================================
+// Settings wrapper ======================================================================
 .settings-wrapper {
 	background-color: $blue-grey-200;
 	color: $black;
 }
 
-// Footer ======================================================================
+// Footer ================================================================================
 .footer-wrapper {
 	background-color: $blue-grey-300;
 	color: $black;
 }
 
-// Box =========================================================================
+// Box ===================================================================================
 .box-wrapper {
 	position: relative;
 	margin: var(--padding-medium) 0;
@@ -418,7 +416,6 @@ body {
 	position: relative;
 	background: $blue-grey-50;
 	box-shadow: $shadow;
-	transition: background-color var(--transition), transform var(--transition);
 	color: $black;
 	box-shadow: inset 0 -1px rgba($black, 0.1);
 	transition: transform var(--transition);
@@ -446,7 +443,7 @@ body {
 
 	&:active {
 		transition: 0s;
-		transform: scale(1.02);
+		transform: scale3d(1.02, 1.02, 1.02);
 	}
 }
 
@@ -476,7 +473,7 @@ body {
 			background: $light-blue-500;
 
 			&:before {
-				transform: translateX(100%) scale(1.15);
+				transform: translate3d(100%, 0, 0) scale3d(1.15, 1.15, 1.15);
 				background: $light-blue-900;
 			}
 		}
@@ -507,16 +504,16 @@ body {
 		background: $blue-grey-600;
 		border-radius: $size;
 		transition: transform var(--transition), background var(--transition);
-		transform: scale(1.15);
+		transform: scale3d(1.15, 1.15, 1.15);
 	}
 }
 
-// Team page ===================================================================
+// Team page =============================================================================
 .team-member {
 	background: $white;
 }
 
-// Responsive ==================================================================
+// Responsive ============================================================================
 .mobile-only {
 	display: block;
 

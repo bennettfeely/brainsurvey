@@ -23,6 +23,7 @@ settings = {
 	roughness: 0.1,
 	metalness: 0.4,
 	wireframe: false,
+	categorical_colors: true,
 
 	// Displays
 	explode: 0,
@@ -421,24 +422,44 @@ function initBrain() {
 		function(gltf) {
 			updateStatus("Rendering model");
 			first = true;
+			i = 0;
 			gltf.scene.traverse(function(mesh) {
 				if (mesh.isMesh) {
 					// Global mesh styles
-					if (first) {
-						mesh.material.roughness = settings.roughness;
-						mesh.material.metalness = settings.metalness;
-						mesh.material.wireframe = settings.wireframe;
-					}
+					// if (i == 0) {
+					// 	mesh.material.roughness = settings.roughness;
+					// 	mesh.material.metalness = settings.metalness;
+					// 	mesh.material.wireframe = settings.wireframe;
+					// }
+
+					mesh.material.roughness = settings.roughness;
+					mesh.material.metalness = settings.metalness;
+					mesh.material.wireframe = settings.wireframe;
 
 					// Create separate material instance and local mesh styles
 					mesh.material = mesh.material.clone();
 
-					// Set random color for each mesh
-					var r = Math.random();
-					var g = Math.random();
-					var b = Math.random();
+					// Set color of mesh
+					if (settings.categorical_colors == true) {
+						// prettier-ignore
+						var colors = ["#F69","#FC3","#6F9","#FF9","#939","#33F","#CF9",
+						"#6C3","#CC3","#6F3","#009","#36F","#963","#C69","#6FF","#FFF",
+						"#0FF","#03F","#F6F","#993","#3C3","#699","#90F","#069","#3CF",
+						"#96F","#693","#6CF","#C99","#F63","#9FF","#9F3","#3F9","#363",
+						"#F9F","#639","#C09","#369","#9CF","#60F","#06F","#CCF","#C39",
+						"#339","#F3F","#93F","#C63","#903","#C03","#CC9","#C33","#969",
+						"#663","#093","#F93","#0F9","#30F","#C3F","#0F3","#0C3","#933",
+						"#39F","#9F9","#999","#669","#FF3","#909","#99F","#C6F","#63F",
+						"#CF3","#3F3","#063","#F0F","#099","#00F","#FCF","#6C9","#0C9",
+						"#3C9","#399","#C9F","#66F","#3FF","#F99","#F09","#F33","#CFF",
+						"#F03","#039","#69F","#FC9","#0CF","#F39","#C93","#9C9","#9C3",
+						"#C0F","#393","#09F"];
+						var color = colors[i++];
+					} else {
+						var color = "#F69";
+					}
 
-					mesh.material.color.setRGB(r, g, b);
+					mesh.material.color.setStyle(color);
 
 					// Explode brain regions
 					if (settings.explode > 0) {
@@ -456,7 +477,7 @@ function initBrain() {
 					}
 
 					// Add region link to regions list
-					addRegionLink(mesh, r, g, b);
+					addRegionLink(mesh, color);
 				}
 			});
 
@@ -470,14 +491,13 @@ function initBrain() {
 			scene.add(gltf.scene);
 
 			animate();
-
-			initRegions();
 		},
 		function(xhr) {
 			var pct = (xhr.loaded / xhr.total) * 100;
 			updateStatus("Loading model " + pct + "%");
 		},
 		function(error) {
+			console.log(error);
 			updateStatus("Error loading model");
 		}
 	);
@@ -514,15 +534,21 @@ function animate() {
 	renderer.render(scene, camera);
 }
 
-function addRegionLink(child, r, g, b) {
+function addRegionLink(child, color) {
 	var regions_list = document.querySelector(".regions-list");
 
 	// Add mesh object to regions object
 	regions_obj[child.name].mesh = child;
 
+	if (settings.categorical_colors == true) {
+		var color_variable = 'style="--color: ' + color + '"';
+	} else {
+		var color_variable = "";
+	}
+
 	// Append region link to regions list
 	// prettier-ignore
-	var region_link = '<li onClick="switchRegion(\'' + child.name + '\')" style="--color: rgb(' + r*255 + ',' + g*255 + ',' + b*255 + ')" class="box box-link region-link container is-hidden">'
+	var region_link = '<li onClick="switchRegion(\'' + child.name + '\')" ' + color_variable + ' class="box box-link region-link container is-hidden">'
 			+ "<h3>" + regions_obj[child.name].full_name + "</h3>" +
 		"</li>";
 	regions_list.innerHTML += region_link;
