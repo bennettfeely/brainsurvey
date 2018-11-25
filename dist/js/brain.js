@@ -683,21 +683,21 @@ function initSettings() {
 	});
 
 	// Polar Grid Toggle
-	var polar_grid_toggle = document.querySelector(".polar-grid input");
-	var polarGridHelper = new THREE.PolarGridHelper(
-		settings.grid_size,
-		8,
-		5,
-		64,
-		0x777777,
-		0x777777
-	);
-	polar_grid_toggle.checked = settings.polar_grid;
-	if (settings.polar_grid == true) {
-		scene.add(polarGridHelper);
-	} else {
-		scene.remove(polarGridHelper);
-	}
+	// var polar_grid_toggle = document.querySelector(".polar-grid input");
+	// var polarGridHelper = new THREE.PolarGridHelper(
+	// 	settings.grid_size,
+	// 	8,
+	// 	5,
+	// 	64,
+	// 	0x777777,
+	// 	0x777777
+	// );
+	// polar_grid_toggle.checked = settings.polar_grid;
+	// if (settings.polar_grid == true) {
+	// 	scene.add(polarGridHelper);
+	// } else {
+	// 	scene.remove(polarGridHelper);
+	// }
 
 	polar_grid_toggle.addEventListener("change", function() {
 		if (polar_grid_toggle.checked) {
