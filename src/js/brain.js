@@ -470,8 +470,6 @@ function initBrain() {
 
 					// We're done traversing
 					if (i == Object.keys(regions_obj).length) {
-						console.log("done!");
-
 						var regions_filter = document.querySelector(
 							".regions-filter"
 						);
@@ -480,8 +478,6 @@ function initBrain() {
 							var selector =
 								'[value="' + regions_filter.value + '"]';
 							var option = document.querySelector(selector);
-
-							console.log(option);
 
 							switchRegion(option.dataset.name);
 						});
@@ -553,7 +549,6 @@ function setMeshColor(mesh) {
 }
 
 function setCanvasSize() {
-	console.log("setCanvasSize();");
 	var brain_wrapper = document.querySelector(".brain-wrapper");
 
 	camera.aspect = brain_wrapper.offsetWidth / brain_wrapper.offsetHeight;
@@ -571,14 +566,10 @@ function animate() {
 }
 
 function switchRegion(region_id) {
-	console.log(region_id);
-
 	var target_obj = regions_obj[region_id];
 
-	console.log(target_obj);
-
 	// Change the URL
-	// history.pushState(null, null, "/" + target_obj.path);
+	history.pushState(null, null, "/" + target_obj.path);
 
 	// Change page class
 	document.querySelector("html").classList.add("has-content");
@@ -599,18 +590,18 @@ function switchRegion(region_id) {
 			mesh.material.transparent = false;
 			mesh.material.opacity = 1;
 
-			if (mesh.name == region_id) {
+			if (mesh.name !== region_id) {
+				mesh.material.transparent = true;
+				mesh.material.opacity = 0.1;
+				mesh.material.color.setStyle(settings.default_color);
+			} else {
+				// // Set origin to center of region
 				// mesh.geometry.computeBoundingSphere();
 				// var x = mesh.geometry.boundingSphere.center.x;
 				// var y = mesh.geometry.boundingSphere.center.y;
 				// var z = mesh.geometry.boundingSphere.center.z;
-				// // Set origin to center of region
 				// controls.target.set(x, y, z);
 				// controls.update();
-			} else {
-				mesh.material.transparent = true;
-				mesh.material.opacity = 0.1;
-				mesh.material.color.setStyle(settings.default_color);
 			}
 		}
 	});
@@ -643,7 +634,21 @@ function switchRegion(region_id) {
 
 function initSettings() {
 	// Orbit Toggle
+	orbitToggle();
+
+	// Square Grid Toggle
+	squareGridToggle();
+
+	// Polar Grid Toggle
+	// polarGridToggle();
+
+	// Axes Toggle
+	axesToggle();
+}
+
+function orbitToggle() {
 	var orbit_toggle = document.querySelector(".orbit input");
+
 	orbit_toggle.checked = settings.orbit;
 	orbit_toggle.addEventListener("change", function() {
 		if (orbit_toggle.checked) {
@@ -656,14 +661,18 @@ function initSettings() {
 
 		saveSettings();
 	});
+}
 
-	// Square Grid Toggle
+function squareGridToggle() {
 	var square_grid_toggle = document.querySelector(".square-grid input");
+
 	var squareGridHelper = new THREE.GridHelper(
 		settings.grid_size * 2,
 		settings.grid_size / 2
 	);
+
 	square_grid_toggle.checked = settings.square_grid;
+
 	if (settings.square_grid == true) {
 		scene.add(squareGridHelper);
 	} else {
@@ -681,23 +690,27 @@ function initSettings() {
 
 		saveSettings();
 	});
+}
 
-	// Polar Grid Toggle
-	// var polar_grid_toggle = document.querySelector(".polar-grid input");
-	// var polarGridHelper = new THREE.PolarGridHelper(
-	// 	settings.grid_size,
-	// 	8,
-	// 	5,
-	// 	64,
-	// 	0x777777,
-	// 	0x777777
-	// );
-	// polar_grid_toggle.checked = settings.polar_grid;
-	// if (settings.polar_grid == true) {
-	// 	scene.add(polarGridHelper);
-	// } else {
-	// 	scene.remove(polarGridHelper);
-	// }
+function polarGridToggle() {
+	var polar_grid_toggle = document.querySelector(".polar-grid input");
+
+	var polarGridHelper = new THREE.PolarGridHelper(
+		settings.grid_size,
+		8,
+		5,
+		64,
+		0x777777,
+		0x777777
+	);
+
+	polar_grid_toggle.checked = settings.polar_grid;
+
+	if (settings.polar_grid == true) {
+		scene.add(polarGridHelper);
+	} else {
+		scene.remove(polarGridHelper);
+	}
 
 	polar_grid_toggle.addEventListener("change", function() {
 		if (polar_grid_toggle.checked) {
@@ -710,8 +723,9 @@ function initSettings() {
 
 		saveSettings();
 	});
+}
 
-	// Axes Toggle
+function axesToggle() {
 	var axes_toggle = document.querySelector(".axes input");
 	var axesHelper = new THREE.AxesHelper(settings.grid_size * 1.25);
 
@@ -735,30 +749,7 @@ function initSettings() {
 	});
 }
 
-function updateStatus(status) {
-	var message =
-		'<div class="loading-status container">' + status + "...</div>";
-
-	document.querySelector(".loading-wrapper").innerHTML = message;
-}
-
-function loadSettings() {
-	// Load settings obj saved in localstorage if there is one
-
-	if (localStorage.getItem("hbr_settings")) {
-		settings = JSON.parse(localStorage.getItem("hbr_settings"));
-	}
-}
-
-function saveSettings() {
-	// Save our settings object saved in localStorage
-
-	localStorage.setItem("hbr_settings", JSON.stringify(settings));
-}
-
 function resetRegion() {
-	console.log("resetRegion();");
-
 	// Change the URL
 	history.pushState(null, null, "/");
 
@@ -790,4 +781,25 @@ function resetRegion() {
 
 	// Empty the content wrapper
 	document.querySelector(".content-wrapper").innerHTML = "";
+}
+
+function updateStatus(status) {
+	var message =
+		'<div class="loading-status container">' + status + "...</div>";
+
+	document.querySelector(".loading-wrapper").innerHTML = message;
+}
+
+function loadSettings() {
+	// Load settings obj saved in localstorage if there is one
+
+	if (localStorage.getItem("hbr_settings")) {
+		settings = JSON.parse(localStorage.getItem("hbr_settings"));
+	}
+}
+
+function saveSettings() {
+	// Save our settings object saved in localStorage
+
+	localStorage.setItem("hbr_settings", JSON.stringify(settings));
 }
