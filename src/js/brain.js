@@ -463,7 +463,7 @@ function initBrain() {
 					// prettier-ignore
 					var option = '<option value="' 
 							+ regions_obj[mesh.name].full_name 
-						+ '"></option>';
+						+ '" data-name="' + mesh.name + '"></option>';
 
 					// prettier-ignore
 					document.querySelector("#regions-datalist").innerHTML += option;
@@ -471,6 +471,20 @@ function initBrain() {
 					// We're done traversing
 					if (i == Object.keys(regions_obj).length) {
 						console.log("done!");
+
+						var regions_filter = document.querySelector(
+							".regions-filter"
+						);
+
+						regions_filter.addEventListener("input", function() {
+							var selector =
+								'[value="' + regions_filter.value + '"]';
+							var option = document.querySelector(selector);
+
+							console.log(option);
+
+							switchRegion(option.dataset.name);
+						});
 					}
 				}
 			});
@@ -556,14 +570,12 @@ function animate() {
 	renderer.render(scene, camera);
 }
 
-function initRegionsFilter() {
-	console.log("initRegionsFilter();");
-
-	console.log(regions_obj_filterable);
-}
-
 function switchRegion(region_id) {
+	console.log(region_id);
+
 	var target_obj = regions_obj[region_id];
+
+	console.log(target_obj);
 
 	// Change the URL
 	// history.pushState(null, null, "/" + target_obj.path);
@@ -772,6 +784,9 @@ function resetRegion() {
 
 	// Remove has content class from html
 	document.querySelector("html").classList.remove("has-content");
+
+	// Clear the region from the regions filter
+	document.querySelector(".regions-filter").value = "";
 
 	// Empty the content wrapper
 	document.querySelector(".content-wrapper").innerHTML = "";
