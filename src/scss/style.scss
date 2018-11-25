@@ -82,7 +82,8 @@ h1 {
 }
 h2 {
 	font-weight: 400;
-	font-size: 1.4em;
+	font-size: 1.3em;
+	margin-bottom: var(--padding-medium);
 }
 h3 {
 	font-weight: 500;
@@ -164,6 +165,22 @@ summary {
 // Structural Styles =====================================================================
 .container {
 	padding: var(--padding-large);
+
+	&.half {
+		display: flex;
+		align-items: center;
+
+		@media (max-width: $tablet) {
+			h2 {
+				margin-right: var(--padding-large);
+				margin-bottom: 0;
+			}
+		}
+
+		@media (min-width: $tablet) {
+			display: block;
+		}
+	}
 }
 
 body {
@@ -376,7 +393,6 @@ body {
 	font-weight: 500;
 	line-height: 1.25;
 	padding: var(--padding-medium);
-	margin: var(--padding-medium) 0 0;
 	border-radius: var(--radius);
 }
 
@@ -399,7 +415,10 @@ body {
 // Box ===================================================================================
 .box-wrapper {
 	position: relative;
-	margin: var(--padding-medium) 0;
+
+	& + & {
+		margin-top: var(--padding-medium);
+	}
 
 	.box-link {
 		&:last-child {
