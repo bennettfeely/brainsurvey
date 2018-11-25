@@ -459,28 +459,18 @@ function initBrain() {
 					// Add mesh object to regions object
 					regions_obj[mesh.name].mesh = mesh;
 
-					// Create new filterable object
-					regions_obj_filterable.push({
-						id: mesh.name,
-						full_name: regions_obj[mesh.name].full_name,
-						path: regions_obj[mesh.name].path
-					});
+					// Add item to datalist
+					// prettier-ignore
+					var option = '<option value="' 
+							+ regions_obj[mesh.name].full_name 
+						+ '"></option>';
+
+					// prettier-ignore
+					document.querySelector("#regions-datalist").innerHTML += option;
 
 					// We're done traversing
 					if (i == Object.keys(regions_obj).length) {
-						// Regions filter options
-						settings.regions_filter = {
-							valueNames: ["full_name", "path"],
-							item:
-								'<li class="box box-link region-link container"><h3 class="full_name"></h3></li>'
-						};
-
-						// Init region filtering
-						var userList = new List(
-							"filter",
-							settings.regions_filter,
-							regions_obj_filterable
-						);
+						console.log("done!");
 					}
 				}
 			});
