@@ -23,7 +23,8 @@ settings = {
 	roughness: 0.1,
 	metalness: 0.4,
 	wireframe: false,
-	categorical_colors: true,
+	categorical_colors: false,
+	default_color: "salmon",
 
 	// Displays
 	explode: 0,
@@ -36,6 +37,7 @@ settings = {
 	}
 };
 
+regions_obj_filterable = [];
 regions_obj = {
 	Frontal_Pole_0: {
 		full_name: "Frontal Pole",
@@ -388,8 +390,6 @@ function initBrain() {
 	// Setup controls
 	controls = new THREE.OrbitControls(camera, brain_wrapper);
 	controls.enableZoom = settings.zoom;
-	// controls.minDistance = 1.5;
-	// controls.maxDistance = 2.5;
 	controls.enablePan = settings.pan;
 	controls.autoRotate = settings.orbit;
 	controls.autoRotateSpeed = settings.orbit_speed;
@@ -421,10 +421,10 @@ function initBrain() {
 		settings.model_path,
 		function(gltf) {
 			updateStatus("Rendering model");
-			first = true;
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
 				if (mesh.isMesh) {
+					i++;
 					// Global mesh styles
 					// if (i == 0) {
 					// 	mesh.material.roughness = settings.roughness;
@@ -439,27 +439,7 @@ function initBrain() {
 					// Create separate material instance and local mesh styles
 					mesh.material = mesh.material.clone();
 
-					// Set color of mesh
-					if (settings.categorical_colors == true) {
-						// prettier-ignore
-						var colors = ["#F69","#FC3","#6F9","#FF9","#939","#33F","#CF9",
-						"#6C3","#CC3","#6F3","#009","#36F","#963","#C69","#6FF","#FFF",
-						"#0FF","#03F","#F6F","#993","#3C3","#699","#90F","#069","#3CF",
-						"#96F","#693","#6CF","#C99","#F63","#9FF","#9F3","#3F9","#363",
-						"#F9F","#639","#C09","#369","#9CF","#60F","#06F","#CCF","#C39",
-						"#339","#F3F","#93F","#C63","#903","#C03","#CC9","#C33","#969",
-						"#663","#093","#F93","#0F9","#30F","#C3F","#0F3","#0C3","#933",
-						"#39F","#9F9","#999","#669","#FF3","#909","#99F","#C6F","#63F",
-						"#CF3","#3F3","#063","#F0F","#099","#00F","#FCF","#6C9","#0C9",
-						"#3C9","#399","#C9F","#66F","#3FF","#F99","#F09","#F33","#CFF",
-						"#F03","#039","#69F","#FC9","#0CF","#F39","#C93","#9C9","#9C3",
-						"#C0F","#393","#09F"];
-						var color = colors[i++];
-					} else {
-						var color = "#F69";
-					}
-
-					mesh.material.color.setStyle(color);
+					var color = setMeshColor(mesh);
 
 					// Explode brain regions
 					if (settings.explode > 0) {
@@ -476,8 +456,32 @@ function initBrain() {
 						);
 					}
 
-					// Add region link to regions list
-					addRegionLink(mesh, color);
+					// Add mesh object to regions object
+					regions_obj[mesh.name].mesh = mesh;
+
+					// Create new filterable object
+					regions_obj_filterable.push({
+						id: mesh.name,
+						full_name: regions_obj[mesh.name].full_name,
+						path: regions_obj[mesh.name].path
+					});
+
+					// We're done traversing
+					if (i == Object.keys(regions_obj).length) {
+						// Regions filter options
+						settings.regions_filter = {
+							valueNames: ["full_name", "path"],
+							item:
+								'<li class="box box-link region-link container"><h3 class="full_name"></h3></li>'
+						};
+
+						// Init region filtering
+						var userList = new List(
+							"filter",
+							settings.regions_filter,
+							regions_obj_filterable
+						);
+					}
 				}
 			});
 
@@ -493,7 +497,9 @@ function initBrain() {
 			animate();
 		},
 		function(xhr) {
+			console.log(xhr);
 			var pct = (xhr.loaded / xhr.total) * 100;
+
 			updateStatus("Loading model " + pct + "%");
 		},
 		function(error) {
@@ -502,6 +508,7 @@ function initBrain() {
 		}
 	);
 
+	// Render the canvas
 	renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 	renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -517,7 +524,32 @@ function initBrain() {
 	window.addEventListener("resize", setCanvasSize, false);
 }
 
+function setMeshColor(mesh) {
+	// Set color of mesh
+	if (settings.categorical_colors == true) {
+		// prettier-ignore
+		var colors = ["#F69","#FC3","#6F9","#FF9","#939","#33F","#CF9",
+		"#6C3","#CC3","#6F3","#009","#36F","#963","#C69","#6FF","#FFF",
+		"#0FF","#03F","#F6F","#993","#3C3","#699","#90F","#069","#3CF",
+		"#96F","#693","#6CF","#C99","#F63","#9FF","#9F3","#3F9","#363",
+		"#F9F","#639","#C09","#369","#9CF","#60F","#06F","#CCF","#C39",
+		"#339","#F3F","#93F","#C63","#903","#C03","#CC9","#C33","#969",
+		"#663","#093","#F93","#0F9","#30F","#C3F","#0F3","#0C3","#933",
+		"#39F","#9F9","#999","#669","#FF3","#909","#99F","#C6F","#63F",
+		"#CF3","#3F3","#063","#F0F","#099","#00F","#FCF","#6C9","#0C9",
+		"#3C9","#399","#C9F","#66F","#3FF","#F99","#F09","#F33","#CFF",
+		"#F03","#039","#69F","#FC9","#0CF","#F39","#C93","#9C9","#9C3",
+		"#C0F","#393","#09F"];
+		var color = colors[i];
+	} else {
+		var color = "#F98";
+	}
+
+	mesh.material.color.setStyle(color);
+}
+
 function setCanvasSize() {
+	console.log("setCanvasSize();");
 	var brain_wrapper = document.querySelector(".brain-wrapper");
 
 	camera.aspect = brain_wrapper.offsetWidth / brain_wrapper.offsetHeight;
@@ -534,24 +566,10 @@ function animate() {
 	renderer.render(scene, camera);
 }
 
-function addRegionLink(child, color) {
-	var regions_list = document.querySelector(".regions-list");
+function initRegionsFilter() {
+	console.log("initRegionsFilter();");
 
-	// Add mesh object to regions object
-	regions_obj[child.name].mesh = child;
-
-	if (settings.categorical_colors == true) {
-		var color_variable = 'style="--color: ' + color + '"';
-	} else {
-		var color_variable = "";
-	}
-
-	// Append region link to regions list
-	// prettier-ignore
-	var region_link = '<li onClick="switchRegion(\'' + child.name + '\')" ' + color_variable + ' class="box box-link region-link container is-hidden">'
-			+ "<h3>" + regions_obj[child.name].full_name + "</h3>" +
-		"</li>";
-	regions_list.innerHTML += region_link;
+	console.log(regions_obj_filterable);
 }
 
 function switchRegion(region_id) {
@@ -569,33 +587,28 @@ function switchRegion(region_id) {
 	// Scroll to top of page
 	window.scroll(0, 0);
 
-	console.log("target_obj.mesh");
-	console.log(target_obj.mesh);
+	// Reset the counter
+	i = 0;
 
 	// Make all other regions transparent
 	scene.traverse(function(mesh) {
 		if (mesh.isMesh) {
 			// Return all regions to opaque state first
-			mesh.visible = true;
-			mesh.material.transparent = true;
+			mesh.material.transparent = false;
 			mesh.material.opacity = 1;
 
 			if (mesh.name == region_id) {
-				mesh.visible = true;
-
-				mesh.geometry.computeBoundingSphere();
-
-				var x = mesh.geometry.boundingSphere.center.x;
-				var y = mesh.geometry.boundingSphere.center.y;
-				var z = mesh.geometry.boundingSphere.center.z;
-
-				// Set origin to center of region
-				controls.target.set(x, y, z);
-				controls.update();
+				// mesh.geometry.computeBoundingSphere();
+				// var x = mesh.geometry.boundingSphere.center.x;
+				// var y = mesh.geometry.boundingSphere.center.y;
+				// var z = mesh.geometry.boundingSphere.center.z;
+				// // Set origin to center of region
+				// controls.target.set(x, y, z);
+				// controls.update();
 			} else {
-				mesh.visible = false;
 				mesh.material.transparent = true;
 				mesh.material.opacity = 0.1;
+				mesh.material.color.setStyle(settings.default_color);
 			}
 		}
 	});
@@ -754,12 +767,16 @@ function resetRegion() {
 	controls.target.set(0, 0, 0);
 	controls.update();
 
+	// Reset the counter
+	i = 0;
+
 	// Make all regions opaque again
 	scene.traverse(function(mesh) {
 		if (mesh.isMesh) {
 			mesh.visible = true;
-			mesh.material.transparent = true;
+			mesh.material.transparent = false;
 			mesh.material.opacity = 1;
+			mesh.material.color.setStyle(settings.default_color);
 		}
 	});
 
