@@ -497,10 +497,11 @@ function initBrain() {
 			animate();
 		},
 		function(xhr) {
-			console.log(xhr);
-			var pct = (xhr.loaded / xhr.total) * 100;
+			if (xhr) {
+				var pct = (xhr.loaded / xhr.total) * 100;
 
-			updateStatus("Loading model " + pct + "%");
+				updateStatus("Loading model " + pct + "%");
+			}
 		},
 		function(error) {
 			console.log(error);
