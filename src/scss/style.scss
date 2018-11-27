@@ -279,14 +279,9 @@ body {
 	transition: transform var(--transition-decorative);
 
 	@media (min-width: $tablet) {
-		display: block;
 		height: 100vh;
 		transform-origin: center top;
 		transform: scale3d(1, 1, 1);
-
-		.has-content & {
-			transform: translate3d(0, -25%, 0);
-		}
 	}
 
 	@media (min-width: $desktop) {
@@ -296,9 +291,17 @@ body {
 		top: 0;
 		bottom: 0;
 		z-index: 10;
-		transform-origin: center center;
+		transform-origin: center;
+	}
+}
 
-		.has-content & {
+.has-region-content {
+	.brain-wrapper {
+		@media (min-width: $tablet) {
+			transform: translate3d(0, -25%, 0);
+		}
+
+		@media (min-width: $desktop) {
 			transform: translate3d(25%, 0, 0);
 		}
 	}
@@ -327,37 +330,41 @@ body {
 .content-wrapper {
 	color: $blue-grey-100;
 
-	h2 {
-		margin-bottom: var(--padding-small);
-		color: $blue-grey-50;
-	}
-
 	@media (min-width: $tablet) {
 		padding: var(--padding-large);
-		margin-top: -50vh;
 	}
 
 	@media (min-width: $desktop) {
-		margin-top: var(--padding-large);
+		margin: var(--padding-large) 0 0;
+	}
 
-		h2 {
-			font-size: 2em;
-			line-height: 1.1;
+	h2 {
+		margin: 0 0 var(--padding-small);
+		color: $blue-grey-50;
+		font-size: 2em;
+		line-height: 1.1;
+	}
+
+	@at-root .has-region-content & {
+		@media (min-width: $tablet) {
+			margin: -50vh 0 0;
 		}
-		.container {
+
+		@media (min-width: $desktop) {
+			margin: 0;
 			width: 50%;
-			animation: load 1s;
 		}
 	}
 }
 
 .back-button {
+	display: none;
 	position: relative;
 	z-index: 100;
 	color: $blue-grey-100;
 	border: 2px solid $blue-grey-200;
 	background: transparent;
-	margin: 0 var(--padding-large);
+	margin: var(--padding-large) var(--padding-large) 0;
 	transition: opacity var(--transition);
 	opacity: 0.5;
 
@@ -365,6 +372,7 @@ body {
 		transition-duration: var(--transition-hover);
 		opacity: 1;
 	}
+
 	&:active {
 		transform: scale3d(1.02, 1.02, 1.02);
 		background: $blue-grey-700;
@@ -372,8 +380,8 @@ body {
 		border-color: $white;
 	}
 
-	@media (min-width: $desktop) {
-		margin: 0 var(--padding-large) var(--padding-large);
+	.has-content & {
+		display: block;
 	}
 }
 
@@ -389,6 +397,13 @@ body {
 	line-height: 1.25;
 	padding: var(--padding-medium);
 	border-radius: var(--radius);
+	font-weight: 500;
+	background: $grey-50;
+
+	&:hover,
+	&:focus {
+		background: $white;
+	}
 }
 
 .region-link {
@@ -463,11 +478,6 @@ body {
 	@extend %no-select;
 	text-decoration: none;
 	cursor: pointer;
-
-	&:active {
-		background: $blue-grey-200;
-		color: $blue-grey-700;
-	}
 }
 
 .box-toggle {
@@ -543,5 +553,10 @@ body {
 }
 
 .is-hidden {
-	// display: none;
+	display: none;
+}
+
+.is-inactive {
+	opacity: 0.15;
+	pointer-events: none;
 }

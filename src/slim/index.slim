@@ -15,13 +15,15 @@ html lang="en"
 		.main-wrapper
 			section.brain-wrapper
 			section.content-wrapper
+				button.back-button onclick="reset()" &larr; Back
+				.container
 			.loading-wrapper
 		.side-wrapper
 			header.header-wrapper.container
 				h1.site-logo 
 					a href="/" Human Brain Map
 				nav.site-links
-					a.site-link href="" Our Team
+					a.site-link.team-link href="\team" Our Team
 					a.site-link href="" For Patients
 			noscript
 				section.browser-issues-wrapper
@@ -31,27 +33,32 @@ html lang="en"
 			section.regions-wrapper
 				.container.half
 					h2 Regions
-					input.regions-filter type="text" list="regions-datalist" placeholder="Filter regions..." autocomplete="off"
+					input.regions-filter type="text" list="regions-datalist" placeholder="Filter regions..." autocomplete="off" spellcheck="off"
 					datalist#regions-datalist
 			section.settings-wrapper
 				.container
 					h2 Settings
 					.box-wrapper
-						label.orbit.box.box-toggle.container
+						label.orbit-toggle.box.box-toggle.container
 							h3 Orbit
 							input type="checkbox"
 							.toggle
 					.box-wrapper
-						label.square-grid.box.box-toggle.container
+						label.square-grid-toggle.box.box-toggle.container
 							h3 Square Grid
 							input type="checkbox"
 							.toggle
-						/ label.polar-grid.box.box-toggle.container
+						/ label.polar-grid-toggle.box.box-toggle.container
 						/ 	h3 Polar Grid
 						/ 	input type="checkbox"
 						/ 	.toggle
-						label.axes.box.box-toggle.container
+						label.axes-toggle.box.box-toggle.container
 							h3 Axes
+							input type="checkbox"
+							.toggle
+					.box-wrapper
+						label.head-toggle.box.box-toggle.container
+							h3 Show Head
 							input type="checkbox"
 							.toggle
 			footer.footer-wrapper
