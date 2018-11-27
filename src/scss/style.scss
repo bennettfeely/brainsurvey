@@ -291,12 +291,40 @@ body {
 
 .has-region-content {
 	.brain-wrapper {
+		&:before {
+			display: block;
+			content: "";
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			height: 10%;
+			background: linear-gradient(
+				rgba(mix($blue-grey-900, $black), 0),
+				mix($blue-grey-900, $black)
+			);
+		}
+
 		@media (min-width: $tablet) {
 			transform: translate3d(0, -25%, 0);
 		}
 
 		@media (min-width: $desktop) {
 			transform: translate3d(25%, 0, 0);
+
+			&:before {
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: initial;
+				width: 10%;
+				height: initial;
+				background: linear-gradient(
+					90deg,
+					mix($blue-grey-900, $black),
+					rgba(mix($blue-grey-900, $black), 0)
+				);
+			}
 		}
 	}
 }
@@ -357,8 +385,6 @@ body {
 
 .back-button {
 	display: none;
-	position: relative;
-	z-index: 100;
 	color: $blue-grey-100;
 	border: 2px solid $blue-grey-200;
 	background: transparent;
@@ -383,6 +409,8 @@ body {
 	.back-button,
 	.content-wrapper .container {
 		display: block;
+		position: relative;
+		z-index: 100;
 	}
 }
 

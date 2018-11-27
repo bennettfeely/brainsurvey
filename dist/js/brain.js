@@ -41,7 +41,7 @@ settings = {
 		}
 	},
 	head: {
-		visible: true,
+		visible: false,
 		roughness: 1,
 		metalness: 0,
 		wireframe: true,
