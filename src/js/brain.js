@@ -2,7 +2,8 @@ settings = {
 	autosave: false,
 
 	// Models
-	model_path: "models/Brain_05/Brain_005.gltf",
+	brain_model_path: "models/Brain_05/Brain_005.gltf",
+	head_model_path: "models/Head_01/Head_01.gltf",
 
 	// Animations
 	orbit: true,
@@ -20,20 +21,29 @@ settings = {
 	zoom: false,
 
 	// Materials
-	roughness: 0.1,
-	metalness: 0.4,
-	wireframe: false,
-	categorical_colors: false,
-	default_color: "lightcoral",
-
-	// Displays
-	explode: 0,
-
-	// Shouldn't need this eventually
-	offset: {
-		x: -2.25,
-		y: 0,
-		z: 0
+	brain: {
+		roughness: 0.1,
+		metalness: 0.4,
+		wireframe: false,
+		default_color: "lightcoral",
+		explode: 0,
+		offset: {
+			x: -2.25,
+			y: 0,
+			z: 0
+		}
+	},
+	head: {
+		roughness: 0.1,
+		metalness: 0.4,
+		wireframe: true,
+		default_color: "whitesmoke",
+		opacity: 0.5,
+		offset: {
+			x: -2.25,
+			y: 0,
+			z: 0
+		}
 	}
 };
 
@@ -548,7 +558,7 @@ function initBrain() {
 	// Model
 	var loader = new THREE.GLTFLoader();
 	loader.load(
-		settings.model_path,
+		settings.brain_model_path,
 		function(gltf) {
 			updateStatus("Rendering model");
 			i = 0;
@@ -557,21 +567,21 @@ function initBrain() {
 					i++;
 					// Global mesh styles
 					// if (i == 0) {
-					// 	mesh.material.roughness = settings.roughness;
-					// 	mesh.material.metalness = settings.metalness;
-					// 	mesh.material.wireframe = settings.wireframe;
+					// 	mesh.material.roughness = settings.brain.roughness;
+					// 	mesh.material.metalness = settings.brain.metalness;
+					// 	mesh.material.wireframe = settings.brain.wireframe;
 					// }
 
-					mesh.material.roughness = settings.roughness;
-					mesh.material.metalness = settings.metalness;
-					mesh.material.wireframe = settings.wireframe;
-					mesh.material.color.setStyle(settings.default_color);
+					mesh.material.roughness = settings.brain.roughness;
+					mesh.material.metalness = settings.brain.metalness;
+					mesh.material.wireframe = settings.brain.wireframe;
+					mesh.material.color.setStyle(settings.brain.default_color);
 
 					// Create separate material instance and local mesh styles
 					mesh.material = mesh.material.clone();
 
 					// Explode brain regions
-					if (settings.explode > 0) {
+					if (settings.brain.explode > 0) {
 						mesh.geometry.computeBoundingSphere();
 
 						var x = mesh.geometry.boundingSphere.center.x;
@@ -579,9 +589,9 @@ function initBrain() {
 						var z = mesh.geometry.boundingSphere.center.z;
 
 						mesh.position.set(
-							x * settings.explode,
-							y * settings.explode,
-							z * settings.explode
+							x * settings.brain.explode,
+							y * settings.brain.explode,
+							z * settings.brain.explode
 						);
 					}
 
@@ -618,9 +628,9 @@ function initBrain() {
 
 			// Set position of brain with offsets
 			gltf.scene.position.set(
-				settings.offset.x,
-				settings.offset.y,
-				settings.offset.z
+				settings.brain.offset.x,
+				settings.brain.offset.y,
+				settings.brain.offset.z
 			);
 
 			scene.add(gltf.scene);
@@ -705,7 +715,7 @@ function switchRegion(region_id) {
 			if (mesh.name !== region_id) {
 				mesh.material.transparent = true;
 				mesh.material.opacity = 0.1;
-				mesh.material.color.setStyle(settings.default_color);
+				mesh.material.color.setStyle(settings.brain.default_color);
 			} else {
 				// // Set origin to center of region
 				// mesh.geometry.computeBoundingSphere();
@@ -749,6 +759,8 @@ function initSettings() {
 
 	// Axes Toggle
 	axesToggle();
+
+	headToggle();
 }
 
 function orbitToggle() {
@@ -856,6 +868,51 @@ function axesToggle() {
 	});
 }
 
+function headToggle() {
+	var loader = new THREE.GLTFLoader();
+	loader.load(
+		settings.head_model_path,
+		function(gltf) {
+			updateStatus("Rendering Head");
+			gltf.scene.traverse(function(mesh) {
+				if (mesh.isMesh) {
+					mesh.material.roughness = settings.head.roughness;
+					mesh.material.metalness = settings.head.metalness;
+					mesh.material.wireframe = settings.head.wireframe;
+					mesh.material.color.setStyle(settings.head.default_color);
+
+					if (settings.head.opacity < 1) {
+						mesh.material.transparent = true;
+						mesh.material.opacity = settings.head.opacity;
+					}
+				}
+			});
+
+			// Set position of brain with offsets
+			gltf.scene.position.set(
+				settings.head.offset.x,
+				settings.head.offset.y,
+				settings.head.offset.z
+			);
+
+			scene.add(gltf.scene);
+
+			// animate();
+		},
+		function(xhr) {
+			if (xhr) {
+				var pct = (xhr.loaded / xhr.total) * 100;
+
+				updateStatus("Loading model of head " + pct + "%");
+			}
+		},
+		function(error) {
+			console.log(error);
+			updateStatus("Error loading model of head");
+		}
+	);
+}
+
 function reset() {
 	console.log("reset();");
 
@@ -878,7 +935,7 @@ function reset() {
 			mesh.visible = true;
 			mesh.material.transparent = false;
 			mesh.material.opacity = 1;
-			mesh.material.color.setStyle(settings.default_color);
+			mesh.material.color.setStyle(settings.brain.default_color);
 		}
 	});
 
