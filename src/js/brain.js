@@ -34,11 +34,12 @@ settings = {
 		}
 	},
 	head: {
-		roughness: 0.1,
-		metalness: 0.4,
+		visible: true,
+		roughness: 1,
+		metalness: 0,
 		wireframe: true,
-		default_color: "whitesmoke",
-		opacity: 0.5,
+		default_color: "white",
+		opacity: 0.1,
 		offset: {
 			x: -2.25,
 			y: 0,
@@ -538,7 +539,7 @@ function initBrain() {
 	controls.addEventListener("start", function() {
 		controls.autoRotate = false;
 
-		document.querySelector(".orbit input").checked = false;
+		document.querySelector(".orbit-toggle input").checked = false;
 	});
 
 	// Origin
@@ -560,7 +561,7 @@ function initBrain() {
 	loader.load(
 		settings.brain_model_path,
 		function(gltf) {
-			updateStatus("Rendering model");
+			updateStatus("Rendering brain model");
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
 				if (mesh.isMesh) {
@@ -641,12 +642,12 @@ function initBrain() {
 			if (xhr) {
 				var pct = (xhr.loaded / xhr.total) * 100;
 
-				updateStatus("Loading model " + pct + "%");
+				updateStatus("Loading brain model " + pct + "%");
 			}
 		},
 		function(error) {
 			console.log(error);
-			updateStatus("Error loading model");
+			updateStatus("Error loading brain model");
 		}
 	);
 
@@ -751,6 +752,9 @@ function initSettings() {
 	// Orbit Toggle
 	orbitToggle();
 
+	// Head Toggle
+	headToggle();
+
 	// Square Grid Toggle
 	squareGridToggle();
 
@@ -759,8 +763,6 @@ function initSettings() {
 
 	// Axes Toggle
 	axesToggle();
-
-	headToggle();
 }
 
 function orbitToggle() {
@@ -869,6 +871,35 @@ function axesToggle() {
 }
 
 function headToggle() {
+	head_mesh = undefined;
+
+	var head_toggle = document.querySelector(".head-toggle input");
+
+	if (settings.head.visible == true) {
+		loadHead();
+	}
+
+	head_toggle.checked = settings.head.visible;
+	head_toggle.addEventListener("change", function() {
+		if (head_toggle.checked) {
+			if (head_mesh == undefined) {
+				// Head mesh not loaded,
+				loadHead();
+			} else {
+				// The head has been loaded, just make it visible
+				head_mesh.visible = true;
+			}
+		} else {
+			// Toggle head mesh off
+			head_mesh.visible = false;
+		}
+
+		saveSettings();
+	});
+}
+
+function loadHead() {
+	console.log("loadHead();");
 	var loader = new THREE.GLTFLoader();
 	loader.load(
 		settings.head_model_path,
@@ -876,28 +907,32 @@ function headToggle() {
 			updateStatus("Rendering Head");
 			gltf.scene.traverse(function(mesh) {
 				if (mesh.isMesh) {
+					console.log(mesh);
 					mesh.material.roughness = settings.head.roughness;
 					mesh.material.metalness = settings.head.metalness;
 					mesh.material.wireframe = settings.head.wireframe;
 					mesh.material.color.setStyle(settings.head.default_color);
+					mesh.visible = true;
 
 					if (settings.head.opacity < 1) {
 						mesh.material.transparent = true;
 						mesh.material.opacity = settings.head.opacity;
 					}
+
+					// Save the mesh to a global variable so we can modify it later
+					head_mesh = mesh;
 				}
 			});
 
-			// Set position of brain with offsets
+			// Set position of head with offsets
 			gltf.scene.position.set(
 				settings.head.offset.x,
 				settings.head.offset.y,
 				settings.head.offset.z
 			);
 
+			// Add the head to the scene
 			scene.add(gltf.scene);
-
-			// animate();
 		},
 		function(xhr) {
 			if (xhr) {
@@ -932,10 +967,16 @@ function reset() {
 	// Make all regions opaque again
 	scene.traverse(function(mesh) {
 		if (mesh.isMesh) {
-			mesh.visible = true;
 			mesh.material.transparent = false;
 			mesh.material.opacity = 1;
-			mesh.material.color.setStyle(settings.brain.default_color);
+
+			if (mesh.name == "Head") {
+				if (settings.head.opacity < 1) {
+					mesh.material.transparent = true;
+					mesh.material.opacity = settings.head.opacity;
+					mesh.material.color.setStyle(settings.head.default_color);
+				}
+			}
 		}
 	});
 
@@ -952,6 +993,12 @@ function reset() {
 
 	// Empty the content wrapper
 	document.querySelector(".content-wrapper .container").innerHTML = "";
+
+	// Make the world orbit because it looks nice
+	if (settings.orbit == true) {
+		document.querySelector(".orbit-toggle input").checked = true;
+		controls.autoRotate = true;
+	}
 }
 
 function updateStatus(status) {
