@@ -135,9 +135,9 @@ button {
 		transform: scale3d(1.02, 1.02, 1.02);
 	}
 
-	&:focus {
-		outline: none;
-	}
+	// &:focus {
+	// 	outline: none;
+	// }
 }
 
 input {
@@ -146,21 +146,21 @@ input {
 	border: 0;
 }
 
-summary {
-	&:focus {
-		outline: 0;
-	}
+// summary {
+// 	&:focus {
+// 		outline: 0;
+// 	}
 
-	h2 {
-		display: inline-block;
-		vertical-align: middle;
+// 	h2 {
+// 		display: inline-block;
+// 		vertical-align: middle;
 
-		&:hover {
-			cursor: pointer;
-			text-decoration: underline;
-		}
-	}
-}
+// 		&:hover {
+// 			cursor: pointer;
+// 			text-decoration: underline;
+// 		}
+// 	}
+// }
 
 // Structural Styles =====================================================================
 .container {

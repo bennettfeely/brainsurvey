@@ -410,11 +410,6 @@ function route() {
 }
 
 function initBrain() {
-	// If we don't have WebGL
-	if (WEBGL.isWebGLAvailable() === false) {
-		document.body.appendChild(WEBGL.getWebGLErrorMessage());
-	}
-
 	var canvasWidth = brain_wrapper.offsetWidth;
 	var canvasHeight = brain_wrapper.offsetHeight;
 
@@ -482,12 +477,6 @@ function initBrain() {
 				if (mesh.isMesh) {
 					i++;
 					// Global mesh styles
-					// if (i == 0) {
-					// 	mesh.material.roughness = settings.brain.roughness;
-					// 	mesh.material.metalness = settings.brain.metalness;
-					// 	mesh.material.wireframe = settings.brain.wireframe;
-					// }
-
 					mesh.material.roughness = settings.brain.roughness;
 					mesh.material.metalness = settings.brain.metalness;
 					mesh.material.wireframe = settings.brain.wireframe;
@@ -531,7 +520,7 @@ function initBrain() {
 
 						regions_filter.addEventListener("input", function() {
 							var selector =
-								'[value="' + regions_filter.value + '"]';
+								'[value="' + regions_filter.value + '" i]';
 							var option = document.querySelector(selector);
 
 							if (option !== null) {
