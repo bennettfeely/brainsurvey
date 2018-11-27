@@ -556,12 +556,28 @@ function initBrain() {
 	directionalLight.position.set(0, 10, 0);
 	scene.add(directionalLight);
 
-	// Model
-	var loader = new THREE.GLTFLoader();
+	// Load manager
+	var brain_manager = new THREE.LoadingManager();
+	brain_manager.onStart = function(url, itemsLoaded, itemsTotal) {
+		updateStatus("Loading brain (" + itemsLoaded + "/" + itemsTotal + ")");
+	};
+
+	brain_manager.onLoad = function() {
+		updateStatus("Brain loaded successfully");
+	};
+
+	brain_manager.onProgress = function(url, itemsLoaded, itemsTotal) {
+		updateStatus("Loading brain (" + itemsLoaded + "/" + itemsTotal + ")");
+	};
+
+	brain_manager.onError = function(url) {
+		updateStatus("Error loading brain");
+	};
+
+	var loader = new THREE.GLTFLoader(brain_manager);
 	loader.load(
 		settings.brain_model_path,
 		function(gltf) {
-			updateStatus("Rendering brain model");
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
 				if (mesh.isMesh) {
@@ -639,15 +655,14 @@ function initBrain() {
 			animate();
 		},
 		function(xhr) {
-			if (xhr) {
-				var pct = (xhr.loaded / xhr.total) * 100;
-
-				updateStatus("Loading brain model " + pct + "%");
-			}
+			// if (xhr.total !== 0) {
+			// 	var pct = (xhr.loaded / xhr.total) * 100;
+			// 	updateStatus("Loading brain model " + pct + "%");
+			// }
 		},
 		function(error) {
-			console.log(error);
-			updateStatus("Error loading brain model");
+			// console.log(error);
+			// updateStatus("Error loading brain model");
 		}
 	);
 
@@ -900,7 +915,34 @@ function headToggle() {
 
 function loadHead() {
 	console.log("loadHead();");
-	var loader = new THREE.GLTFLoader();
+
+	var head_manager = new THREE.LoadingManager();
+	head_manager.onStart = function(url, itemsLoaded, itemsTotal) {
+		console.log(
+			"Started loading file: " +
+				url +
+				".\nLoaded " +
+				itemsLoaded +
+				" of " +
+				itemsTotal +
+				" files."
+		);
+		updateStatus("Loading head (" + itemsLoaded + "/" + itemsTotal + ")");
+	};
+
+	head_manager.onLoad = function() {
+		updateStatus("Head loaded successfully");
+	};
+
+	head_manager.onProgress = function(url, itemsLoaded, itemsTotal) {
+		updateStatus("Loading head (" + itemsLoaded + "/" + itemsTotal + ")");
+	};
+
+	head_manager.onError = function(url) {
+		updateStatus("Error loading head");
+	};
+
+	var loader = new THREE.GLTFLoader(head_manager);
 	loader.load(
 		settings.head_model_path,
 		function(gltf) {
@@ -935,17 +977,52 @@ function loadHead() {
 			scene.add(gltf.scene);
 		},
 		function(xhr) {
-			if (xhr) {
-				var pct = (xhr.loaded / xhr.total) * 100;
-
-				updateStatus("Loading model of head " + pct + "%");
-			}
+			// if (xhr.total !== 0) {
+			// 	var pct = (xhr.loaded / xhr.total) * 100;
+			// 	updateStatus("Loading model of head " + pct + "%");
+			// }
 		},
 		function(error) {
-			console.log(error);
-			updateStatus("Error loading model of head");
+			// console.log(error);
+			// updateStatus("Error loading model of head");
 		}
 	);
+}
+
+function loadingManager(manager) {
+	console.log("loadingManager();	");
+
+	manager.onStart = function(url, itemsLoaded, itemsTotal) {
+		console.log(
+			"Started loading file: " +
+				url +
+				".\nLoaded " +
+				itemsLoaded +
+				" of " +
+				itemsTotal +
+				" files."
+		);
+	};
+
+	manager.onLoad = function() {
+		console.log("Loading complete!");
+	};
+
+	manager.onProgress = function(url, itemsLoaded, itemsTotal) {
+		console.log(
+			"Loading file: " +
+				url +
+				".\nLoaded " +
+				itemsLoaded +
+				" of " +
+				itemsTotal +
+				" files."
+		);
+	};
+
+	manager.onError = function(url) {
+		console.log("There was an error loading " + url);
+	};
 }
 
 function reset() {
@@ -1002,6 +1079,8 @@ function reset() {
 }
 
 function updateStatus(status) {
+	console.log(status);
+
 	var message =
 		'<div class="loading-status container">' + status + "...</div>";
 
