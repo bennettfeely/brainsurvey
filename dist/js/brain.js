@@ -1,3 +1,10 @@
+// Warnings
+if (WEBGL.isWebGLAvailable() === false) {
+	warning(
+		"Your web browser or graphics card doesn't support WebGL. Try another device or browser."
+	);
+}
+
 settings = {
 	autosave: false,
 
@@ -721,25 +728,25 @@ function switchRegion(region_id) {
 	// Reset the counter
 	i = 0;
 
+	// Reset the content wrapper
+	document.querySelector(".content-wrapper .container").innerHTML = "";
+
 	// Make all other regions transparent
 	scene.traverse(function(mesh) {
 		if (mesh.isMesh) {
-			// Return all regions to opaque state first
-			mesh.material.transparent = false;
-			mesh.material.opacity = 1;
+			// Return all brain regions to opaque state first
+			if (mesh.name !== "Head") {
+				mesh.material.transparent = false;
+				mesh.material.opacity = 1;
+			}
 
 			if (mesh.name !== region_id) {
 				mesh.material.transparent = true;
 				mesh.material.opacity = 0.1;
-				mesh.material.color.setStyle(settings.brain.default_color);
-			} else {
-				// // Set origin to center of region
-				// mesh.geometry.computeBoundingSphere();
-				// var x = mesh.geometry.boundingSphere.center.x;
-				// var y = mesh.geometry.boundingSphere.center.y;
-				// var z = mesh.geometry.boundingSphere.center.z;
-				// controls.target.set(x, y, z);
-				// controls.update();
+
+				if (mesh.name !== "Head") {
+					mesh.material.color.setStyle(settings.brain.default_color);
+				}
 			}
 		}
 	});
@@ -1079,12 +1086,16 @@ function reset() {
 }
 
 function updateStatus(status) {
-	console.log(status);
-
 	var message =
 		'<div class="loading-status container">' + status + "...</div>";
 
 	document.querySelector(".loading-wrapper").innerHTML = message;
+}
+
+function warning(status) {
+	var message = '<p class="container">' + status + "</p>";
+
+	document.querySelector(".warning").innerHTML = message;
 }
 
 function loadSettings() {

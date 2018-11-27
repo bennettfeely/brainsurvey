@@ -259,15 +259,9 @@ body {
 }
 
 // Browser issues wrapper ================================================================
-.browser-issues-wrapper {
-	background-color: $red-900;
+.warning {
+	background-color: $red;
 	color: $white;
-	text-align: center;
-
-	a {
-		font-weight: 700;
-		color: $white;
-	}
 }
 
 // Brain wrapper =========================================================================
@@ -330,6 +324,10 @@ body {
 .content-wrapper {
 	color: $blue-grey-100;
 
+	.container {
+		display: none;
+	}
+
 	@media (min-width: $tablet) {
 		padding: var(--padding-large);
 	}
@@ -379,8 +377,11 @@ body {
 		color: $white;
 		border-color: $white;
 	}
+}
 
-	.has-content & {
+.has-content {
+	.back-button,
+	.content-wrapper .container {
 		display: block;
 	}
 }
