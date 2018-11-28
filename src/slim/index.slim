@@ -32,7 +32,9 @@ html lang="en"
 			section.regions-wrapper
 				.container.half
 					h2 Regions
-					input.regions-filter type="text" list="regions-datalist" placeholder="Filter regions..." autocomplete="off" spellcheck="false"
+					select.regions-filter
+						option(disabled selected value) Select a brain region...
+					/ input.regions-filter type="text" list="regions-datalist" placeholder="Filter regions..." autocomplete="off" spellcheck="false"
 					datalist#regions-datalist
 			section.settings-wrapper
 				.container

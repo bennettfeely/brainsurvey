@@ -505,12 +505,10 @@ function initBrain() {
 
 					// Add item to datalist
 					// prettier-ignore
-					var option = '<option value="' 
-							+ regions_obj[mesh.name].full_name 
-						+ '" data-name="' + mesh.name + '"></option>';
+					var option = '<option value="' + mesh.name + '">' + regions_obj[mesh.name].full_name + '</option>';
 
 					// prettier-ignore
-					document.querySelector("#regions-datalist").innerHTML += option;
+					document.querySelector(".regions-filter").innerHTML += option;
 
 					// We're done traversing
 					if (i == Object.keys(regions_obj).length) {
@@ -518,14 +516,8 @@ function initBrain() {
 							".regions-filter"
 						);
 
-						regions_filter.addEventListener("input", function() {
-							var selector =
-								'[value="' + regions_filter.value + '" i]';
-							var option = document.querySelector(selector);
-
-							if (option !== null) {
-								switchRegion(option.dataset.name);
-							}
+						regions_filter.addEventListener("change", function() {
+							switchRegion(regions_filter.value);
 						});
 					}
 				}

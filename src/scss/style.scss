@@ -339,7 +339,7 @@ body {
 }
 
 .loading-status {
-	animation: fade 1s 1s both;
+	animation: fade 1.5s 1s both;
 
 	@keyframes fade {
 		to {
@@ -428,6 +428,7 @@ body {
 	border-radius: var(--radius);
 	font-weight: 500;
 	background: $grey-50;
+	border: 0;
 
 	&:hover,
 	&:focus {
