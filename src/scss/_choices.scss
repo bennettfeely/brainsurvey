@@ -154,6 +154,7 @@ $choices-highlight-color: $choices-primary-color;
     &.is-highlighted {
       background: $light-blue-100;
       color: $light-blue-900;
+      transition-duration: 0s;
     }
   }
 }
