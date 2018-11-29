@@ -37,7 +37,8 @@ $shadow-hover: none;
 
 	--radius: 0.25rem;
 
-	--sidebar-width: 20em;
+	--sidebar-width: 20rem;
+	--spinner-size: 4rem;
 
 	@media (min-width: $tablet) {
 		--root-size: 100%;
@@ -250,12 +251,35 @@ body {
 }
 
 // Brain wrapper =========================================================================
+.spinner {
+	$spinner-size: 5rem;
+
+	position: absolute;
+	top: calc(50% - #{$spinner-size/2});
+	left: calc(50% - #{$spinner-size/2});
+	width: $spinner-size;
+	height: $spinner-size;
+	animation: loading 1s linear infinite;
+	pointer-events: none;
+
+	@keyframes loading {
+		to {
+			transform: rotate(1turn);
+		}
+	}
+}
+
 .brain-wrapper {
 	position: relative;
 	width: 100%;
-	height: 75vw;
+	height: 80vw;
 	overflow: hidden;
 	transition: transform var(--transition-decorative);
+
+	canvas {
+		position: relative;
+		z-index: 10;
+	}
 
 	@media (min-width: $tablet) {
 		height: 100vh;

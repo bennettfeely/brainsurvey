@@ -433,6 +433,10 @@ function initBrain() {
 		controls.autoRotate = false;
 
 		document.querySelector(".orbit-toggle input").checked = false;
+
+		// Remove the spinner
+		var spinner = document.querySelector(".spinner");
+		spinner.parentNode.removeChild(spinner);
 	});
 
 	// Origin
@@ -503,24 +507,9 @@ function initBrain() {
 					// TODO: is this necessary?
 					regions_obj[mesh.name].mesh = mesh;
 
-					// // Add item to datalist
-					// // prettier-ignore
-					// var option = '<option value="' + mesh.name + '">' + regions_obj[mesh.name].full_name + '</option>';
-
-					// // prettier-ignore
-					// document.querySelector(".regions-filter").innerHTML += option;
-
 					// We're done traversing
 					if (i == Object.keys(regions_obj).length) {
 						setupRegionsFilter();
-
-						// var regions_filter = document.querySelector(
-						// 	".regions-filter"
-						// );
-
-						// regions_filter.addEventListener("change", function() {
-						// 	switchRegion(regions_filter.value);
-						// });
 					}
 				}
 			});
@@ -544,7 +533,6 @@ function initBrain() {
 		},
 		function(error) {
 			console.log(error);
-			// updateStatus("Error loading brain model");
 		}
 	);
 
@@ -631,18 +619,12 @@ function switchRegion(region_id) {
 	scene.traverse(function(mesh) {
 		if (mesh.isMesh) {
 			// Return all brain regions to opaque state first
-			if (mesh.name !== "Head") {
-				mesh.material.transparent = false;
-				mesh.material.opacity = 1;
-			}
+			mesh.material.transparent = false;
+			mesh.material.opacity = 1;
 
-			if (mesh.name !== region_id) {
+			if (mesh.name !== region_id && mesh.name !== "Head") {
 				mesh.material.transparent = true;
 				mesh.material.opacity = 0.1;
-
-				if (mesh.name !== "Head") {
-					mesh.material.color.setStyle(settings.brain.default_color);
-				}
 			}
 		}
 	});
@@ -959,6 +941,10 @@ function warning(status) {
 	var message = '<p class="container">' + status + "</p>";
 
 	document.querySelector(".warning").innerHTML = message;
+
+	// Stop the spinner because it's not loading after all
+	var spinner = document.querySelector(".spinner");
+	spinner.parentNode.removeChild(spinner);
 }
 
 function loadSettings() {
