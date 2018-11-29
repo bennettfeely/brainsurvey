@@ -6,9 +6,23 @@ autoprefixer = require("gulp-autoprefixer");
 cssnano = require("gulp-cssnano");
 browserSync = require("browser-sync");
 rename = require("gulp-rename");
+jsImport = require("gulp-js-import");
+uglify = require("gulp-uglify");
 
 const path = require("path");
 const fs = require("fs");
+
+// Transform regions object to an array to add to regions filter
+regions = require("./src/js/_regions.js");
+regions_arr = [];
+
+Object.keys(regions_obj).forEach(function(name) {
+  regions_arr.push({
+    name: name,
+    full_name: regions_obj[name].full_name,
+    path: regions_obj[name].path
+  });
+});
 
 // BrowserSync
 gulp.task("sync", function() {
@@ -23,7 +37,11 @@ gulp.task("slim", function() {
     .src("src/slim/*.slim")
     .pipe(
       slim({
-        pretty: true
+        pretty: true,
+        data: {
+          regions: regions_arr,
+          users: [{ name: "Fred" }, { name: "Bill" }, { name: "Harry" }]
+        }
       })
     )
     .pipe(
@@ -106,6 +124,14 @@ gulp.task("js", function() {
     );
 });
 
+// Compile JS
+gulp.task("import", function() {
+  return gulp
+    .src("brain.js")
+    .pipe(jsImport({ hideConsole: true }))
+    .pipe(gulp.dest("./dist/js"));
+});
+
 // Move gltf
 gulp.task("models", function() {
   return gulp
@@ -146,7 +172,7 @@ gulp.task("default", function() {
   });
 
   gulp.watch("src/js/*.js", function() {
-    return gulp.run("js");
+    return gulp.run("import", "js");
   });
 
   gulp.watch("src/models/*", function() {

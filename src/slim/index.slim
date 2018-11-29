@@ -27,32 +27,31 @@ html lang="en"
 					a href="/" Human Brain Map
 				nav.site-links
 					a.site-link.team-link href="\team" Our Team
-					a.site-link href="" For Patients
+					// a.site-link href="" For Patients
 			section.warning
 			section.regions-wrapper
-				.container.half
+				.container
 					h2 Regions
 					select.regions-filter
-						option(disabled selected value) Select a brain region...
-					/ input.regions-filter type="text" list="regions-datalist" placeholder="Filter regions..." autocomplete="off" spellcheck="false"
-					datalist#regions-datalist
+						- for region in regions
+        					option value=region['name'] = region['full_name']
 			section.settings-wrapper
 				.container
 					h2 Settings
 					.box-wrapper
 						label.head-toggle.box.box-toggle.container
 							h3 Show Head
-							input type="checkbox"
+							input type="checkbox" tabindex="0"
 							.toggle
 					.box-wrapper
 						label.orbit-toggle.box.box-toggle.container
 							h3 Orbit
-							input type="checkbox"
+							input type="checkbox" tabindex="0"
 							.toggle
 					.box-wrapper
 						label.square-grid-toggle.box.box-toggle.container
 							h3 Square Grid
-							input type="checkbox"
+							input type="checkbox" tabindex="0"
 							.toggle
 						/ label.polar-grid-toggle.box.box-toggle.container
 						/ 	h3 Polar Grid
@@ -60,7 +59,7 @@ html lang="en"
 						/ 	.toggle
 						label.axes-toggle.box.box-toggle.container
 							h3 Axes
-							input type="checkbox"
+							input type="checkbox" tabindex="0"
 							.toggle
 			footer.footer-wrapper
 				.container
@@ -69,4 +68,6 @@ html lang="en"
 		script src="js/GLTFLoader.min.js"
 		script src="js/OrbitControls.min.js"
 		script src="js/WebGL.min.js"
+		/ script src="js/choices.min.js"
+		script src="https://cdn.jsdelivr.net/npm/choices.js@4/public/assets/scripts/choices.min.js"
 		script src="js/brain.js"

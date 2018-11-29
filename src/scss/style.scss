@@ -165,22 +165,6 @@ input {
 // Structural Styles =====================================================================
 .container {
 	padding: var(--padding-large);
-
-	&.half {
-		display: flex;
-		align-items: center;
-
-		@media (max-width: $tablet) {
-			h2 {
-				margin-right: var(--padding-large);
-				margin-bottom: 0;
-			}
-		}
-
-		@media (min-width: $tablet) {
-			display: block;
-		}
-	}
 }
 
 body {
@@ -247,6 +231,7 @@ body {
 	background: $light-blue-50;
 	padding: var(--padding-small) var(--padding-medium);
 	transition: background-color var(--transition), color var(--transition);
+	color: $light-blue-900;
 
 	&:first-child {
 		margin-left: 0;
@@ -332,10 +317,12 @@ body {
 // Loading indicator =====================================================================
 .loading-wrapper {
 	position: absolute;
-	top: 0;
-	left: 0;
+	z-index: 100;
+	bottom: 0;
+	right: 0;
 	color: $blue-grey-50;
 	font-weight: 500;
+	pointer-events: none;
 }
 
 .loading-status {
@@ -424,7 +411,7 @@ body {
 	font-size: 1em;
 	font-weight: 500;
 	line-height: 1.25;
-	padding: var(--padding-medium);
+	padding: var(--padding-small);
 	border-radius: var(--radius);
 	font-weight: 500;
 	background: $grey-50;
@@ -436,9 +423,7 @@ body {
 	}
 }
 
-.region-link {
-	border-left: var(--padding-small) solid var(--color);
-}
+@import "choices";
 
 // Settings wrapper ======================================================================
 .settings-wrapper {

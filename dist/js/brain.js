@@ -1,10 +1,3 @@
-// Warnings
-if (WEBGL.isWebGLAvailable() === false) {
-	warning(
-		"Your web browser or graphics card doesn't support WebGL. Try another device or browser."
-	);
-}
-
 settings = {
 	autosave: false,
 
@@ -45,8 +38,7 @@ settings = {
 		roughness: 1,
 		metalness: 0,
 		wireframe: true,
-		default_color: "white",
-		opacity: 0.1,
+		default_color: "#2a2a2a",
 		offset: {
 			x: -2.25,
 			y: 0,
@@ -380,10 +372,17 @@ var brain_wrapper = document.querySelector(".brain-wrapper");
 init();
 
 function init() {
-	updateStatus("Loading model");
-
 	// Navigate to correct page
 	route();
+
+	// Warnings
+	if (WEBGL.isWebGLAvailable() === false) {
+		warning(
+			"Your web browser or graphics card doesn't support WebGL. Try another device or browser."
+		);
+	} else {
+		updateStatus("Loading model");
+	}
 
 	// Load any settings in localstorage
 	if (settings.autosave == true) {
@@ -501,24 +500,27 @@ function initBrain() {
 					}
 
 					// Add mesh object to regions object
+					// TODO: is this necessary?
 					regions_obj[mesh.name].mesh = mesh;
 
-					// Add item to datalist
-					// prettier-ignore
-					var option = '<option value="' + mesh.name + '">' + regions_obj[mesh.name].full_name + '</option>';
+					// // Add item to datalist
+					// // prettier-ignore
+					// var option = '<option value="' + mesh.name + '">' + regions_obj[mesh.name].full_name + '</option>';
 
-					// prettier-ignore
-					document.querySelector(".regions-filter").innerHTML += option;
+					// // prettier-ignore
+					// document.querySelector(".regions-filter").innerHTML += option;
 
 					// We're done traversing
 					if (i == Object.keys(regions_obj).length) {
-						var regions_filter = document.querySelector(
-							".regions-filter"
-						);
+						setupRegionsFilter();
 
-						regions_filter.addEventListener("change", function() {
-							switchRegion(regions_filter.value);
-						});
+						// var regions_filter = document.querySelector(
+						// 	".regions-filter"
+						// );
+
+						// regions_filter.addEventListener("change", function() {
+						// 	switchRegion(regions_filter.value);
+						// });
 					}
 				}
 			});
@@ -541,7 +543,7 @@ function initBrain() {
 			// }
 		},
 		function(error) {
-			// console.log(error);
+			console.log(error);
 			// updateStatus("Error loading brain model");
 		}
 	);
@@ -577,6 +579,27 @@ function animate() {
 	controls.update();
 
 	renderer.render(scene, camera);
+}
+
+function setupRegionsFilter() {
+	var regions_filter = document.querySelector(".regions-filter");
+	var choices = new Choices(regions_filter, {
+		itemSelectText: "Select",
+		noResultsText: "No matching brain regions",
+		placeholder: true,
+		placeholderValue: "Filter brain regions...",
+		searchPlaceholderValue: "Filter brain regions...",
+		searchResultLimit: 3
+	});
+
+	regions_filter.addEventListener(
+		"choice",
+		function(e) {
+			console.log(e.detail.choice.value);
+			switchRegion(e.detail.choice.value);
+		},
+		false
+	);
 }
 
 function switchRegion(region_id) {
@@ -771,10 +794,13 @@ function headToggle() {
 	var head_toggle = document.querySelector(".head-toggle input");
 
 	if (settings.head.visible == true) {
+		console.log("loadHead!!!");
 		loadHead();
+		head_toggle.checked = true;
+	} else {
+		console.log("no loadhead!");
 	}
 
-	head_toggle.checked = settings.head.visible;
 	head_toggle.addEventListener("change", function() {
 		if (head_toggle.checked) {
 			if (head_mesh == undefined) {
@@ -863,46 +889,10 @@ function loadHead() {
 			// }
 		},
 		function(error) {
-			// console.log(error);
+			console.log(error);
 			// updateStatus("Error loading model of head");
 		}
 	);
-}
-
-function loadingManager(manager) {
-	console.log("loadingManager();	");
-
-	manager.onStart = function(url, itemsLoaded, itemsTotal) {
-		console.log(
-			"Started loading file: " +
-				url +
-				".\nLoaded " +
-				itemsLoaded +
-				" of " +
-				itemsTotal +
-				" files."
-		);
-	};
-
-	manager.onLoad = function() {
-		console.log("Loading complete!");
-	};
-
-	manager.onProgress = function(url, itemsLoaded, itemsTotal) {
-		console.log(
-			"Loading file: " +
-				url +
-				".\nLoaded " +
-				itemsLoaded +
-				" of " +
-				itemsTotal +
-				" files."
-		);
-	};
-
-	manager.onError = function(url) {
-		console.log("There was an error loading " + url);
-	};
 }
 
 function reset() {
