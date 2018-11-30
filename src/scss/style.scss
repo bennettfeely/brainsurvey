@@ -123,7 +123,7 @@ small {
 	font-size: 0.9em;
 }
 
-button {
+.button {
 	@extend %no-select;
 
 	font-weight: bold;
@@ -250,6 +250,8 @@ body {
 .spinner {
 	$spinner-size: 5rem;
 
+	display: none;
+
 	position: absolute;
 	top: calc(50% - #{$spinner-size/2});
 	left: calc(50% - #{$spinner-size/2});
@@ -335,8 +337,143 @@ body {
 	}
 }
 
+// Slice tool ============================================================================
+.slice-tool {
+	display: flex;
+	align-items: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 100;
+	white-space: nowrap;
+	color: $white;
+	max-width: 100%;
+	opacity: 0.5;
+
+	h2 {
+		display: inline-block;
+		margin: 0 var(--padding-medium) 0 0;
+	}
+
+	input[type="radio"] {
+		display: none;
+	}
+
+	&:hover,
+	&:focus-within {
+		opacity: 1;
+	}
+}
+
+.slice-button {
+	display: inline-block;
+	border: 2px solid $white;
+	background: transparent;
+	transition: opacity var(--transition);
+	padding: var(--padding-small) var(--padding-medium);
+	border-radius: 0;
+
+	&:first-of-type {
+		border-radius: var(--radius) 0 0 var(--radius);
+	}
+
+	&:nth-of-type(2) {
+		border-width: 2px 0;
+	}
+
+	&:last-of-type {
+		border-radius: 0 var(--radius) var(--radius) 0;
+	}
+
+	&:hover {
+		transition-duration: var(--transition-hover);
+		opacity: 1;
+	}
+
+	input[type="radio"]:checked + & {
+		background: $white;
+		color: $black;
+	}
+
+	&:active {
+		transform: scale3d(1.02, 1.02, 1.02);
+		background: $blue-grey-700;
+		color: $white;
+		border-color: $white;
+	}
+}
+
+.slice-position {
+	display: inline-block;
+	flex: 1;
+	margin-left: var(--padding-medium);
+	cursor: move;
+	cursor: col-resize;
+
+	&:focus {
+		outline: 0;
+	}
+}
+
+input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	height: calc(1.5rem - 2px);
+	width: calc(1.5rem - 2px);
+	border-radius: 50%;
+	background: $black;
+	margin-top: -0.625rem;
+	border: 2px solid $white;
+
+	&:hover {
+		background: $white;
+	}
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 2px;
+	cursor: pointer;
+	background: rgba($white, 0.5);
+	border-radius: var(--radius);
+}
+
+// ::-webkit-slider-runnable-track,
+// ::-moz-range-track,
+// ::-ms-track {
+// 	-webkit-appearance: none;
+// 	appearance: none;
+// 	width: 100%;
+// 	height: 10px;
+// 	cursor: pointer;
+// 	background: rgba(0, 0, 0, 0.05);
+// 	border-radius: 25px;
+// }
+
+// ::-webkit-slider-thumb,
+// ::-moz-range-thumb,
+// ::-ms-thumb {
+// 	-webkit-appearance: none;
+// 	appearance: none;
+// 	height: 20px;
+// 	width: 20px;
+// 	border-radius: 20px;
+// 	background: red;
+// 	cursor: pointer;
+// 	margin-top: -5px;
+// }
+
+input[type="range"]::-ms-fill-lower {
+}
+input[type="range"]::-ms-fill-upper {
+}
+input[type="range"]:focus::-ms-fill-lower {
+}
+input[type="range"]:focus::-ms-fill-upper {
+}
+
 // Loading indicator =====================================================================
-.loading-wrapper {
+.status-wrapper {
 	position: absolute;
 	z-index: 100;
 	bottom: 0;
@@ -346,7 +483,7 @@ body {
 	pointer-events: none;
 }
 
-.loading-status {
+.status {
 	animation: fade 1.5s 1s both;
 
 	@keyframes fade {

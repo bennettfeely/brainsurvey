@@ -22,7 +22,16 @@ html lang="en"
 			section.content-wrapper
 				button.back-button onclick="reset()" &larr; Back
 				.container
-			.loading-wrapper
+			.slice-tool.container
+				h2 Slice
+				input type="radio" id="x_axis_slice" name="slice_axis"
+				label.button.slice-button for="x_axis_slice" X
+				input type="radio" id="y_axis_slice" name="slice_axis"
+				label.button.slice-button for="y_axis_slice" Y
+				input type="radio" id="z_axis_slice" name="slice_axis"
+				label.button.slice-button for="z_axis_slice" Z
+				input.slice-position type="range" min="0" max="1" value=".5" step="0.01"
+			.status-wrapper
 		.side-wrapper
 			header.header-wrapper.container
 				h1.site-logo 
@@ -42,6 +51,11 @@ html lang="en"
 					.box-wrapper
 						label.head-toggle.box.box-toggle.container
 							h3 Show Head
+							input type="checkbox" tabindex="0"
+							.toggle
+					.box-wrapper
+						label.slice-toggle.box.box-toggle.container
+							h3 Slice tool
 							input type="checkbox" tabindex="0"
 							.toggle
 					.box-wrapper

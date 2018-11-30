@@ -20,6 +20,9 @@ settings = {
 	pan: false,
 	zoom: false,
 
+	// Displays
+	slice: true,
+
 	// Materials
 	brain: {
 		roughness: 0.1,
@@ -486,6 +489,7 @@ function initBrain() {
 					mesh.material.metalness = settings.brain.metalness;
 					mesh.material.wireframe = settings.brain.wireframe;
 					mesh.material.color.setStyle(settings.brain.default_color);
+					mesh.material.side = THREE.DoubleSide;
 
 					// Create separate material instance and local mesh styles
 					mesh.material = mesh.material.clone();
@@ -538,28 +542,17 @@ function initBrain() {
 		}
 	);
 
-	// Clipping
-	// var globalPlanes = [
-	// 	new THREE.Plane(new THREE.Vector3(0, -1, 0), 1),
-	// 	new THREE.Plane(new THREE.Vector3(0, -1, 0), 1)
-	// ];
-
-	var globalPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0.9);
-
 	// Render the canvas
 	renderer = new THREE.WebGLRenderer({
 		alpha: true,
 		antialias: true,
-		side: THREE.DoubleSide,
-		clippingPlanes: [globalPlane]
+		side: THREE.DoubleSide
 	});
 	renderer.setPixelRatio(window.devicePixelRatio);
-	renderer.clippingPlanes = [globalPlane];
 
 	setCanvasSize();
 
 	// Rendering settings
-	renderer.localClippingEnabled = true;
 	renderer.gammaOutput = true;
 
 	// Add canvas to page
@@ -669,6 +662,9 @@ function initSettings() {
 	// Orbit Toggle
 	orbitToggle();
 
+	// Slice Toggle
+	sliceToggle();
+
 	// Head Toggle
 	headToggle();
 
@@ -694,6 +690,44 @@ function orbitToggle() {
 			settings.orbit = false;
 			controls.autoRotate = false;
 		}
+
+		saveSettings();
+	});
+}
+
+function sliceToggle() {
+	var slice_toggle = document.querySelector(".slice-toggle input");
+
+	slice_toggle.checked = settings.slice;
+
+	var slice_width = 0.05;
+
+	if (settings.slice == true) {
+		renderer.localClippingEnabled = true;
+		renderer.clippingPlanes = [
+			new THREE.Plane(new THREE.Vector3(0, slice_width, 0), 1),
+			new THREE.Plane(new THREE.Vector3(0, -slice_width, 0), 1)
+		];
+	} else {
+		renderer.localClippingEnabled = false;
+		renderer.clippingPlanes = [];
+	}
+
+	slice_toggle.addEventListener("change", function() {
+		if (slice_toggle.checked) {
+			settings.slice = true;
+			renderer.localClippingEnabled = true;
+			renderer.clippingPlanes = [
+				new THREE.Plane(new THREE.Vector3(0, slice_width, 0), 1),
+				new THREE.Plane(new THREE.Vector3(0, -slice_width, 0), 1)
+			];
+		} else {
+			settings.slice = false;
+			renderer.localClippingEnabled = false;
+			renderer.clippingPlanes = [];
+		}
+
+		renderer.render(scene, camera);
 
 		saveSettings();
 	});
@@ -949,10 +983,9 @@ function reset() {
 }
 
 function updateStatus(status) {
-	var message =
-		'<div class="loading-status container">' + status + "...</div>";
+	var message = '<div class="status container">' + status + "...</div>";
 
-	document.querySelector(".loading-wrapper").innerHTML = message;
+	document.querySelector(".status-wrapper").innerHTML = message;
 }
 
 function warning(status) {
