@@ -436,7 +436,9 @@ function initBrain() {
 
 		// Remove the spinner
 		var spinner = document.querySelector(".spinner");
-		spinner.parentNode.removeChild(spinner);
+		if (spinner !== null) {
+			spinner.parentNode.removeChild(spinner);
+		}
 	});
 
 	// Origin
@@ -536,13 +538,28 @@ function initBrain() {
 		}
 	);
 
+	// Clipping
+	// var globalPlanes = [
+	// 	new THREE.Plane(new THREE.Vector3(0, -1, 0), 1),
+	// 	new THREE.Plane(new THREE.Vector3(0, -1, 0), 1)
+	// ];
+
+	var globalPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0.9);
+
 	// Render the canvas
-	renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+	renderer = new THREE.WebGLRenderer({
+		alpha: true,
+		antialias: true,
+		side: THREE.DoubleSide,
+		clippingPlanes: [globalPlane]
+	});
 	renderer.setPixelRatio(window.devicePixelRatio);
+	renderer.clippingPlanes = [globalPlane];
 
 	setCanvasSize();
 
-	// Make canvas background transparent
+	// Rendering settings
+	renderer.localClippingEnabled = true;
 	renderer.gammaOutput = true;
 
 	// Add canvas to page
@@ -606,9 +623,6 @@ function switchRegion(region_id) {
 	// Rerender the page
 	renderer.render(scene, camera);
 
-	// Scroll to top of page
-	window.scroll(0, 0);
-
 	// Reset the counter
 	i = 0;
 
@@ -646,6 +660,9 @@ function switchRegion(region_id) {
         + "</div>";
 
 	document.querySelector(".content-wrapper .container").innerHTML += heading;
+
+	// Scroll to top of page
+	scrollTop();
 }
 
 function initSettings() {
@@ -780,7 +797,7 @@ function headToggle() {
 		loadHead();
 		head_toggle.checked = true;
 	} else {
-		console.log("no loadhead!");
+		console.log("settings.head.visible = false;");
 	}
 
 	head_toggle.addEventListener("change", function() {
@@ -883,9 +900,6 @@ function reset() {
 	// Change the URL
 	history.pushState(null, null, "/");
 
-	// Scroll to top of page
-	window.scroll(0, 0);
-
 	// Return origin to center of model
 	controls.target.set(0, 0, 0);
 	controls.update();
@@ -928,6 +942,10 @@ function reset() {
 		document.querySelector(".orbit-toggle input").checked = true;
 		controls.autoRotate = true;
 	}
+
+	// Scroll to top of page
+
+	scrollTop();
 }
 
 function updateStatus(status) {
@@ -959,4 +977,10 @@ function saveSettings() {
 	// Save our settings object saved in localStorage
 
 	localStorage.setItem("hbr_settings", JSON.stringify(settings));
+}
+
+function scrollTop() {
+	setTimeout(function() {
+		window.scroll(0, 0);
+	}, 50);
 }

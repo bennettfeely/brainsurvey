@@ -135,10 +135,6 @@ button {
 	&:active {
 		transform: scale3d(1.02, 1.02, 1.02);
 	}
-
-	// &:focus {
-	// 	outline: none;
-	// }
 }
 
 input {
@@ -300,16 +296,17 @@ body {
 
 .has-region-content {
 	.brain-wrapper {
-		&:before {
+		&:after {
 			display: block;
 			content: "";
 			position: absolute;
+			z-index: 10;
 			bottom: 0;
 			left: 0;
 			right: 0;
 			height: 10%;
 			background: linear-gradient(
-				rgba(mix($blue-grey-900, $black), 0),
+				rgba($black, 0),
 				mix($blue-grey-900, $black)
 			);
 		}
@@ -321,7 +318,7 @@ body {
 		@media (min-width: $desktop) {
 			transform: translate3d(25%, 0, 0);
 
-			&:before {
+			&:after {
 				top: 0;
 				bottom: 0;
 				left: 0;
@@ -331,7 +328,7 @@ body {
 				background: linear-gradient(
 					90deg,
 					mix($blue-grey-900, $black),
-					rgba(mix($blue-grey-900, $black), 0)
+					rgba($black, 0)
 				);
 			}
 		}
@@ -447,6 +444,7 @@ body {
 	}
 }
 
+// Regions dropdown ======================================================================
 @import "choices";
 
 // Settings wrapper ======================================================================
