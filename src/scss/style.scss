@@ -394,6 +394,10 @@ body {
 	input[type="radio"]:checked + & {
 		background: $white;
 		color: $black;
+
+		&:after {
+			content: "-axis";
+		}
 	}
 
 	&:active {
