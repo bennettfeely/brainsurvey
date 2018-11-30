@@ -339,6 +339,8 @@ body {
 
 // Slice tool ============================================================================
 .slice-tool {
+	@extend %no-select;
+
 	display: flex;
 	align-items: center;
 	position: absolute;
@@ -350,6 +352,12 @@ body {
 	color: $white;
 	max-width: 100%;
 	opacity: 0.5;
+	transition: transform var(--transition), opacity var(--transition);
+	transform: translateY(-100%);
+
+	&.is-visible {
+		transform: none;
+	}
 
 	h2 {
 		display: inline-block;
@@ -369,8 +377,7 @@ body {
 .slice-button {
 	display: inline-block;
 	border: 2px solid $white;
-	background: transparent;
-	transition: opacity var(--transition);
+	background: $black;
 	padding: var(--padding-small) var(--padding-medium);
 	border-radius: 0;
 
@@ -408,7 +415,7 @@ body {
 	}
 }
 
-.slice-position {
+.slice-range {
 	display: inline-block;
 	flex: 1;
 	margin-left: var(--padding-medium);
@@ -428,6 +435,8 @@ input[type="range"]::-webkit-slider-thumb {
 	background: $black;
 	margin-top: -0.625rem;
 	border: 2px solid $white;
+	cursor: move;
+	cursor: col-resize;
 
 	&:hover {
 		background: $white;

@@ -21,7 +21,17 @@ settings = {
 	zoom: false,
 
 	// Displays
-	slice: true,
+	slice: {
+		visible: false,
+		axis: "z",
+		position: 0,
+		size: 0.25,
+		dimensions: {
+			x: 7,
+			y: 10,
+			z: 7
+		}
+	},
 
 	// Materials
 	brain: {
@@ -696,41 +706,111 @@ function orbitToggle() {
 }
 
 function sliceToggle() {
+	// Setup slice toggle inits
 	var slice_toggle = document.querySelector(".slice-toggle input");
+	slice_toggle.checked = settings.slice.visible;
 
-	slice_toggle.checked = settings.slice;
-
-	var slice_width = 0.05;
-
-	if (settings.slice == true) {
-		renderer.localClippingEnabled = true;
-		renderer.clippingPlanes = [
-			new THREE.Plane(new THREE.Vector3(0, slice_width, 0), 1),
-			new THREE.Plane(new THREE.Vector3(0, -slice_width, 0), 1)
-		];
-	} else {
-		renderer.localClippingEnabled = false;
-		renderer.clippingPlanes = [];
-	}
+	setupSlice();
 
 	slice_toggle.addEventListener("change", function() {
 		if (slice_toggle.checked) {
-			settings.slice = true;
-			renderer.localClippingEnabled = true;
-			renderer.clippingPlanes = [
-				new THREE.Plane(new THREE.Vector3(0, slice_width, 0), 1),
-				new THREE.Plane(new THREE.Vector3(0, -slice_width, 0), 1)
-			];
+			settings.slice.visible = true;
 		} else {
-			settings.slice = false;
-			renderer.localClippingEnabled = false;
-			renderer.clippingPlanes = [];
+			settings.slice.visible = false;
 		}
 
-		renderer.render(scene, camera);
+		setupSlice();
 
 		saveSettings();
 	});
+}
+
+function setupSlice() {
+	if (settings.slice.visible == true) {
+		// Check the default slice axis button
+		document.querySelector(
+			'input[name="slice_axis"][value="' + settings.slice.axis + '"]'
+		).checked = true;
+
+		// Show the slice tool
+		document.querySelector(".slice-tool").classList.add("is-visible");
+
+		// Slice things up to start
+		slice();
+
+		// Detect change to slice axis buttons
+		document
+			.querySelectorAll('[name="slice_axis"]')
+			.forEach(function(axis_button) {
+				axis_button.addEventListener("change", function() {
+					// Stop orbiting
+					controls.autoRotate = false;
+
+					// Set slice axis
+					settings.slice.axis = document.querySelector(
+						'[name="slice_axis"]:checked'
+					).value;
+
+					saveSettings();
+
+					slice();
+				});
+			});
+
+		// Detect change to slice range slider
+		document
+			.querySelector(".slice-range")
+			.addEventListener("input", function() {
+				// Stop orbiting
+				controls.autoRotate = false;
+
+				// Set slice position
+				settings.slice.position = this.value;
+
+				saveSettings();
+
+				slice();
+			});
+	} else {
+		// Hide slice tool
+		document.querySelector(".slice-tool").classList.remove("is-visible");
+
+		// Remove the slicing
+		renderer.localClippingEnabled = false;
+		renderer.clippingPlanes = [];
+	}
+}
+
+function slice() {
+	console.log("slice();");
+
+	if (settings.slice.axis == "y") {
+		var slice_base = [1, 0, 0];
+	}
+	if (settings.slice.axis == "x") {
+		var slice_base = [0, 0, 1];
+	}
+	if (settings.slice.axis == "z") {
+		var slice_base = [0, 1, 0];
+	}
+
+	var computed_slice_position =
+		settings.slice.dimensions[settings.slice.axis] *
+		settings.slice.position;
+
+	var clip_plane = [
+		new THREE.Plane(
+			new THREE.Vector3(slice_base[0], slice_base[1], slice_base[2]),
+			-1 * computed_slice_position + settings.slice.size / 2
+		),
+		new THREE.Plane(
+			new THREE.Vector3(-slice_base[0], -slice_base[1], -slice_base[2]),
+			computed_slice_position + settings.slice.size / 2
+		)
+	];
+
+	renderer.localClippingEnabled = true;
+	renderer.clippingPlanes = clip_plane;
 }
 
 function squareGridToggle() {
