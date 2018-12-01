@@ -11,7 +11,6 @@ settings = {
 
 	// Helpers
 	grid_size: 10,
-
 	square_grid: false,
 	polar_grid: false,
 	axes: false,
@@ -20,7 +19,7 @@ settings = {
 	pan: false,
 	zoom: false,
 
-	// Displays
+	// Slicing and dicing
 	slice: {
 		visible: false,
 		axis: "z",
@@ -722,6 +721,8 @@ function sliceToggle() {
 		setupSlice();
 
 		saveSettings();
+
+		scrollTop();
 	});
 }
 

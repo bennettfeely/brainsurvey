@@ -49,6 +49,7 @@ $choices-highlight-color: $choices-primary-color;
     background-color: $white;
     margin: 0;
   }
+
   &:after {
     // Arrow
     content: "";
@@ -76,7 +77,7 @@ $choices-highlight-color: $choices-primary-color;
 
 .choices__inner {
   display: block;
-  background: $white;
+  background: rgba($white, 0.8);
   padding: var(--padding-small) 2rem var(--padding-small) var(--padding-small);
   border-radius: var(--radius);
   font-weight: 500;
