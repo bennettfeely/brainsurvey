@@ -348,15 +348,22 @@ body {
 	left: 0;
 	right: 0;
 	z-index: 100;
-	white-space: nowrap;
 	color: $white;
-	max-width: 100%;
 	opacity: 0.5;
 	transition: transform var(--transition), opacity var(--transition);
 	transform: translateY(-100%);
+	pointer-events: none;
+	max-width: 100%;
 
-	&.is-visible {
+	@media (min-width: $desktop) {
+		position: relative;
+		padding: calc(var(--padding-large) * 2) calc(var(--padding-large) * 2)
+			var(--padding-large);
+	}
+
+	.has-slice-tool & {
 		transform: none;
+		pointer-events: initial;
 	}
 
 	h2 {
@@ -453,31 +460,6 @@ input[type="range"]::-webkit-slider-runnable-track {
 	border-radius: var(--radius);
 }
 
-// ::-webkit-slider-runnable-track,
-// ::-moz-range-track,
-// ::-ms-track {
-// 	-webkit-appearance: none;
-// 	appearance: none;
-// 	width: 100%;
-// 	height: 10px;
-// 	cursor: pointer;
-// 	background: rgba(0, 0, 0, 0.05);
-// 	border-radius: 25px;
-// }
-
-// ::-webkit-slider-thumb,
-// ::-moz-range-thumb,
-// ::-ms-thumb {
-// 	-webkit-appearance: none;
-// 	appearance: none;
-// 	height: 20px;
-// 	width: 20px;
-// 	border-radius: 20px;
-// 	background: red;
-// 	cursor: pointer;
-// 	margin-top: -5px;
-// }
-
 input[type="range"]::-ms-fill-lower {
 }
 input[type="range"]::-ms-fill-upper {
@@ -544,13 +526,19 @@ input[type="range"]:focus::-ms-fill-upper {
 }
 
 .back-button {
+	@extend %no-select;
+
 	display: none;
 	color: $blue-grey-100;
 	border: 2px solid $blue-grey-200;
+	padding: var(--padding-medium);
+	font-weight: 500;
+	border-radius: var(--radius);
 	background: transparent;
-	margin: var(--padding-large) var(--padding-large) 0;
+	margin: 0 var(--padding-large) 0;
 	transition: opacity var(--transition);
 	opacity: 0.5;
+	cursor: pointer;
 
 	&:hover {
 		transition-duration: var(--transition-hover);

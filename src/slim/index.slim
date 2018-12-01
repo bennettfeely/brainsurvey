@@ -16,12 +16,6 @@ html lang="en"
 		meta name="theme-color" content="#13191c"
 	body.home
 		.main-wrapper
-			section.brain-wrapper
-				svg.spinner width="20" height="20" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-					path d="M 15 25 A 5 5 0 1 1 15 5" stroke="#eceff1" stroke-width="1" fill="none" stroke-linecap="round"
-			section.content-wrapper
-				button.back-button onclick="reset()" &larr; Back
-				.container
 			.slice-tool.container
 				h2 Slice Tool
 				input type="radio" value="x" id="x_axis_slice" onchange="settings.slice.axis='x'" name="slice_axis"
@@ -30,7 +24,13 @@ html lang="en"
 				label.button.slice-button for="y_axis_slice" Y
 				input type="radio" value="z" id="z_axis_slice" onchange="settings.slice.axis='z'" name="slice_axis"
 				label.button.slice-button for="z_axis_slice" Z
-				input.slice-range type="range" min="-1" max="1" value="0" step="0.01"
+				input.slice-range type="range" min="-1" max="1" value="0" step="0.001"
+			section.brain-wrapper
+				svg.spinner width="20" height="20" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+					path d="M 15 25 A 5 5 0 1 1 15 5" stroke="#eceff1" stroke-width="1" fill="none" stroke-linecap="round"
+			section.content-wrapper
+				button.back-button onclick="reset()" &larr; Back
+				.container
 			.status-wrapper
 		.side-wrapper
 			header.header-wrapper.container

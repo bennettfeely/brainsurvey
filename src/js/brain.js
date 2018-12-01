@@ -733,7 +733,7 @@ function setupSlice() {
 		).checked = true;
 
 		// Show the slice tool
-		document.querySelector(".slice-tool").classList.add("is-visible");
+		document.querySelector("html").classList.add("has-slice-tool");
 
 		// Slice things up to start
 		slice();
@@ -773,7 +773,7 @@ function setupSlice() {
 			});
 	} else {
 		// Hide slice tool
-		document.querySelector(".slice-tool").classList.remove("is-visible");
+		document.querySelector("html").classList.remove("has-slice-tool");
 
 		// Remove the slicing
 		renderer.localClippingEnabled = false;
