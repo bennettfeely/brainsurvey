@@ -11,6 +11,7 @@ settings = {
 
 	// Helpers
 	grid_size: 10,
+
 	square_grid: false,
 	polar_grid: false,
 	axes: false,
@@ -18,19 +19,6 @@ settings = {
 	// Interactions
 	pan: false,
 	zoom: false,
-
-	// Slicing and dicing
-	slice: {
-		visible: false,
-		axis: "z",
-		position: 0,
-		size: 0.25,
-		dimensions: {
-			x: 7,
-			y: 10,
-			z: 7
-		}
-	},
 
 	// Materials
 	brain: {
@@ -46,11 +34,11 @@ settings = {
 		}
 	},
 	head: {
-		visible: false,
+		visible: true,
 		roughness: 1,
 		metalness: 0,
 		wireframe: true,
-		default_color: "#2a2a2a",
+		default_color: "#333",
 		offset: {
 			x: -2.25,
 			y: 0,
@@ -58,7 +46,7 @@ settings = {
 		}
 	}
 };
-
+;
 regions_obj = {
 	Frontal_Pole_0: {
 		full_name: "Frontal Pole",
@@ -377,6 +365,7 @@ regions_obj = {
 		path: "occipital-pole"
 	}
 };
+
 
 var html = document.querySelector("html");
 var brain_wrapper = document.querySelector(".brain-wrapper");
@@ -698,7 +687,7 @@ function orbitToggle() {
 		} else {
 			settings.orbit = false;
 			controls.autoRotate = false;
-		}
+		}k
 
 		saveSettings();
 	});

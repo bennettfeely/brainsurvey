@@ -83,6 +83,10 @@ $choices-highlight-color: $choices-primary-color;
   font-weight: 500;
   overflow: hidden;
 
+  &:hover {
+    background: $white;
+  }
+
   .is-open & {
     border-radius: var(--radius) var(--radius) 0 0;
   }
@@ -108,8 +112,6 @@ $choices-highlight-color: $choices-primary-color;
   z-index: 1;
   position: absolute;
   width: 100%;
-  background-color: $choices-bg-color-dropdown;
-  background: $white;
   top: 100%;
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
