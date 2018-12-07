@@ -11,7 +11,6 @@ settings = {
 
 	// Helpers
 	grid_size: 10,
-
 	square_grid: false,
 	polar_grid: false,
 	axes: false,
@@ -19,6 +18,19 @@ settings = {
 	// Interactions
 	pan: false,
 	zoom: false,
+
+	// Slicing and dicing
+	slice: {
+		visible: false,
+		axis: "z",
+		position: 0,
+		size: 0.25,
+		dimensions: {
+			x: 7,
+			y: 10,
+			z: 7
+		}
+	},
 
 	// Materials
 	brain: {
@@ -34,11 +46,11 @@ settings = {
 		}
 	},
 	head: {
-		visible: true,
+		visible: false,
 		roughness: 1,
 		metalness: 0,
 		wireframe: true,
-		default_color: "#333",
+		default_color: "#2a2a2a",
 		offset: {
 			x: -2.25,
 			y: 0,

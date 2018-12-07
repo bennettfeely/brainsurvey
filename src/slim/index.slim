@@ -16,7 +16,7 @@ html lang="en"
 		meta name="theme-color" content="#13191c"
 	body.home
 		.main-wrapper
-			.slice-tool.container
+			.slice-tool.container.is-hidden
 				h2 Slice Tool
 				input type="radio" value="x" id="x_axis_slice" onchange="settings.slice.axis='x'" name="slice_axis"
 				label.button.slice-button for="x_axis_slice" X
@@ -43,6 +43,7 @@ html lang="en"
 				.container
 					h2 Regions
 					select.regions-filter
+						option(placeholder) Select a brain region...
 						- for region in regions
         					option value=region['name'] = region['full_name']
 			section.tools-wrapper

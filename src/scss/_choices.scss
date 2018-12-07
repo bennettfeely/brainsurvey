@@ -2,17 +2,6 @@
 =            Choices            =
 ===============================*/
 
-$choices-font-size-lg: 16px;
-$choices-font-size-md: 14px;
-$choices-font-size-sm: 12px;
-$choices-bg-color: #f9f9f9;
-$choices-bg-color-disabled: #eaeaea;
-$choices-bg-color-dropdown: #ffffff;
-$choices-keyline-color: #dddddd;
-$choices-primary-color: #00bcd4;
-$choices-disabled-color: #eaeaea;
-$choices-highlight-color: $choices-primary-color;
-
 .choices {
   width: 100%;
   position: relative;
@@ -21,13 +10,15 @@ $choices-highlight-color: $choices-primary-color;
   &:focus {
     outline: none;
   }
+
   &:last-child {
     margin-bottom: 0;
   }
+
   &.is-disabled {
     .choices__inner,
     .choices__input {
-      background-color: $choices-bg-color-disabled;
+      background-color: $grey-200;
       cursor: not-allowed;
       user-select: none;
     }
@@ -43,15 +34,15 @@ $choices-highlight-color: $choices-primary-color;
   .choices__input {
     display: block;
     width: 100%;
-    padding: 10px;
-    border: solid $choices-keyline-color;
+    padding: var(--padding-medium);
+    border: solid $blue-grey-100;
     border-width: 1px 0;
     background-color: $white;
     margin: 0;
   }
 
+  // Arrow
   &:after {
-    // Arrow
     content: "";
     height: 0;
     width: 0;
@@ -137,6 +128,9 @@ $choices-highlight-color: $choices-primary-color;
     -webkit-overflow-scrolling: touch;
     will-change: scroll-position;
   }
+  .choices__placeholder {
+    display: none;
+  }
   .choices__item {
     position: relative;
     font-size: 0.9rem;
@@ -147,7 +141,11 @@ $choices-highlight-color: $choices-primary-color;
     border-radius: var(--radius);
     padding: var(--padding-medium);
     margin: var(--padding-medium);
-    transition: background-color var(--transition), color var(--transition);
+
+    &.has-no-results {
+      background-color: $grey-100;
+      color: $grey-600;
+    }
 
     @media (min-width: $tablet) {
       margin: var(--padding-small);
@@ -157,7 +155,6 @@ $choices-highlight-color: $choices-primary-color;
     &.is-highlighted {
       background: $light-blue-100;
       color: $light-blue-900;
-      transition-duration: 0s;
     }
   }
 }

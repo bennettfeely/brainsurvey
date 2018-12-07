@@ -88,23 +88,25 @@ gulp.task("scss", function() {
 
 // Compile JS ============================================================================
 gulp.task("js", function() {
-  return gulp
-    .src("src/js/brain.js")
-    .pipe(jsImport({ hideConsole: true }))
-    .pipe(gulp.dest("./dist/js"))
-    .pipe(
-      rename(function(path) {
-        path.basename += ".min";
-        path.extname = ".js";
-      })
-    )
-    .pipe(uglify())
-    .pipe(gulp.dest("./dist/js"))
-    .pipe(
-      browserSync.reload({
-        stream: true
-      })
-    );
+  return (
+    gulp
+      .src("src/js/brain.js")
+      .pipe(jsImport({ hideConsole: true }))
+      .pipe(gulp.dest("./dist/js"))
+      .pipe(
+        rename(function(path) {
+          path.basename += ".min";
+          path.extname = ".js";
+        })
+      )
+      // .pipe(uglify())
+      .pipe(gulp.dest("./dist/js"))
+      .pipe(
+        browserSync.reload({
+          stream: true
+        })
+      )
+  );
 });
 
 // Move _redirects =======================================================================

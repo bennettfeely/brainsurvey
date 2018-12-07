@@ -250,8 +250,6 @@ body {
 .spinner {
 	$spinner-size: 5rem;
 
-	display: none;
-
 	position: absolute;
 	top: calc(50% - #{$spinner-size/2});
 	left: calc(50% - #{$spinner-size/2});
@@ -351,14 +349,18 @@ body {
 	color: $white;
 	opacity: 0.5;
 	transition: transform var(--transition), opacity var(--transition);
-	transform: translateY(-100%);
-	pointer-events: none;
+	transform: translate3d(0, 0, 0);
 	max-width: 100%;
 	white-space: nowrap;
 
-	.has-slice-tool & {
-		transform: none;
-		pointer-events: initial;
+	@media (min-width: $desktop) {
+		left: var(--padding-large);
+		right: var(--padding-large);
+	}
+
+	&.is-hidden {
+		transform: translate3d(0, -100%, 0);
+		pointer-events: none;
 	}
 
 	h2 {
@@ -518,7 +520,7 @@ body {
 }
 
 .status {
-	animation: fade 1.5s 1s both;
+	animation: fade 1s 2s both;
 
 	@keyframes fade {
 		to {
@@ -541,6 +543,12 @@ body {
 
 	@media (min-width: $desktop) {
 		margin: var(--padding-large) 0 0;
+		transition: margin-top var(--transition);
+		will-change: margin-top;
+
+		.slice-tool:not(.is-hidden) ~ & {
+			margin-top: 4.25rem;
+		}
 	}
 
 	h2 {
@@ -558,12 +566,6 @@ body {
 		@media (min-width: $desktop) {
 			margin: 0;
 			width: 50%;
-		}
-	}
-
-	@at-root .has-region-content.has-slice-tool & {
-		@media (min-width: $desktop) {
-			margin-top: 5rem;
 		}
 	}
 }
@@ -593,6 +595,10 @@ body {
 		background: $blue-grey-700;
 		color: $white;
 		border-color: $white;
+	}
+
+	@media (min-width: $tablet) {
+		margin-top: var(--padding-large);
 	}
 }
 
@@ -774,13 +780,4 @@ body {
 	@media (min-width: $tablet) {
 		display: block;
 	}
-}
-
-.is-hidden {
-	display: none;
-}
-
-.is-inactive {
-	opacity: 0.15;
-	pointer-events: none;
 }

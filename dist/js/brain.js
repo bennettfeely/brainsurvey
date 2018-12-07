@@ -11,7 +11,6 @@ settings = {
 
 	// Helpers
 	grid_size: 10,
-
 	square_grid: false,
 	polar_grid: false,
 	axes: false,
@@ -19,6 +18,19 @@ settings = {
 	// Interactions
 	pan: false,
 	zoom: false,
+
+	// Slicing and dicing
+	slice: {
+		visible: false,
+		axis: "z",
+		position: 0,
+		size: 0.25,
+		dimensions: {
+			x: 7,
+			y: 10,
+			z: 7
+		}
+	},
 
 	// Materials
 	brain: {
@@ -34,11 +46,11 @@ settings = {
 		}
 	},
 	head: {
-		visible: true,
+		visible: false,
 		roughness: 1,
 		metalness: 0,
 		wireframe: true,
-		default_color: "#333",
+		default_color: "#2a2a2a",
 		offset: {
 			x: -2.25,
 			y: 0,
@@ -46,7 +58,7 @@ settings = {
 		}
 	}
 };
-;
+
 regions_obj = {
 	Frontal_Pole_0: {
 		full_name: "Frontal Pole",
@@ -459,14 +471,19 @@ function initBrain() {
 	// Load manager
 	var brain_manager = new THREE.LoadingManager();
 	brain_manager.onStart = function(url, itemsLoaded, itemsTotal) {
-		updateStatus("Loading brain (" + itemsLoaded + "/" + itemsTotal + ")");
+		updateStatus("Receiving data (" + itemsLoaded + "/" + itemsTotal + ")");
 	};
 
 	brain_manager.onLoad = function() {
-		updateStatus("Brain loaded successfully");
+		updateStatus("Rendering brain");
 	};
 
 	brain_manager.onProgress = function(url, itemsLoaded, itemsTotal) {
+		// Sometimes it will display 4/3 items loaded, this is a fix
+		if (itemsLoaded > itemsTotal) {
+			var itemsLoaded = itemsTotal;
+		}
+
 		updateStatus("Loading brain (" + itemsLoaded + "/" + itemsTotal + ")");
 	};
 
@@ -687,7 +704,7 @@ function orbitToggle() {
 		} else {
 			settings.orbit = false;
 			controls.autoRotate = false;
-		}k
+		}
 
 		saveSettings();
 	});
@@ -723,7 +740,7 @@ function setupSlice() {
 		).checked = true;
 
 		// Show the slice tool
-		document.querySelector("html").classList.add("has-slice-tool");
+		document.querySelector(".slice-tool").classList.remove("is-hidden");
 
 		// Slice things up to start
 		slice();
@@ -763,7 +780,7 @@ function setupSlice() {
 			});
 	} else {
 		// Hide slice tool
-		document.querySelector("html").classList.remove("has-slice-tool");
+		document.querySelector(".slice-tool").classList.add("is-hidden");
 
 		// Remove the slicing
 		renderer.localClippingEnabled = false;
@@ -940,7 +957,7 @@ function loadHead() {
 	};
 
 	head_manager.onLoad = function() {
-		updateStatus("Head loaded successfully");
+		updateStatus("Rendering head");
 	};
 
 	head_manager.onProgress = function(url, itemsLoaded, itemsTotal) {
@@ -1031,7 +1048,6 @@ function reset() {
 	document
 		.querySelector("html")
 		.classList.remove("has-region-content", "has-content");
-	document.querySelector(".brain-wrapper").classList.remove("is-hidden");
 	document.querySelector(".regions-wrapper").classList.remove("is-inactive");
 	document.querySelector(".settings-wrapper").classList.remove("is-inactive");
 
@@ -1080,6 +1096,10 @@ function saveSettings() {
 	// Save our settings object saved in localStorage
 
 	localStorage.setItem("hbr_settings", JSON.stringify(settings));
+
+	// Stop the spinner because it's not loading after all
+	var spinner = document.querySelector(".spinner");
+	spinner.parentNode.removeChild(spinner);
 }
 
 function scrollTop() {
