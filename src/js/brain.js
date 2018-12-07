@@ -122,6 +122,9 @@ function initBrain() {
 					mesh.material.color.setStyle(settings.brain.default_color);
 					mesh.material.side = THREE.DoubleSide;
 
+
+					console.log(mesh.name);
+
 					// Create separate material instance and local mesh styles
 					mesh.material = mesh.material.clone();
 
