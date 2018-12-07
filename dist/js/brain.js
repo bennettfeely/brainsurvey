@@ -446,12 +446,6 @@ function initBrain() {
 		controls.autoRotate = false;
 
 		document.querySelector(".orbit-toggle input").checked = false;
-
-		// Remove the spinner
-		var spinner = document.querySelector(".spinner");
-		if (spinner !== null) {
-			spinner.parentNode.removeChild(spinner);
-		}
 	});
 
 	// Origin
@@ -741,6 +735,12 @@ function setupSlice() {
 
 		// Show the slice tool
 		document.querySelector(".slice-tool").classList.remove("is-hidden");
+
+		// Remove the spinner
+		var spinner = document.querySelector(".spinner");
+		if (spinner !== null) {
+			spinner.parentNode.removeChild(spinner);
+		}
 
 		// Slice things up to start
 		slice();
@@ -1081,7 +1081,9 @@ function warning(status) {
 
 	// Stop the spinner because it's not loading after all
 	var spinner = document.querySelector(".spinner");
-	spinner.parentNode.removeChild(spinner);
+	if (spinner !== null) {
+		spinner.parentNode.removeChild(spinner);
+	}
 }
 
 function loadSettings() {
@@ -1096,10 +1098,6 @@ function saveSettings() {
 	// Save our settings object saved in localStorage
 
 	localStorage.setItem("hbr_settings", JSON.stringify(settings));
-
-	// Stop the spinner because it's not loading after all
-	var spinner = document.querySelector(".spinner");
-	spinner.parentNode.removeChild(spinner);
 }
 
 function scrollTop() {
