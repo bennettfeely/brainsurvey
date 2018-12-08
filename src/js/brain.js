@@ -269,11 +269,12 @@ function switchRegion(region_id) {
 	// Set content of content wrapper
 	var full_name = "<h2>" + target_obj.full_name + "</h2>";
 
-	if (target_obj.intro !== undefined) {
+	if (target_obj.summary !== undefined) {
 		var intro = "<p>" + target_obj.intro + "</p>";
 	} else {
 		var intro =
 			"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
+		var intro = '';
 	}
 
 	// prettier-ignore
