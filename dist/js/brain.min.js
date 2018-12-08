@@ -405,8 +405,9 @@ function route() {
 	// This can be improved 1000%
 	if (path_name !== '/') {
 		Object.keys(regions_obj).forEach(function(key) {
+			console.log(key);
 			if ('/' + regions_obj[key].path == path_name) {		 		
-		 		switchRegion(regions_obj[key]);
+		 		switchRegion(key);
 			}
 		});
 	}
