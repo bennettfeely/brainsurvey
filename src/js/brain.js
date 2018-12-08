@@ -1,5 +1,5 @@
-@import "./_settings.js"
-@import "./_regions.js"
+@import "./_settings.js";
+@import "./_regions.js";
 
 var html = document.querySelector("html");
 var brain_wrapper = document.querySelector(".brain-wrapper");
@@ -28,19 +28,17 @@ function init() {
 function route() {
 	var path_name = window.location.pathname;
 
-	if (path_name !== "/team") {
-		initBrain();
-		initSettings();
-	} else {
-		for (key in regions_obj) {
-			if (path_name == "/" + key) {
-				switchRegion(key);
-				break;
-			}
-		}
-	}
+	initBrain();
+	initSettings();
 
-	// Todo: Add real 404 routing here
+	// This can be improved 1000%
+	if (path_name !== '/') {
+		Object.keys(regions_obj).forEach(function(key) {
+			if ('/' + regions_obj[key].path == path_name) {		 		
+		 		switchRegion(regions_obj[key]);
+			}
+		});
+	}
 }
 
 function initBrain() {
@@ -121,9 +119,6 @@ function initBrain() {
 					mesh.material.wireframe = settings.brain.wireframe;
 					mesh.material.color.setStyle(settings.brain.default_color);
 					mesh.material.side = THREE.DoubleSide;
-
-
-					console.log(mesh.name);
 
 					// Create separate material instance and local mesh styles
 					mesh.material = mesh.material.clone();
@@ -215,7 +210,7 @@ function animate() {
 
 function setupRegionsFilter() {
 	var regions_filter = document.querySelector(".regions-filter");
-	var choices = new Choices(regions_filter, {
+	choices = new Choices(regions_filter, {
 		itemSelectText: "Select",
 		noResultsText: "No matching brain regions",
 		placeholder: true,
@@ -677,7 +672,9 @@ function reset() {
 	document.querySelector(".settings-wrapper").classList.remove("is-inactive");
 
 	// Clear the region from the regions filter
-	document.querySelector(".regions-filter").value = "";
+	// if (choices !== undefined) {
+	// 	choices.removeActiveItems(excludedId);;
+	// }
 
 	// Empty the content wrapper
 	document.querySelector(".content-wrapper .container").innerHTML = "";
@@ -689,7 +686,6 @@ function reset() {
 	}
 
 	// Scroll to top of page
-
 	scrollTop();
 }
 

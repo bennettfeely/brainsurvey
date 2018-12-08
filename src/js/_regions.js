@@ -1,5 +1,9 @@
+// prettier-ignore
 regions_obj = {
-	Frontal_Pole_0: { path: "frontal-pole", full_name: "Frontal Pole" },
+	Frontal_Pole_0: { 
+		path: "frontal-pole", 
+		full_name: "Frontal Pole" 
+	},
 	Right_Insular_Cortex_1: {
 		path: "right-insular-cortex",
 		full_name: "Right Insular Cortex"
@@ -299,5 +303,8 @@ regions_obj = {
 		path: "left-heschls-gyrus-includes-h-and-h",
 		full_name: "Left Heschls Gyrus includes H and H"
 	},
-	Occipital_Pole_82: { path: "occipital-pole", full_name: "Occipital Pole" }
-};
+	Occipital_Pole_82: { 
+		path: "occipital-pole", 
+		full_name: "Occipital Pole" 
+	}
+}

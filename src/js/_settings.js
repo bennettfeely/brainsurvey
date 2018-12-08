@@ -1,3 +1,4 @@
+// prettier-ignore
 settings = {
 	autosave: false,
 
@@ -57,4 +58,4 @@ settings = {
 			z: 0
 		}
 	}
-};
+}
