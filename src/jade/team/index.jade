@@ -1,0 +1,19 @@
+include ../_head.jade
+include ../_header.jade
+include ../_footer.jade
+
++head()
+
+body.team
+	+header()
+	.container
+		h2 Our Team
+		.team-wrapper
+			for member in teams
+				.team-member
+					.container
+						img(src="../img/team/" + member.img_src, width=160, height=240, alt="Photo of " + member.name)
+						h2= member.name
+						for title in member.titles
+							h3= title
+						p= member.bio

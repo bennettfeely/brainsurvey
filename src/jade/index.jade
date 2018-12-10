@@ -1,0 +1,69 @@
+include _head
+include _header
+include _footer
+
++head()
+
+body.home
+	.main-wrapper
+		.slice-tool.container.is-hidden
+			h2 Slice Tool
+			input(type="radio", value="x", id="x_axis_slice", onchange="settings.slice.axis='x'", name="slice_axis")
+			label.button.slice-button(for="x_axis_slice") X
+			input(type="radio", value="y", id="y_axis_slice", onchange="settings.slice.axis='y'", name="slice_axis")
+			label.button.slice-button(for="y_axis_slice") Y
+			input(type="radio", value="z", id="z_axis_slice", onchange="settings.slice.axis='z'", name="slice_axis")
+			label.button.slice-button(for="z_axis_slice") Z
+			input.slice-range(type="range", min="-1", max="1", value="0", step="0.01")
+		section.brain-wrapper
+		section.content-wrapper
+			button.back-button(onclick="reset()") &larr; Back
+			.container
+		.status-wrapper
+	.side-wrapper
+		+header()
+		section.warning
+		section.regions-wrapper
+			.container
+				h2 Regions
+				select.regions-filter
+					option(placeholder) Select a brain region...
+						for region in regions
+							option(value=region.name)= region.full_name
+		section.tools-wrapper
+			.container
+				h2 Tools
+				.box-wrapper
+					label.slice-toggle.box.box-toggle.container
+						h3 Slice Tool
+						input(type="checkbox", tabindex="0")
+						.toggle
+		section.settings-wrapper
+			.container
+				h2 Settings
+				.box-wrapper
+					label.head-toggle.box.box-toggle.container
+						h3 Show Head
+						input(type="checkbox", tabindex="0")
+						.toggle
+				.box-wrapper
+					label.orbit-toggle.box.box-toggle.container
+						h3 Orbit
+						input(type="checkbox", tabindex="0")
+						.toggle
+				.box-wrapper
+					label.square-grid-toggle.box.box-toggle.container
+						h3 Square Grid
+						input(type="checkbox", tabindex="0")
+						.toggle
+					label.axes-toggle.box.box-toggle.container
+						h3 Axes
+						input(type="checkbox", tabindex="0")
+						.toggle
+		+footer()
+	script(src="js/three.min.js")
+	script(src="js/GLTFLoader.min.js")
+	script(src="js/OrbitControls.min.js")
+	script(src="js/WebGL.min.js")
+	script(src="js/choices.min.js")
+	script(src="js/brain.js")

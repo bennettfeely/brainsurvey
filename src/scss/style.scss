@@ -172,13 +172,15 @@ body {
 		display: flex;
 		flex-direction: row-reverse;
 	}
+
+	&.team {
+		display: block;
+	}
 }
 
 .main-wrapper {
 	position: relative;
 	width: 100%;
-	min-width: 100px;
-	min-height: 100px;
 	background-color: mix($blue-grey-900, $black);
 
 	@media (min-width: $tablet) {
@@ -189,8 +191,6 @@ body {
 
 .side-wrapper {
 	width: 100%;
-	min-width: 100px;
-	min-height: 100px;
 
 	@media (min-width: $tablet) {
 		width: var(--sidebar-width);
@@ -213,9 +213,8 @@ body {
 }
 
 .site-links {
-	display: inline-block;
+	display: block;
 	margin-top: var(--padding-small);
-	vertical-align: bottom;
 }
 
 .site-link {
@@ -758,3 +757,30 @@ body {
 		display: block;
 	}
 }
+
+// Icons =====================================================================
+// @mixin icon($icon) {
+// 	h3:before {
+// 		content: $icon;
+// 	}
+// }
+
+// .head-toggle {
+// 	@include icon("👤");
+// }
+
+// .orbit-toggle {
+// 	@include icon("🌐");
+// }
+
+// .square-grid-toggle {
+// 	@include icon("🔲");
+// }
+
+// .axes-toggle {
+// 	@include icon("➖");
+// }
+
+// .slice-toggle {
+// 	@include icon("🔪");
+// }

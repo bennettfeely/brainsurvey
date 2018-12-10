@@ -1,4 +1,5 @@
 gulp = require("gulp");
+jade = require("gulp-jade");
 slim = require("gulp-slim");
 htmlmin = require("gulp-htmlmin");
 sass = require("gulp-sass");
@@ -11,6 +12,9 @@ uglify = require("gulp-uglify");
 pump = require("pump");
 path = require("path");
 fs = require("fs");
+
+// Team array
+teams = require("./src/js/_team.js");
 
 // Transform regions object to an array to add to regions filter =========================
 regions = require("./src/js/_regions.js");
@@ -31,7 +35,7 @@ gulp.task("sync", function() {
   });
 });
 
-// Compile HTML ==========================================================================
+// Compile HTML from Slim ================================================================
 gulp.task("slim", function() {
   return gulp
     .src("src/slim/*.slim")
@@ -40,6 +44,61 @@ gulp.task("slim", function() {
         pretty: true,
         data: {
           regions: regions_arr
+        }
+      })
+    )
+    .pipe(
+      htmlmin({
+        collapseWhitespace: true,
+        removeComments: true,
+        minifyCSS: true,
+        minifyJS: true
+      })
+    )
+    .pipe(gulp.dest("./dist"))
+    .pipe(
+      browserSync.reload({
+        stream: true
+      })
+    );
+});
+
+// Compile HTML from Jade ================================================================
+gulp.task("jade", function() {
+  return gulp
+    .src(["src/jade/*.jade"])
+    .pipe(
+      jade({
+        pretty: true,
+        data: {
+          regions: regions_arr
+        }
+      })
+    )
+    .pipe(
+      htmlmin({
+        collapseWhitespace: true,
+        removeComments: true,
+        minifyCSS: true,
+        minifyJS: true
+      })
+    )
+    .pipe(gulp.dest("./dist"))
+    .pipe(
+      browserSync.reload({
+        stream: true
+      })
+    );
+});
+
+gulp.task("jade-subfolder", function() {
+  return gulp
+    .src(["src/jade/**/*.jade"])
+    .pipe(
+      jade({
+        pretty: true,
+        data: {
+          teams: team_arr
         }
       })
     )
@@ -127,6 +186,14 @@ gulp.task("default", function() {
 
   gulp.watch("src/slim/*.slim", function() {
     return gulp.run("slim");
+  });
+
+  gulp.watch("src/jade/*.jade", function() {
+    return gulp.run("jade");
+  });
+
+  gulp.watch("src/jade/**/*.jade", function() {
+    return gulp.run("jade-subfolder");
   });
 
   gulp.watch("src/scss/*.scss", function() {
