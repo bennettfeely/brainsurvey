@@ -582,7 +582,7 @@ function animate() {
 
 function setupRegionsFilter() {
 	var regions_filter = document.querySelector(".regions-filter");
-	choices = new Choices(regions_filter, {
+	var choices = new Choices(regions_filter, {
 		itemSelectText: "Select",
 		noResultsText: "No matching brain regions",
 		placeholder: true,

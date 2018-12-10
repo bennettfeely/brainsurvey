@@ -12,6 +12,7 @@
 $white: white;
 $black: black;
 
+$mobile: 22em;
 $tablet: 44em;
 $desktop: 66em;
 
@@ -236,6 +237,16 @@ body {
 	&:hover {
 		background: $light-blue-100;
 		color: $light-blue-900;
+	}
+}
+
+.home .home-link,
+.team .team-link {
+	background: $light-blue-900;
+	color: $white;
+
+	&:hover {
+		opacity: 0.9;
 	}
 }
 
@@ -592,6 +603,10 @@ body {
 	background-color: $blue-grey-100;
 }
 
+.regions-filter-wrapper {
+	height: 3rem;
+}
+
 .regions-filter {
 	width: 100%;
 	font-size: 1em;
@@ -746,12 +761,21 @@ body {
 	padding: 0 0 calc(var(--padding-large) / 2);
 }
 
-.team-member-wrapper {
-	padding: calc(var(--padding-large) / 2);
+.team-col {
+	vertical-align: top;
+	display: inline-block;
 
 	@media (min-width: $tablet) {
+		width: 50%;
+	}
+
+	@media (min-width: $desktop) {
 		width: 33.33%;
 	}
+}
+
+.team-member-wrapper {
+	padding: calc(var(--padding-large) / 2);
 }
 
 .team-member {
@@ -763,8 +787,8 @@ body {
 	border-radius: var(--radius);
 	float: left;
 	margin: 0 var(--padding-large) var(--padding-small) 0;
-	max-width: 40%;
-	height: auto;
+	width: auto;
+	height: 12rem;
 }
 
 .team-member-title {

@@ -3,6 +3,7 @@
 ===============================*/
 
 .choices {
+  @extend %no-select;
   width: 100%;
   position: relative;
   margin-bottom: var(--padding-large);
