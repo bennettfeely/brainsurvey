@@ -6,14 +6,21 @@ include ../_footer.jade
 
 body.team
 	+header()
-	.container
-		h2 Our Team
-		.team-wrapper
-			for member in teams
+	.team-wrapper
+		for member in teams
+			.team-member-wrapper
 				.team-member
 					.container
-						img(src="../img/team/" + member.img_src, width=160, height=240, alt="Photo of " + member.name)
-						h2= member.name
-						for title in member.titles
-							h3= title
-						p= member.bio
+						img.team-member-photo(src="../img/team/" + member.img_src, width=160, height=240, alt="Photo of " + member.name)
+						.team-member-info
+							h2= member.name
+							for title in member.titles
+								h3.team-member-title= title
+							p.team-member-bio= member.bio
+	script(src="../js/masonry.pkgd.min.js")
+	script.
+		var gridElement = document.querySelector(".team-wrapper");
+		var msnry = new Masonry( gridElement, {});
+		gridElement.appendChild(elem);
+		msnry.appended(elem);
+		msnry.layout();

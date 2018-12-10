@@ -737,8 +737,42 @@ body {
 }
 
 // Team page =============================================================================
+.team {
+	background: $blue-grey-100;
+}
+
+.team-wrapper {
+	margin: calc(var(--padding-large) / 2);
+	padding: 0 0 calc(var(--padding-large) / 2);
+}
+
+.team-member-wrapper {
+	padding: calc(var(--padding-large) / 2);
+
+	@media (min-width: $tablet) {
+		width: 33.33%;
+	}
+}
+
 .team-member {
 	background: $white;
+	border-radius: var(--radius);
+}
+
+.team-member-photo {
+	border-radius: var(--radius);
+	float: left;
+	margin: 0 var(--padding-large) var(--padding-small) 0;
+	max-width: 40%;
+	height: auto;
+}
+
+.team-member-title {
+	font-size: 0.9em;
+}
+
+.team-member-bio {
+	margin: var(--padding-large) 0 0;
 }
 
 // Responsive ============================================================================
