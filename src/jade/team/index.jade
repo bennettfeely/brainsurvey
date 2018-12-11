@@ -20,6 +20,7 @@ body.team
 							for title in member.titles
 								h3.team-member-title= title
 							p.team-member-bio= member.bio
+	+footer()
 	script(src="../js/colcade.js")
 	script.
 		var colc = new Colcade('.team-wrapper', {

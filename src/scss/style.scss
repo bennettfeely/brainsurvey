@@ -61,7 +61,7 @@ body {
 	font-size: var(--root-size);
 	font-family: Catamaran, Helvetica Neue, Helvetica, sans-serif;
 	line-height: 1.5;
-	background: $blue-grey;
+	background: $blue-grey-400;
 	color: $blue-grey-900;
 }
 
@@ -251,8 +251,9 @@ body {
 
 .home .home-link,
 .team .team-link {
-	background: $light-blue-900;
+	background: $light-blue-700;
 	color: $white;
+	font-weight: 700;
 
 	&:hover {
 		opacity: 0.9;
@@ -761,13 +762,9 @@ body {
 }
 
 // Team page =============================================================================
-.team {
-	background: $blue-grey-100;
-}
-
 .team-wrapper {
-	margin: calc(var(--padding-large) / 2);
-	padding: 0 0 calc(var(--padding-large) / 2);
+	padding: calc(var(--padding-large) / 2);
+	background: $blue-grey-100;
 }
 
 .team-col {
@@ -790,6 +787,7 @@ body {
 .team-member {
 	background: $white;
 	border-radius: var(--radius);
+	overflow: hidden;
 }
 
 .team-member-photo {
