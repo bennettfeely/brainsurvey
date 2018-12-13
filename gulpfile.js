@@ -1,6 +1,5 @@
 gulp = require("gulp");
 jade = require("gulp-jade");
-slim = require("gulp-slim");
 htmlmin = require("gulp-htmlmin");
 sass = require("gulp-sass");
 autoprefixer = require("gulp-autoprefixer");
@@ -35,38 +34,10 @@ gulp.task("sync", function() {
   });
 });
 
-// Compile HTML from Slim ================================================================
-gulp.task("slim", function() {
-  return gulp
-    .src("src/slim/*.slim")
-    .pipe(
-      slim({
-        pretty: true,
-        data: {
-          regions: regions_arr
-        }
-      })
-    )
-    .pipe(
-      htmlmin({
-        collapseWhitespace: true,
-        removeComments: true,
-        minifyCSS: true,
-        minifyJS: true
-      })
-    )
-    .pipe(gulp.dest("./dist"))
-    .pipe(
-      browserSync.reload({
-        stream: true
-      })
-    );
-});
-
 // Compile HTML from Jade ================================================================
 gulp.task("jade", function() {
   return gulp
-    .src(["src/jade/*.jade"])
+    .src(["src/jade/index.jade"])
     .pipe(
       jade({
         pretty: true,
@@ -137,6 +108,7 @@ gulp.task("scss", function() {
         path.extname = ".css";
       })
     )
+    .pipe(gulp.dest("./src/css"))
     .pipe(gulp.dest("./dist/css"))
     .pipe(
       browserSync.reload({
@@ -183,10 +155,6 @@ gulp.task("redirects", function() {
 // Init ==================================================================================
 gulp.task("default", function() {
   gulp.run("sync");
-
-  gulp.watch("src/slim/*.slim", function() {
-    return gulp.run("slim");
-  });
 
   gulp.watch("src/jade/*.jade", function() {
     return gulp.run("jade");
