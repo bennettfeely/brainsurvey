@@ -3,7 +3,6 @@ include _header
 include _footer
 
 +head()
-
 body.home
 	.main-wrapper
 		.slice-tool.container.is-hidden
@@ -29,8 +28,8 @@ body.home
 				.regions-filter-wrapper
 					select.regions-filter
 						option(placeholder) Select a brain region...
-							for region in regions
-								option(value=region.name)= region.full_name
+						for region in regions
+							option(value=region.name)= region.full_name
 		section.tools-wrapper
 			.container
 				h2 Tools
@@ -65,6 +64,5 @@ body.home
 	script(src="js/three.min.js")
 	script(src="js/GLTFLoader.min.js")
 	script(src="js/OrbitControls.min.js")
-	// script(src="js/WebGL.min.js")
 	script(src="js/choices.min.js")
 	script(src="js/brain.js")

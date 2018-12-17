@@ -12,11 +12,11 @@ pump = require("pump");
 path = require("path");
 fs = require("fs");
 
-// Team array
+// Import data
 teams = require("./src/js/_team.js");
+regions = require("./src/js/_regions.js");
 
 // Transform regions object to an array to add to regions filter =========================
-regions = require("./src/js/_regions.js");
 regions_arr = [];
 
 Object.keys(regions_obj).forEach(function(name) {
@@ -27,12 +27,7 @@ Object.keys(regions_obj).forEach(function(name) {
   });
 });
 
-// Browser sync ==========================================================================
-gulp.task("sync", function() {
-  return browserSync({
-    server: "dist"
-  });
-});
+console.log(regions_arr);
 
 // Compile HTML from Jade ================================================================
 gulp.task("jade", function() {
@@ -42,7 +37,8 @@ gulp.task("jade", function() {
       jade({
         pretty: true,
         data: {
-          regions: regions_arr
+          regions: regions_arr,
+          teams: team_arr
         }
       })
     )
@@ -69,6 +65,7 @@ gulp.task("jade-subfolder", function() {
       jade({
         pretty: true,
         data: {
+          regions: regions_arr,
           teams: team_arr
         }
       })
@@ -150,6 +147,13 @@ gulp.task("redirects", function() {
         stream: true
       })
     );
+});
+
+// Browser sync ==========================================================================
+gulp.task("sync", function() {
+  return browserSync({
+    server: "dist"
+  });
 });
 
 // Init ==================================================================================
