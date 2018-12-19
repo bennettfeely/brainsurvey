@@ -51,7 +51,7 @@ settings = {
 		roughness: 1,
 		metalness: 0,
 		wireframe: true,
-		default_color: "#2a2a2a",
+		default_color: "#333",
 		offset: {
 			x: -2.25,
 			y: 0,

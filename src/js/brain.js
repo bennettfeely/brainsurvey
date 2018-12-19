@@ -12,6 +12,9 @@ function init() {
 	// Navigate to correct page
 	route();
 
+	// Prevent transitions from happening before page is setup
+	window.onload = document.querySelector('body').classList.remove('preload');
+
 	// Warnings
 	if (WEBGL.isWebGLAvailable() === false) {
 		warning(
@@ -36,7 +39,6 @@ function route() {
 	// This can be improved 1000%
 	if (path_name !== '/') {
 		Object.keys(regions_obj).forEach(function(key) {
-			console.log(key);
 			if ('/' + regions_obj[key].path == path_name) {		 		
 		 		switchRegion(key);
 			}
@@ -276,8 +278,6 @@ function switchRegion(region_id) {
 		url: request_url,
 		success: function(data) {
 			// We got the summary
-			console.log(data);
-
 			var sub_heading = '<cite>From the article <a href="https://en.wikipedia.org/wiki/' + target_obj.wiki_path + '">' + data.query.normalized[0].to + '</a> on Wikipedia.</cite>';
 			var article_id = Object.keys(data.query.pages)[0]; // Gets the first object in pages
 			var article_extract = '<p>' + data.query.pages[article_id].extract + '</p>';
@@ -287,7 +287,6 @@ function switchRegion(region_id) {
 		},
 		error: function(error) {
 			console.log(error);
-			console.log('Wiki load error');
 		}
 	});
 
@@ -418,8 +417,6 @@ function setupSlice() {
 }
 
 function slice() {
-	console.log("slice();");
-
 	if (settings.slice.axis == "y") {
 		var slice_base = [1, 0, 0];
 	}
@@ -543,11 +540,9 @@ function headToggle() {
 	var head_toggle = document.querySelector(".head-toggle input");
 
 	if (settings.head.visible == true) {
-		console.log("loadHead!!!");
 		loadHead();
 		head_toggle.checked = true;
 	} else {
-		console.log("settings.head.visible = false;");
 	}
 
 	head_toggle.addEventListener("change", function() {
@@ -569,8 +564,6 @@ function headToggle() {
 }
 
 function loadHead() {
-	console.log("loadHead();");
-
 	var head_manager = new THREE.LoadingManager();
 	head_manager.onStart = function(url, itemsLoaded, itemsTotal) {
 		console.log(
@@ -604,7 +597,6 @@ function loadHead() {
 			updateStatus("Rendering Head");
 			gltf.scene.traverse(function(mesh) {
 				if (mesh.isMesh) {
-					console.log(mesh);
 					mesh.material.roughness = settings.head.roughness;
 					mesh.material.metalness = settings.head.metalness;
 					mesh.material.wireframe = settings.head.wireframe;

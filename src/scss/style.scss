@@ -63,6 +63,10 @@ body {
 	line-height: 1.5;
 	background: $blue-grey-400;
 	color: $blue-grey-900;
+
+	&.preload * {
+		transition: 0 !important;
+	}
 }
 
 header,
