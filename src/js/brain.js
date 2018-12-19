@@ -1,6 +1,7 @@
 @import "./WebGL.min.js";
 @import "./_settings.js";
 @import "./_regions.js";
+@import "./_jsonp.js";
 
 var html = document.querySelector("html");
 var brain_wrapper = document.querySelector(".brain-wrapper");
@@ -224,7 +225,6 @@ function setupRegionsFilter() {
 	regions_filter.addEventListener(
 		"choice",
 		function(e) {
-			console.log(e.detail.choice.value);
 			switchRegion(e.detail.choice.value);
 		},
 		false
@@ -232,8 +232,6 @@ function setupRegionsFilter() {
 }
 
 function switchRegion(region_id) {
-	console.log("switchRegion(" + region_id + ")");
-
 	var target_obj = regions_obj[region_id];
 
 	// Change the URL
@@ -268,23 +266,31 @@ function switchRegion(region_id) {
 	});
 
 	// Set content of content wrapper
-	var full_name = "<h2>" + target_obj.full_name + "</h2>";
+	var request_url = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=true&exintro=true&redirects=true&titles=' + target_obj.wiki_path + '&callback=?';
 
-	if (target_obj.summary !== undefined) {
-		var intro = "<p>" + target_obj.intro + "</p>";
-	} else {
-		var intro =
-			"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
-		var intro = '';
-	}
+	// Set the title
+	document.querySelector(".content-wrapper .container").innerHTML += "<h2>" + target_obj.full_name + "</h2>";
 
-	// prettier-ignore
-	var heading = '<div>' 
-            + full_name 
-            + intro 
-        + "</div>";
+	// Get Wikipedia summary
+	JSONP({
+		url: request_url,
+		success: function(data) {
+			// We got the summary
+			console.log(data);
 
-	document.querySelector(".content-wrapper .container").innerHTML += heading;
+			var sub_heading = '<cite>From the article <a href="https://en.wikipedia.org/wiki/' + target_obj.wiki_path + '">' + data.query.normalized[0].to + '</a> on Wikipedia.</cite>';
+			var article_id = Object.keys(data.query.pages)[0]; // Gets the first object in pages
+			var article_extract = '<p>' + data.query.pages[article_id].extract + '</p>';
+
+			document.querySelector(".content-wrapper .container").innerHTML += sub_heading + article_extract;
+
+		},
+		error: function(error) {
+			console.log(error);
+			console.log('Wiki load error');
+		}
+	});
+
 
 	// Scroll to top of page
 	scrollTop();

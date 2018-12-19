@@ -112,6 +112,14 @@ p {
 	}
 }
 
+cite {
+	display: block;
+	font-size: 0.8em;
+	opacity: 0.75;
+	font-style: normal;
+	margin: var(--padding-medium) 0 var(--padding-medium);
+}
+
 a {
 	color: $light-blue-700;
 	transition: color var(--transition);
@@ -617,7 +625,7 @@ body {
 }
 
 .regions-filter-wrapper {
-	height: 3rem;
+	min-height: 3rem;
 }
 
 .regions-filter {
