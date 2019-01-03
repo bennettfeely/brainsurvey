@@ -3,8 +3,8 @@ settings = {
 	autosave: false,
 
 	// Models
-	brain_model_path: "models/Brain_05/Brain_005.gltf",
-	head_model_path: "models/Head_01/Head_01.gltf",
+	brain_model_path: "Brain_05/Brain_005.gltf",
+	head_model_path: "BertsHead_01/BertsHead_01_Remesh_01.gltf",
 
 	// Animations
 	orbit: true,

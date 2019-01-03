@@ -1,6 +1,10 @@
+// prettier-ignore
 @import "./WebGL.min.js";
+// prettier-ignore
 @import "./_settings.js";
+// prettier-ignore
 @import "./_regions.js";
+// prettier-ignore
 @import "./_jsonp.js";
 
 var html = document.querySelector("html");
@@ -13,7 +17,7 @@ function init() {
 	route();
 
 	// Prevent transitions from happening before page is setup
-	window.onload = document.querySelector('body').classList.remove('preload');
+	window.onload = document.querySelector("body").classList.remove("preload");
 
 	// Warnings
 	if (WEBGL.isWebGLAvailable() === false) {
@@ -37,10 +41,10 @@ function route() {
 	initSettings();
 
 	// This can be improved 1000%
-	if (path_name !== '/') {
+	if (path_name !== "/") {
 		Object.keys(regions_obj).forEach(function(key) {
-			if ('/' + regions_obj[key].path == path_name) {		 		
-		 		switchRegion(key);
+			if ("/" + regions_obj[key].path == path_name) {
+				switchRegion(key);
 			}
 		});
 	}
@@ -112,7 +116,7 @@ function initBrain() {
 
 	var loader = new THREE.GLTFLoader(brain_manager);
 	loader.load(
-		settings.brain_model_path,
+		'models/' + settings.brain_model_path,
 		function(gltf) {
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
@@ -268,28 +272,37 @@ function switchRegion(region_id) {
 	});
 
 	// Set content of content wrapper
-	var request_url = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=true&exintro=true&redirects=true&titles=' + target_obj.wiki_path + '&callback=?';
+	var request_url =
+		"https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=true&exintro=true&redirects=true&titles=" +
+		target_obj.wiki_path +
+		"&callback=?";
 
 	// Set the title
-	document.querySelector(".content-wrapper .container").innerHTML += "<h2>" + target_obj.full_name + "</h2>";
+	document.querySelector(".content-wrapper .container").innerHTML +=
+		"<h2>" + target_obj.full_name + "</h2>";
 
 	// Get Wikipedia summary
 	JSONP({
 		url: request_url,
 		success: function(data) {
 			// We got the summary
-			var sub_heading = '<cite>From the article <a href="https://en.wikipedia.org/wiki/' + target_obj.wiki_path + '">' + data.query.normalized[0].to + '</a> on Wikipedia.</cite>';
+			var sub_heading =
+				'<cite>From the article <a href="https://en.wikipedia.org/wiki/' +
+				target_obj.wiki_path +
+				'">' +
+				data.query.normalized[0].to +
+				"</a> on Wikipedia.</cite>";
 			var article_id = Object.keys(data.query.pages)[0]; // Gets the first object in pages
-			var article_extract = '<p>' + data.query.pages[article_id].extract + '</p>';
+			var article_extract =
+				"<p>" + data.query.pages[article_id].extract + "</p>";
 
-			document.querySelector(".content-wrapper .container").innerHTML += sub_heading + article_extract;
-
+			document.querySelector(".content-wrapper .container").innerHTML +=
+				sub_heading + article_extract;
 		},
 		error: function(error) {
 			console.log(error);
 		}
 	});
-
 
 	// Scroll to top of page
 	scrollTop();
@@ -592,7 +605,7 @@ function loadHead() {
 
 	var loader = new THREE.GLTFLoader(head_manager);
 	loader.load(
-		settings.head_model_path,
+		'models/' + settings.head_model_path,
 		function(gltf) {
 			updateStatus("Rendering Head");
 			gltf.scene.traverse(function(mesh) {
