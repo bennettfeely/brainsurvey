@@ -1,10 +1,6 @@
-// prettier-ignore
 @import "./WebGL.min.js";
-// prettier-ignore
 @import "./_settings.js";
-// prettier-ignore
 @import "./_regions.js";
-// prettier-ignore
 @import "./_jsonp.js";
 
 var html = document.querySelector("html");

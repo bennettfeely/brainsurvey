@@ -15,6 +15,8 @@ body.home.preload
 			label.button.slice-button(for="z_axis_slice") Z
 			input.slice-range(type="range", min="-1", max="1", value="0", step="0.01")
 		section.brain-wrapper
+			svg.spinner(width="20", height="20", viewBox="0, 0, 30, 30", xmlns="http://www.w3.org/2000/svg", aria-hidden="true")
+				path(d="M 15 25 A 5 5 0 1 1 15 5", stroke="#eceff1", stroke-width="1", fill="none", stroke-linecap="round")
 		section.content-wrapper
 			button.back-button(onclick="reset()") &larr; Back
 			.container
@@ -62,7 +64,6 @@ body.home.preload
 						.toggle
 		+footer()
 	script(src="js/three.min.js")
-	script(src="js/DRACOLoader.min.js")
 	script(src="js/GLTFLoader.min.js")
 	script(src="js/OrbitControls.min.js")
 	script(src="js/choices.min.js")

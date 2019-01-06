@@ -8,9 +8,11 @@ browserSync = require("browser-sync");
 rename = require("gulp-rename");
 jsImport = require("gulp-js-import");
 uglify = require("gulp-uglify");
+
 pump = require("pump");
 path = require("path");
 fs = require("fs");
+del = require("del");
 
 // Import data
 teams = require("./src/js/_team.js");
@@ -27,12 +29,10 @@ Object.keys(regions_obj).forEach(function(name) {
   });
 });
 
-console.log(regions_arr);
-
-// Compile HTML from Jade ================================================================
+// Compile Jade to HTML ==================================================================
 gulp.task("jade", function() {
   return gulp
-    .src(["src/jade/index.jade"])
+    .src("src/jade/index.jade")
     .pipe(
       jade({
         pretty: true,
@@ -149,6 +149,11 @@ gulp.task("redirects", function() {
     );
 });
 
+// Cleanup ===============================================================================
+gulp.task("cleanup", function() {
+  return del(["dist/_footer.html", "dist/_head.html", "dist/_header.html"]);
+});
+
 // Browser sync ==========================================================================
 gulp.task("sync", function() {
   return browserSync({
@@ -161,11 +166,11 @@ gulp.task("default", function() {
   gulp.run("sync");
 
   gulp.watch("src/jade/*.jade", function() {
-    return gulp.run("jade");
+    return gulp.run(["jade", "cleanup"]);
   });
 
-  gulp.watch("src/jade/**/*.jade", function() {
-    return gulp.run("jade-subfolder");
+  gulp.watch("src/jade/team/team.jade", function() {
+    return gulp.run("jade-subfolder", "cleanup");
   });
 
   gulp.watch("src/scss/*.scss", function() {
