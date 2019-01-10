@@ -223,12 +223,16 @@ body {
 }
 
 .site-logo {
-	display: inline-block;
-	margin-right: var(--padding-large);
+	display: block;
+	width: 100%;
+	max-width: 15em;
+	height: auto;
+	margin: 0 0 var(--padding-large);
+	transition: opacity var(--transition);
 
-	a {
-		text-decoration: none;
-		color: $grey-900;
+	&:hover {
+		opacity: 0.75;
+		transition-duration: var(--transition-hover);
 	}
 }
 

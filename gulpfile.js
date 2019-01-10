@@ -169,8 +169,8 @@ gulp.task("default", function() {
     return gulp.run(["jade", "cleanup"]);
   });
 
-  gulp.watch("src/jade/team/team.jade", function() {
-    return gulp.run("jade-subfolder", "cleanup");
+  gulp.watch("src/jade/team/index.jade", function() {
+    return gulp.run("jade-subfolder");
   });
 
   gulp.watch("src/scss/*.scss", function() {
