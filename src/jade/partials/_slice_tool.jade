@@ -1,0 +1,14 @@
+mixin slice_tool()
+	.slice-tool.container.is-hidden
+		h2 Slice Tool
+		input(type="radio", value="x", id="x_axis_slice", onchange="settings.slice.axis='x'", name="slice_axis")
+		label.button.slice-button(for="x_axis_slice") X
+		input(type="radio", value="y", id="y_axis_slice", onchange="settings.slice.axis='y'", name="slice_axis")
+		label.button.slice-button(for="y_axis_slice") Y
+		input(type="radio", value="z", id="z_axis_slice", onchange="settings.slice.axis='z'", name="slice_axis")
+		label.button.slice-button(for="z_axis_slice") Z
+		input.slice-range(type="range", min="-1", max="1", value="0", step="0.01")
+		button.button.slice-button.close-slice-tool(onclick="settings.slice.visible = false; setupSlice();")
+			svg.icon.close-icon(width="20", height="20", viewbox="0 0 6 6")
+				path(d="M 1 1 L 5 5 M 5 1 L 1 5")
+			| Close

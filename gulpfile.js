@@ -58,33 +58,33 @@ gulp.task("jade", function() {
     );
 });
 
-gulp.task("jade-subfolder", function() {
-  return gulp
-    .src(["src/jade/**/*.jade"])
-    .pipe(
-      jade({
-        pretty: true,
-        data: {
-          regions: regions_arr,
-          teams: team_arr
-        }
-      })
-    )
-    .pipe(
-      htmlmin({
-        collapseWhitespace: true,
-        removeComments: true,
-        minifyCSS: true,
-        minifyJS: true
-      })
-    )
-    .pipe(gulp.dest("./dist"))
-    .pipe(
-      browserSync.reload({
-        stream: true
-      })
-    );
-});
+// gulp.task("jade-subfolder", function() {
+//   return gulp
+//     .src(["src/jade/**/*.jade"])
+//     .pipe(
+//       jade({
+//         pretty: true,
+//         data: {
+//           regions: regions_arr,
+//           teams: team_arr
+//         }
+//       })
+//     )
+//     .pipe(
+//       htmlmin({
+//         collapseWhitespace: true,
+//         removeComments: true,
+//         minifyCSS: true,
+//         minifyJS: true
+//       })
+//     )
+//     .pipe(gulp.dest("./dist"))
+//     .pipe(
+//       browserSync.reload({
+//         stream: true
+//       })
+//     );
+// });
 
 // Compile CSS ===========================================================================
 gulp.task("scss", function() {
@@ -149,11 +149,6 @@ gulp.task("redirects", function() {
     );
 });
 
-// Cleanup ===============================================================================
-gulp.task("cleanup", function() {
-  return del(["dist/_footer.html", "dist/_head.html", "dist/_header.html"]);
-});
-
 // Browser sync ==========================================================================
 gulp.task("sync", function() {
   return browserSync({
@@ -166,12 +161,12 @@ gulp.task("default", function() {
   gulp.run("sync");
 
   gulp.watch("src/jade/*.jade", function() {
-    return gulp.run(["jade", "cleanup"]);
+    return gulp.run("jade");
   });
 
-  gulp.watch("src/jade/team/index.jade", function() {
-    return gulp.run("jade-subfolder");
-  });
+  // gulp.watch("src/jade/team/index.jade", function() {
+  //   return gulp.run("jade-subfolder");
+  // });
 
   gulp.watch("src/scss/*.scss", function() {
     return gulp.run("scss");

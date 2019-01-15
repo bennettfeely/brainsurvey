@@ -1,4 +1,3 @@
-var WEBGL={isWebGLAvailable:function(){try{var e=document.createElement("canvas");return!(!window.WebGLRenderingContext||!e.getContext("webgl")&&!e.getContext("experimental-webgl"))}catch(e){return!1}},isWebGL2Available:function(){try{var e=document.createElement("canvas");return!(!window.WebGL2RenderingContext||!e.getContext("webgl2"))}catch(e){return!1}},getWebGLErrorMessage:function(){return this.getErrorMessage(1)},getWebGL2ErrorMessage:function(){return this.getErrorMessage(2)},getErrorMessage:function(e){var t={1:window.WebGLRenderingContext,2:window.WebGL2RenderingContext},n='Your $0 does not seem to support <a href="http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation" style="color:#000">$1</a>',r=document.createElement("div");return r.id="webglmessage",r.style.fontFamily="monospace",r.style.fontSize="13px",r.style.fontWeight="normal",r.style.textAlign="center",r.style.background="#fff",r.style.color="#000",r.style.padding="1.5em",r.style.width="400px",r.style.margin="5em auto 0",n=(n=t[e]?n.replace("$0","graphics card"):n.replace("$0","browser")).replace("$1",{1:"WebGL",2:"WebGL 2"}[e]),r.innerHTML=n,r}};;
 // prettier-ignore
 settings = {
 	autosave: false,
@@ -19,7 +18,11 @@ settings = {
 
 	// Interactions
 	pan: false,
-	zoom: false,
+	zoom: {
+		enabled: true,
+		min: 10,
+		max: 30
+	},
 
 	// Slicing and dicing
 	slice: {
@@ -60,7 +63,7 @@ settings = {
 		}
 	}
 }
-;
+
 regions_obj = {
 	Frontal_Pole_0: {
 		path: "frontal-pole",
@@ -458,138 +461,6 @@ regions_obj = {
 		full_name: "Occipital Pole"
 	}
 };
-;
-// JSONP by larryosborn
-// https://github.com/larryosborn/JSONP
-(function() {
-	var e, n, r, o, t, l, u, d;
-	(r = function(e) {
-		return window.document.createElement(e);
-	}),
-		(o = window.encodeURIComponent),
-		(u = Math.random),
-		(e = function(e) {
-			var o, l, u, i, a, c, f;
-			if (
-				(null == e && (e = {}),
-				(c = {
-					data: e.data || {},
-					error: e.error || t,
-					success: e.success || t,
-					beforeSend: e.beforeSend || t,
-					complete: e.complete || t,
-					url: e.url || ""
-				}),
-				(c.computedUrl = n(c)),
-				0 === c.url.length)
-			)
-				throw new Error("MissingUrl");
-			return (
-				(i = !1),
-				c.beforeSend({}, c) !== !1 &&
-					((u = e.callbackName || "callback"),
-					(l = e.callbackFunc || "jsonp_" + d(15)),
-					(o = c.data[u] = l),
-					(window[o] = function(e) {
-						return (
-							(window[o] = null),
-							c.success(e, c),
-							c.complete(e, c)
-						);
-					}),
-					(f = r("script")),
-					(f.src = n(c)),
-					(f.async = !0),
-					(f.onerror = function(e) {
-						return (
-							c.error({ url: f.src, event: e }),
-							c.complete({ url: f.src, event: e }, c)
-						);
-					}),
-					(f.onload = f.onreadystatechange = function() {
-						var e, n;
-						if (
-							!(
-								i ||
-								("loaded" !== (e = this.readyState) &&
-									"complete" !== e)
-							)
-						)
-							return (
-								(i = !0),
-								f
-									? ((f.onload = f.onreadystatechange = null),
-									  null != (n = f.parentNode) &&
-											n.removeChild(f),
-									  (f = null))
-									: void 0
-							);
-					}),
-					(a =
-						window.document.getElementsByTagName("head")[0] ||
-						window.document.documentElement),
-					a.insertBefore(f, a.firstChild)),
-				{
-					abort: function() {
-						return (
-							(window[o] = function() {
-								return (window[o] = null);
-							}),
-							(i = !0),
-							(null != f
-							? f.parentNode
-							: void 0)
-								? ((f.onload = f.onreadystatechange = null),
-								  f.parentNode.removeChild(f),
-								  (f = null))
-								: void 0
-						);
-					}
-				}
-			);
-		}),
-		(t = function() {}),
-		(n = function(e) {
-			var n;
-			return (
-				(n = e.url),
-				(n += e.url.indexOf("?") < 0 ? "?" : "&"),
-				(n += l(e.data))
-			);
-		}),
-		(d = function(e) {
-			var n;
-			for (n = ""; n.length < e; )
-				n += u()
-					.toString(36)
-					.slice(2, 3);
-			return n;
-		}),
-		(l = function(e) {
-			var n, r, t;
-			return (
-				(n = (function() {
-					var n;
-					n = [];
-					for (r in e) (t = e[r]), n.push(o(r) + "=" + o(t));
-					return n;
-				})()),
-				n.join("&")
-			);
-		}),
-		("undefined" != typeof define && null !== define
-		? define.amd
-		: void 0)
-			? define(function() {
-					return e;
-			  })
-			: ("undefined" != typeof module && null !== module
-				? module.exports
-				: void 0)
-				? (module.exports = e)
-				: (this.JSONP = e);
-}.call(this));
-;
 
 var html = document.querySelector("html");
 var brain_wrapper = document.querySelector(".brain-wrapper");
@@ -599,9 +470,6 @@ init();
 function init() {
 	// Navigate to correct page
 	route();
-
-	// Prevent transitions from happening before page is setup
-	window.onload = document.querySelector("body").classList.remove("preload");
 
 	// Warnings
 	if (WEBGL.isWebGLAvailable() === false) {
@@ -649,8 +517,15 @@ function initBrain() {
 
 	// Setup controls
 	controls = new THREE.OrbitControls(camera, brain_wrapper);
-	controls.enableZoom = settings.zoom;
+
+	controls.enableZoom = settings.zoom.enabled;
+	controls.maxDistance = settings.zoom.max;
+	controls.minDistance = settings.zoom.min;
+
+	console.log(settings.zoom.min, settings.zoom.max);
+
 	controls.enablePan = settings.pan;
+
 	controls.autoRotate = settings.orbit;
 	controls.autoRotateSpeed = settings.orbit_speed;
 
@@ -700,7 +575,7 @@ function initBrain() {
 
 	var loader = new THREE.GLTFLoader(brain_manager);
 	loader.load(
-		'models/' + settings.brain_model_path,
+		"models/" + settings.brain_model_path,
 		function(gltf) {
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
@@ -801,25 +676,7 @@ function animate() {
 	renderer.render(scene, camera);
 }
 
-function setupRegionsFilter() {
-	var regions_filter = document.querySelector(".regions-filter");
-	var choices = new Choices(regions_filter, {
-		itemSelectText: "Select",
-		noResultsText: "No matching brain regions",
-		placeholder: true,
-		placeholderValue: "Filter brain regions...",
-		searchPlaceholderValue: "Filter brain regions...",
-		searchResultLimit: 3
-	});
-
-	regions_filter.addEventListener(
-		"choice",
-		function(e) {
-			switchRegion(e.detail.choice.value);
-		},
-		false
-	);
-}
+function setupRegionsFilter() {}
 
 function switchRegion(region_id) {
 	var target_obj = regions_obj[region_id];
@@ -1010,6 +867,10 @@ function setupSlice() {
 		// Remove the slicing
 		renderer.localClippingEnabled = false;
 		renderer.clippingPlanes = [];
+
+		// Untoggle slice toggle
+		var slice_toggle = document.querySelector(".slice-toggle input");
+		slice_toggle.checked = false;
 	}
 }
 
@@ -1163,15 +1024,6 @@ function headToggle() {
 function loadHead() {
 	var head_manager = new THREE.LoadingManager();
 	head_manager.onStart = function(url, itemsLoaded, itemsTotal) {
-		console.log(
-			"Started loading file: " +
-				url +
-				".\nLoaded " +
-				itemsLoaded +
-				" of " +
-				itemsTotal +
-				" files."
-		);
 		updateStatus("Loading head (" + itemsLoaded + "/" + itemsTotal + ")");
 	};
 
@@ -1189,7 +1041,7 @@ function loadHead() {
 
 	var loader = new THREE.GLTFLoader(head_manager);
 	loader.load(
-		'models/' + settings.head_model_path,
+		"models/" + settings.head_model_path,
 		function(gltf) {
 			updateStatus("Rendering Head");
 			gltf.scene.traverse(function(mesh) {

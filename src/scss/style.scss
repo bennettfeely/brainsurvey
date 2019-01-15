@@ -63,10 +63,6 @@ body {
 	line-height: 1.5;
 	background: $blue-grey-400;
 	color: $blue-grey-900;
-
-	&.preload * {
-		transition: 0 !important;
-	}
 }
 
 header,
@@ -163,6 +159,21 @@ input {
 	border: 0;
 }
 
+// Icons ============================================================================
+.icon {
+	display: inline-block;
+	margin-right: var(--padding-small);
+	vertical-align: middle;
+	width: 1em;
+	height: 1em;
+
+	path {
+		stroke-width: 1;
+		stroke: currentColor;
+		stroke-linecap: round;
+	}
+}
+
 // summary {
 // 	&:focus {
 // 		outline: 0;
@@ -225,7 +236,7 @@ body {
 .site-logo {
 	display: block;
 	width: 100%;
-	max-width: 15em;
+	max-width: 13em;
 	height: auto;
 	margin: 0 0 var(--padding-large);
 	transition: opacity var(--transition);
@@ -314,6 +325,16 @@ body {
 	canvas {
 		position: relative;
 		z-index: 10;
+		cursor: move;
+		cursor: grab;
+		cursor: -moz-grab;
+		cursor: -webkit-grab;
+
+		&:active {
+			cursor: grabbing;
+			cursor: -moz-grabbing;
+			cursor: -webkit-grabbing;
+		}
 	}
 
 	@media (min-width: $tablet) {
@@ -387,8 +408,7 @@ body {
 	z-index: 100;
 	color: $white;
 	opacity: 0.5;
-	transition: transform var(--transition), opacity var(--transition);
-	transform: translate3d(0, 0, 0);
+	transition: opacity var(--transition);
 	max-width: 100%;
 	white-space: nowrap;
 
@@ -398,8 +418,7 @@ body {
 	}
 
 	&.is-hidden {
-		transform: translate3d(0, -100%, 0);
-		pointer-events: none;
+		display: none;
 	}
 
 	h2 {
@@ -422,6 +441,7 @@ body {
 
 	display: inline-block;
 	border: 2px solid $white;
+	color: $white;
 	background: $black;
 	padding: 0 var(--padding-small);
 	line-height: calc(2rem - 10px);
@@ -454,6 +474,15 @@ body {
 
 		&:after {
 			content: "-axis";
+		}
+	}
+
+	&.close-slice-tool {
+		margin-left: var(--padding-medium);
+		border-radius: var(--radius);
+
+		&:before {
+			content: "";
 		}
 	}
 }
@@ -559,11 +588,9 @@ body {
 
 	@media (min-width: $desktop) {
 		margin: var(--padding-large) 0 0;
-		transition: margin-top var(--transition);
-		will-change: margin-top;
 
 		.slice-tool:not(.is-hidden) ~ & {
-			margin-top: 4.25rem;
+			margin-top: 4rem;
 		}
 	}
 
@@ -630,10 +657,6 @@ body {
 // Regions wrapper =======================================================================
 .regions-wrapper {
 	background-color: $blue-grey-100;
-}
-
-.regions-filter-wrapper {
-	min-height: 3rem;
 }
 
 .regions-filter {
