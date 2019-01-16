@@ -220,7 +220,7 @@ body {
 	width: 100%;
 	height: auto;
 	margin: 0 0 var(--space-large);
-	transition: opacity var(--transition);
+	transition: color var(--transition);
 
 	.icon {
 		width: 1.5em;
@@ -408,7 +408,7 @@ body {
 
 	h2 {
 		display: inline-block;
-		margin: 0 var(--space-medium);
+		margin: 0;
 	}
 
 	input[type="radio"] {
@@ -419,6 +419,11 @@ body {
 	&:focus-within {
 		opacity: 1;
 	}
+}
+
+.slice-tool-axes {
+	display: inline-flex;
+	margin: 0 var(--space-medium);
 }
 
 .slice-button {
@@ -437,15 +442,15 @@ body {
 		padding: var(--space-small) var(--space-medium);
 	}
 
-	&:nth-of-type(1) {
+	&.x-axis-toggle {
 		border-radius: var(--radius) 0 0 var(--radius);
 	}
 
-	&:nth-of-type(2) {
+	&.y-axis-toggle {
 		border-width: 2px 0;
 	}
 
-	&:nth-of-type(3) {
+	&.z-axis-toggle {
 		border-radius: 0 var(--radius) var(--radius) 0;
 	}
 
@@ -464,7 +469,7 @@ body {
 	}
 
 	&.close-slice-tool {
-		margin: 0 var(--space-medium);
+		margin: 0 0 0 var(--space-medium);
 		border-radius: var(--radius);
 
 		&:before {
@@ -476,7 +481,7 @@ body {
 .slice-range {
 	display: inline-block;
 	flex: 1;
-	margin-left: var(--space-medium);
+	width: 100%;
 	cursor: col-resize;
 	height: 2rem;
 	background: linear-gradient;

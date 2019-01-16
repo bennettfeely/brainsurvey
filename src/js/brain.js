@@ -1199,7 +1199,5 @@ function saveSettings() {
 }
 
 function scrollTop() {
-	setTimeout(function() {
-		window.scroll(0, 0);
-	}, 50);
+	window.scroll(0, 0);
 }
