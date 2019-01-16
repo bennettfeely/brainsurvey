@@ -727,6 +727,9 @@ function switchRegion(region_id) {
 		}
 	});
 
+	// Hide the spinner from the site
+	document.querySelector("html").classList.add("is-loaded");
+
 	// Set content of content wrapper
 	var request_url =
 		"https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=true&exintro=true&redirects=true&titles=" +
