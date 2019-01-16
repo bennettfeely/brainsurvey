@@ -487,7 +487,11 @@ function init() {
 }
 
 function route() {
+	console.log('route();')
+
 	var path_name = window.location.pathname;
+
+	console.log('path_name == ' + pathname)
 
 	initBrain();
 	initSettings();
@@ -496,6 +500,7 @@ function route() {
 	if (path_name !== "/") {
 		Object.keys(regions_obj).forEach(function(key) {
 			if ("/" + regions_obj[key].path == path_name) {
+				console.log("switchRegion(" + key + "")");
 				switchRegion(key);
 			}
 		});
