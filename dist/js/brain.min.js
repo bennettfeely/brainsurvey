@@ -20,14 +20,14 @@ settings = {
 	pan: false,
 	zoom: {
 		enabled: true,
-		min: 10,
+		min: 15,
 		max: 30
 	},
 
 	// Slicing and dicing
 	slice: {
 		visible: false,
-		axis: "z",
+		axis: "y",
 		position: 0,
 		size: 0.25,
 		dimensions: {
@@ -39,8 +39,8 @@ settings = {
 
 	// Materials
 	brain: {
-		roughness: 0.1,
-		metalness: 0.4,
+		roughness: 0.1, // 0.1
+		metalness: 0.3, // 0.4
 		wireframe: false,
 		default_color: "lightcoral",
 		explode: 0,
@@ -518,11 +518,14 @@ function initBrain() {
 	// Setup controls
 	controls = new THREE.OrbitControls(camera, brain_wrapper);
 
+	// Setup zoom
 	controls.enableZoom = settings.zoom.enabled;
+
+	// Set max zoom to current zoom level
+	settings.zoom.max = controls.target.distanceTo(controls.object.position);
+
 	controls.maxDistance = settings.zoom.max;
 	controls.minDistance = settings.zoom.min;
-
-	console.log(settings.zoom.min, settings.zoom.max);
 
 	controls.enablePan = settings.pan;
 
@@ -676,7 +679,14 @@ function animate() {
 	renderer.render(scene, camera);
 }
 
-function setupRegionsFilter() {}
+function setupRegionsFilter() {
+	var regions_filter = document.querySelector(".regions-filter");
+	regions_filter.onchange = e => {
+		var region_id = e.target.value;
+
+		switchRegion(region_id);
+	};
+}
 
 function switchRegion(region_id) {
 	var target_obj = regions_obj[region_id];
@@ -827,20 +837,22 @@ function setupSlice() {
 		// Slice things up to start
 		slice();
 
+		// Adjust camera for full view of slice
+		sliceCameraCentering();
+
 		// Detect change to slice axis buttons
 		document
 			.querySelectorAll('[name="slice_axis"]')
 			.forEach(function(axis_button) {
 				axis_button.addEventListener("change", function() {
-					// Stop orbiting
-					controls.autoRotate = false;
-
 					// Set slice axis
 					settings.slice.axis = document.querySelector(
 						'[name="slice_axis"]:checked'
 					).value;
 
 					saveSettings();
+
+					sliceCameraCentering();
 
 					slice();
 				});
@@ -874,7 +886,22 @@ function setupSlice() {
 	}
 }
 
+function sliceCameraCentering() {
+	if (settings.slice.axis == "y") {
+		camera.position.set(50, 0, 0);
+	}
+	if (settings.slice.axis == "x") {
+		camera.position.set(0, 0, 50);
+	}
+	if (settings.slice.axis == "z") {
+		camera.position.set(0, 50, 0);
+	}
+}
+
 function slice() {
+	// Stop orbiting
+	controls.autoRotate = false;
+
 	if (settings.slice.axis == "y") {
 		var slice_base = [1, 0, 0];
 	}
@@ -1120,11 +1147,6 @@ function reset() {
 		.classList.remove("has-region-content", "has-content");
 	document.querySelector(".regions-wrapper").classList.remove("is-inactive");
 	document.querySelector(".settings-wrapper").classList.remove("is-inactive");
-
-	// Clear the region from the regions filter
-	// if (choices !== undefined) {
-	// 	choices.removeActiveItems(excludedId);;
-	// }
 
 	// Empty the content wrapper
 	document.querySelector(".content-wrapper .container").innerHTML = "";

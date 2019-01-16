@@ -2,11 +2,11 @@
 @charset "UTF-8";
 
 // Normalize =============================================================================
-@import "normalize";
-@import "reset";
-@import "extensions";
-@import "functions";
-@import "palette";
+@import "partials/normalize";
+@import "partials/reset";
+@import "partials/extensions";
+@import "partials/functions";
+@import "partials/palette";
 
 // Variables =============================================================================
 $white: white;
@@ -28,9 +28,9 @@ $shadow-hover: none;
 :root {
 	--root-size: 90%;
 
-	--padding-large: 0.75rem;
-	--padding-medium: 0.5rem;
-	--padding-small: 0.25rem;
+	--space-large: 0.75rem;
+	--space-medium: 0.5rem;
+	--space-small: 0.25rem;
 
 	--transition: 0.25s;
 	--transition-hover: 0s;
@@ -44,9 +44,9 @@ $shadow-hover: none;
 	@media (min-width: $tablet) {
 		--root-size: 100%;
 
-		--padding-large: 1rem;
-		--padding-medium: 0.75rem;
-		--padding-small: 0.35rem;
+		--space-large: 1rem;
+		--space-medium: 0.75rem;
+		--space-small: 0.35rem;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -92,7 +92,7 @@ h1 {
 h2 {
 	font-weight: 400;
 	font-size: 1.3em;
-	margin-bottom: var(--padding-medium);
+	margin-bottom: var(--space-medium);
 }
 h3 {
 	font-weight: 500;
@@ -108,7 +108,7 @@ p {
 	font-size: 1em;
 
 	& + p {
-		margin-top: var(--padding-large);
+		margin-top: var(--space-large);
 	}
 }
 
@@ -117,7 +117,7 @@ cite {
 	font-size: 0.8em;
 	opacity: 0.75;
 	font-style: normal;
-	margin: var(--padding-medium) 0 var(--padding-medium);
+	margin: var(--space-medium) 0 var(--space-medium);
 }
 
 a {
@@ -125,7 +125,7 @@ a {
 	transition: color var(--transition);
 
 	&:hover {
-		color: $light-blue-500;
+		color: $light-blue-700;
 		transition-duration: var(--transition-hover);
 	}
 
@@ -143,7 +143,7 @@ small {
 	@extend %no-select;
 
 	font-weight: bold;
-	padding: var(--padding-medium);
+	padding: var(--space-medium);
 	line-height: 1;
 	cursor: pointer;
 	border-radius: var(--radius);
@@ -159,40 +159,18 @@ input {
 	border: 0;
 }
 
-// Icons ============================================================================
+// Icons =================================================================================
 .icon {
 	display: inline-block;
-	margin-right: var(--padding-small);
+	margin-right: var(--space-small);
 	vertical-align: middle;
 	width: 1em;
 	height: 1em;
-
-	path {
-		stroke-width: 1;
-		stroke: currentColor;
-		stroke-linecap: round;
-	}
 }
-
-// summary {
-// 	&:focus {
-// 		outline: 0;
-// 	}
-
-// 	h2 {
-// 		display: inline-block;
-// 		vertical-align: middle;
-
-// 		&:hover {
-// 			cursor: pointer;
-// 			text-decoration: underline;
-// 		}
-// 	}
-// }
 
 // Structural Styles =====================================================================
 .container {
-	padding: var(--padding-large);
+	padding: var(--space-large);
 }
 
 body {
@@ -235,11 +213,19 @@ body {
 
 .site-logo {
 	display: block;
+	font-weight: bold;
+	font-size: 1.5em;
+	text-decoration: none;
+	color: $black;
 	width: 100%;
-	max-width: 13em;
 	height: auto;
-	margin: 0 0 var(--padding-large);
+	margin: 0 0 var(--space-large);
 	transition: opacity var(--transition);
+
+	.icon {
+		width: 1.5em;
+		height: 1.5em;
+	}
 
 	&:hover {
 		opacity: 0.75;
@@ -249,7 +235,7 @@ body {
 
 .site-links {
 	display: block;
-	margin-top: var(--padding-small);
+	margin-top: var(--space-small);
 }
 
 .site-link {
@@ -257,13 +243,13 @@ body {
 	@extend %no-select;
 
 	display: inline-block;
-	margin: 0 0 0 var(--padding-small);
+	margin: 0 0 0 var(--space-small);
 	font-size: 0.9em;
 	font-weight: 500;
 	text-decoration: none;
 	border-radius: var(--radius);
 	background: $light-blue-50;
-	padding: var(--padding-small) var(--padding-medium);
+	padding: var(--space-small) var(--space-medium);
 	transition: background-color var(--transition), color var(--transition),
 		opacity var(--transition);
 	color: $light-blue-900;
@@ -401,20 +387,19 @@ body {
 
 	display: flex;
 	align-items: center;
-	position: absolute;
+	opacity: 0.9;
+	position: relative;
 	top: 0;
 	left: 0;
 	right: 0;
 	z-index: 100;
 	color: $white;
-	opacity: 0.5;
-	transition: opacity var(--transition);
 	max-width: 100%;
 	white-space: nowrap;
+	background: $grey-800;
 
 	@media (min-width: $desktop) {
-		left: var(--padding-large);
-		right: var(--padding-large);
+		padding: var(--space-medium);
 	}
 
 	&.is-hidden {
@@ -423,7 +408,7 @@ body {
 
 	h2 {
 		display: inline-block;
-		margin: 0 var(--padding-medium) 0 0;
+		margin: 0 var(--space-medium);
 	}
 
 	input[type="radio"] {
@@ -442,13 +427,14 @@ body {
 	display: inline-block;
 	border: 2px solid $white;
 	color: $white;
-	background: $black;
-	padding: 0 var(--padding-small);
+	padding: 0 var(--space-small);
 	line-height: calc(2rem - 10px);
 	border-radius: 0;
+	background: transparent;
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='20' height='20' viewBox='0 0 8 8'%3e%3cpath d='M 2 1 L 2 7 M 4 1 L 4 7 M 6 1 L 6 7' stroke='%23eceff1' stroke-width='1' fill='none' stroke-linecap='round'%3e%3c/path%3e%3c/svg%3e");
 
 	@media (min-width: $desktop) {
-		padding: var(--padding-small) var(--padding-medium);
+		padding: var(--space-small) var(--space-medium);
 	}
 
 	&:nth-of-type(1) {
@@ -478,7 +464,7 @@ body {
 	}
 
 	&.close-slice-tool {
-		margin-left: var(--padding-medium);
+		margin: 0 var(--space-medium);
 		border-radius: var(--radius);
 
 		&:before {
@@ -490,7 +476,7 @@ body {
 .slice-range {
 	display: inline-block;
 	flex: 1;
-	margin-left: var(--padding-medium);
+	margin-left: var(--space-medium);
 	cursor: col-resize;
 	height: 2rem;
 	background: linear-gradient;
@@ -506,7 +492,7 @@ body {
 	height: 2rem;
 	margin-top: -0.25rem;
 	border-radius: 50%;
-	background: $black;
+	background: $grey-800;
 	border: 2px solid $white;
 	cursor: col-resize;
 
@@ -578,24 +564,12 @@ body {
 .content-wrapper {
 	color: $blue-grey-100;
 
-	.container {
-		display: none;
-	}
-
 	@media (min-width: $tablet) {
-		padding: var(--padding-large);
-	}
-
-	@media (min-width: $desktop) {
-		margin: var(--padding-large) 0 0;
-
-		.slice-tool:not(.is-hidden) ~ & {
-			margin-top: 4rem;
-		}
+		padding: var(--space-large);
 	}
 
 	h2 {
-		margin: 0 0 var(--padding-small);
+		margin: 0 0 var(--space-small);
 		color: $blue-grey-50;
 		font-size: 2em;
 		line-height: 1.1;
@@ -613,19 +587,29 @@ body {
 	}
 }
 
-.back-button {
+.action-buttons-wrapper {
+	position: relative;
+	z-index: 100;
+	padding: 0 var(--space-large) var(--space-large);
+
+	@media (min-width: $tablet) {
+		padding: 0 var(--space-large);
+	}
+}
+
+.outline-button {
 	@extend %no-select;
 
-	display: none;
+	display: inline-block;
 	color: $white;
 	border: 2px solid $white;
-	padding: var(--padding-medium);
+	padding: var(--space-medium);
 	font-weight: 500;
 	border-radius: var(--radius);
 	background: transparent;
-	margin: 0 var(--padding-large) 0;
+	margin: 0 var(--space-small) 0 0;
 	transition: opacity var(--transition);
-	opacity: 0.5;
+	opacity: 0.75;
 	cursor: pointer;
 
 	&:hover {
@@ -641,12 +625,18 @@ body {
 	}
 
 	@media (min-width: $tablet) {
-		margin-top: var(--padding-large);
+		margin-top: var(--space-large);
 	}
 }
 
+.back-button {
+	display: none;
+}
+
 .has-content {
-	.back-button,
+	.back-button {
+		display: inline-block;
+	}
 	.content-wrapper .container {
 		display: block;
 		position: relative;
@@ -664,20 +654,18 @@ body {
 	font-size: 1em;
 	font-weight: 500;
 	line-height: 1.25;
-	padding: var(--padding-small);
 	border-radius: var(--radius);
 	font-weight: 500;
 	background: $grey-50;
 	border: 0;
+	height: 2.75em;
+	cursor: pointer;
 
 	&:hover,
 	&:focus {
 		background: $white;
 	}
 }
-
-// Regions dropdown ======================================================================
-@import "choices";
 
 // Tools wrapper =========================================================================
 .tools-wrapper {
@@ -704,7 +692,7 @@ body {
 	position: relative;
 
 	& + & {
-		margin-top: var(--padding-medium);
+		margin-top: var(--space-medium);
 	}
 
 	.box-link {
@@ -725,7 +713,7 @@ body {
 	transition: transform var(--transition);
 
 	&.container {
-		padding: var(--padding-medium);
+		padding: var(--space-medium);
 	}
 
 	&:first-child {
@@ -784,7 +772,7 @@ body {
 
 	width: $size * 2;
 	height: $size;
-	margin-left: var(--padding-medium);
+	margin-left: var(--space-medium);
 	background: $blue-grey-200;
 	border-radius: $size;
 	transition: background var(--transition);
@@ -809,7 +797,7 @@ body {
 
 // Team page =============================================================================
 .team-wrapper {
-	padding: calc(var(--padding-large) / 2);
+	padding: calc(var(--space-large) / 2);
 	background: $blue-grey-100;
 }
 
@@ -827,7 +815,7 @@ body {
 }
 
 .team-member-wrapper {
-	padding: calc(var(--padding-large) / 2);
+	padding: calc(var(--space-large) / 2);
 }
 
 .team-member {
@@ -839,61 +827,17 @@ body {
 .team-member-photo {
 	border-radius: var(--radius);
 	float: left;
-	margin: 0 var(--padding-large) 0 0;
+	margin: 0 var(--space-large) 0 0;
 	width: auto;
 	height: 13rem;
 }
 
 .team-member-title {
 	font-size: 0.9em;
-	margin-bottom: var(--padding-small);
+	margin-bottom: var(--space-small);
 	color: $blue-grey-600;
 }
 
 .team-member-bio {
-	margin: var(--padding-medium) 0 0;
+	margin: var(--space-medium) 0 0;
 }
-
-// Responsive ============================================================================
-.mobile-only {
-	display: block;
-
-	@media (min-width: $tablet) {
-		display: none;
-	}
-}
-
-.desktop-only {
-	display: none;
-
-	@media (min-width: $tablet) {
-		display: block;
-	}
-}
-
-// Icons =====================================================================
-// @mixin icon($icon) {
-// 	h3:before {
-// 		content: $icon;
-// 	}
-// }
-
-// .head-toggle {
-// 	@include icon("👤");
-// }
-
-// .orbit-toggle {
-// 	@include icon("🌐");
-// }
-
-// .square-grid-toggle {
-// 	@include icon("🔲");
-// }
-
-// .axes-toggle {
-// 	@include icon("➖");
-// }
-
-// .slice-toggle {
-// 	@include icon("🔪");
-// }

@@ -58,6 +58,34 @@ gulp.task("jade", function() {
     );
 });
 
+gulp.task("jade-subfolder", function() {
+  return gulp
+    .src("src/jade/team/index.jade")
+    .pipe(
+      jade({
+        pretty: true,
+        data: {
+          regions: regions_arr,
+          teams: team_arr
+        }
+      })
+    )
+    .pipe(
+      htmlmin({
+        collapseWhitespace: true,
+        removeComments: true,
+        minifyCSS: true,
+        minifyJS: true
+      })
+    )
+    .pipe(gulp.dest("./dist/team"))
+    .pipe(
+      browserSync.reload({
+        stream: true
+      })
+    );
+});
+
 // gulp.task("jade-subfolder", function() {
 //   return gulp
 //     .src(["src/jade/**/*.jade"])
@@ -160,9 +188,12 @@ gulp.task("sync", function() {
 gulp.task("default", function() {
   gulp.run("sync");
 
-  gulp.watch("src/jade/*.jade", function() {
-    return gulp.run("jade");
-  });
+  gulp.watch(
+    ["src/jade/*.jade", "src/jade/team/*.jade", "src/jade/partials/*.jade"],
+    function() {
+      return gulp.run("jade", "jade-subfolder");
+    }
+  );
 
   // gulp.watch("src/jade/team/index.jade", function() {
   //   return gulp.run("jade-subfolder");

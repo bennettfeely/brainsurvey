@@ -13,9 +13,10 @@ body.home
 		section.brain-wrapper
 			+icon("spinner")
 		section.content-wrapper
-			button.back-button(onclick="reset()")
-				+icon("larr-icon")
-				| Back
+			.action-buttons-wrapper
+				button.back-button.outline-button(onclick="reset()")
+					+icon("larr-icon")
+					| Back
 			.container
 		.status-wrapper
 	.side-wrapper
@@ -38,13 +39,11 @@ body.home
 				h2 Settings
 				.box-wrapper
 					+toggle("head-toggle", "Show Head")
-				.box-wrapper
 					+toggle("orbit-toggle", "Orbit")
-				.box-wrapper
-					+toggle("square-grid-toggle", "Square Grid")
-					+toggle("axes-toggle", "Axes")
+				//- .box-wrapper
+				//- 	+toggle("square-grid-toggle", "Square Grid")
+				//- 	+toggle("axes-toggle", "Axes")
 		+footer()
-		+svg()
 	script(src="js/three.js")
 	script(src="js/GLTFLoader.js")
 	script(src="js/OrbitControls.js")

@@ -1,6 +1,6 @@
-include ../_head.jade
-include ../_header.jade
-include ../_footer.jade
+include ../partials/_head
+include ../partials/_header
+include ../partials/_footer
 
 +head()
 
@@ -21,7 +21,7 @@ body.team
 								h3.team-member-title= title
 							p.team-member-bio= member.bio
 	+footer()
-	script(src="../js/colcade.min.js")
+	script(src="../js/colcade.js")
 	script.
 		var colc = new Colcade('.team-wrapper', {
 		  columns: '.team-col',

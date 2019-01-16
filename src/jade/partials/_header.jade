@@ -1,7 +1,10 @@
+include ./_icon
+
 mixin header()
 	header.header-wrapper.container
-		a(href="/")
-			img.site-logo(src="../img/logo_text_515x65.png", width="515", height="65", alt="Human Brain Map logo")
+		a.site-logo(href="/")
+			+icon("brain")
+			| Human Brain Map
 		nav.site-links
 			a.site-link.home-link(href="/") Explorer
 			a.site-link.team-link(href="/team") Our Team
