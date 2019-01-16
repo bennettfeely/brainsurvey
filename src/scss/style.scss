@@ -28,9 +28,9 @@ $shadow-hover: none;
 :root {
 	--root-size: 90%;
 
-	--space-large: 0.75rem;
-	--space-medium: 0.5rem;
-	--space-small: 0.25rem;
+	--large: 0.75rem;
+	--medium: 0.5rem;
+	--small: 0.25rem;
 
 	--transition: 0.25s;
 	--transition-hover: 0s;
@@ -39,14 +39,13 @@ $shadow-hover: none;
 	--radius: 0.25rem;
 
 	--sidebar-width: 20rem;
-	--spinner-size: 4rem;
 
 	@media (min-width: $tablet) {
 		--root-size: 100%;
 
-		--space-large: 1rem;
-		--space-medium: 0.75rem;
-		--space-small: 0.35rem;
+		--large: 1rem;
+		--medium: 0.75rem;
+		--small: 0.35rem;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -92,7 +91,7 @@ h1 {
 h2 {
 	font-weight: 400;
 	font-size: 1.3em;
-	margin-bottom: var(--space-medium);
+	margin-bottom: var(--medium);
 }
 h3 {
 	font-weight: 500;
@@ -108,7 +107,7 @@ p {
 	font-size: 1em;
 
 	& + p {
-		margin-top: var(--space-large);
+		margin-top: var(--large);
 	}
 }
 
@@ -117,7 +116,7 @@ cite {
 	font-size: 0.8em;
 	opacity: 0.75;
 	font-style: normal;
-	margin: var(--space-medium) 0 var(--space-medium);
+	margin: var(--medium) 0 var(--medium);
 }
 
 a {
@@ -143,7 +142,7 @@ small {
 	@extend %no-select;
 
 	font-weight: bold;
-	padding: var(--space-medium);
+	padding: var(--medium);
 	line-height: 1;
 	cursor: pointer;
 	border-radius: var(--radius);
@@ -162,7 +161,7 @@ input {
 // Icons =================================================================================
 .icon {
 	display: inline-block;
-	margin-right: var(--space-small);
+	margin-right: var(--small);
 	vertical-align: middle;
 	width: 1em;
 	height: 1em;
@@ -170,7 +169,7 @@ input {
 
 // Structural Styles =====================================================================
 .container {
-	padding: var(--space-large);
+	padding: var(--large);
 }
 
 body {
@@ -219,7 +218,7 @@ body {
 	color: $black;
 	width: 100%;
 	height: auto;
-	margin: 0 0 var(--space-large);
+	margin: 0 0 var(--large);
 	transition: color var(--transition);
 
 	.icon {
@@ -235,7 +234,7 @@ body {
 
 .site-links {
 	display: block;
-	margin-top: var(--space-small);
+	margin-top: var(--small);
 }
 
 .site-link {
@@ -243,13 +242,13 @@ body {
 	@extend %no-select;
 
 	display: inline-block;
-	margin: 0 0 0 var(--space-small);
+	margin: 0 0 0 var(--small);
 	font-size: 0.9em;
 	font-weight: 500;
 	text-decoration: none;
 	border-radius: var(--radius);
 	background: $light-blue-50;
-	padding: var(--space-small) var(--space-medium);
+	padding: var(--small) var(--medium);
 	transition: background-color var(--transition), color var(--transition),
 		opacity var(--transition);
 	color: $light-blue-900;
@@ -291,7 +290,7 @@ body {
 	left: calc(50% - #{$spinner-size/2});
 	width: $spinner-size;
 	height: $spinner-size;
-	animation: loading 1s linear infinite;
+	animation: loading 0.5s linear infinite;
 	pointer-events: none;
 
 	@keyframes loading {
@@ -397,9 +396,12 @@ body {
 	max-width: 100%;
 	white-space: nowrap;
 	background: $grey-800;
+	animation: slice-tool 0.5s;
 
-	@media (min-width: $desktop) {
-		padding: var(--space-medium);
+	@keyframes slice-tool {
+		0% {
+			background: $grey-600;
+		}
 	}
 
 	&.is-hidden {
@@ -423,7 +425,7 @@ body {
 
 .slice-tool-axes {
 	display: inline-flex;
-	margin: 0 var(--space-medium);
+	margin: 0 var(--medium);
 }
 
 .slice-button {
@@ -432,14 +434,14 @@ body {
 	display: inline-block;
 	border: 2px solid $white;
 	color: $white;
-	padding: 0 var(--space-small);
+	padding: 0 var(--small);
 	line-height: calc(2rem - 10px);
 	border-radius: 0;
 	background: transparent;
 	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='20' height='20' viewBox='0 0 8 8'%3e%3cpath d='M 2 1 L 2 7 M 4 1 L 4 7 M 6 1 L 6 7' stroke='%23eceff1' stroke-width='1' fill='none' stroke-linecap='round'%3e%3c/path%3e%3c/svg%3e");
 
 	@media (min-width: $desktop) {
-		padding: var(--space-small) var(--space-medium);
+		padding: var(--small) var(--medium);
 	}
 
 	&.x-axis-toggle {
@@ -469,7 +471,7 @@ body {
 	}
 
 	&.close-slice-tool {
-		margin: 0 0 0 var(--space-medium);
+		margin: 0 0 0 var(--medium);
 		border-radius: var(--radius);
 
 		&:before {
@@ -570,11 +572,11 @@ body {
 	color: $blue-grey-100;
 
 	@media (min-width: $tablet) {
-		padding: var(--space-large);
+		padding: var(--large);
 	}
 
 	h2 {
-		margin: 0 0 var(--space-small);
+		margin: 0 0 var(--small);
 		color: $blue-grey-50;
 		font-size: 2em;
 		line-height: 1.1;
@@ -595,10 +597,10 @@ body {
 .action-buttons-wrapper {
 	position: relative;
 	z-index: 100;
-	padding: 0 var(--space-large) var(--space-large);
+	padding: 0 var(--large) var(--large);
 
 	@media (min-width: $tablet) {
-		padding: 0 var(--space-large);
+		padding: 0 var(--large);
 	}
 }
 
@@ -608,11 +610,11 @@ body {
 	display: inline-block;
 	color: $white;
 	border: 2px solid $white;
-	padding: var(--space-medium);
+	padding: var(--medium);
 	font-weight: 500;
 	border-radius: var(--radius);
 	background: transparent;
-	margin: 0 var(--space-small) 0 0;
+	margin: 0 var(--small) 0 0;
 	transition: opacity var(--transition);
 	opacity: 0.75;
 	cursor: pointer;
@@ -630,7 +632,7 @@ body {
 	}
 
 	@media (min-width: $tablet) {
-		margin-top: var(--space-large);
+		margin-top: var(--large);
 	}
 }
 
@@ -697,7 +699,7 @@ body {
 	position: relative;
 
 	& + & {
-		margin-top: var(--space-medium);
+		margin-top: var(--medium);
 	}
 
 	.box-link {
@@ -718,7 +720,7 @@ body {
 	transition: transform var(--transition);
 
 	&.container {
-		padding: var(--space-medium);
+		padding: var(--medium);
 	}
 
 	&:first-child {
@@ -777,7 +779,7 @@ body {
 
 	width: $size * 2;
 	height: $size;
-	margin-left: var(--space-medium);
+	margin-left: var(--medium);
 	background: $blue-grey-200;
 	border-radius: $size;
 	transition: background var(--transition);
@@ -802,7 +804,7 @@ body {
 
 // Team page =============================================================================
 .team-wrapper {
-	padding: calc(var(--space-large) / 2);
+	padding: calc(var(--large) / 2);
 	background: $blue-grey-100;
 }
 
@@ -820,7 +822,7 @@ body {
 }
 
 .team-member-wrapper {
-	padding: calc(var(--space-large) / 2);
+	padding: calc(var(--large) / 2);
 }
 
 .team-member {
@@ -832,17 +834,17 @@ body {
 .team-member-photo {
 	border-radius: var(--radius);
 	float: left;
-	margin: 0 var(--space-large) 0 0;
+	margin: 0 var(--large) 0 0;
 	width: auto;
 	height: 13rem;
 }
 
 .team-member-title {
 	font-size: 0.9em;
-	margin-bottom: var(--space-small);
+	margin-bottom: var(--small);
 	color: $blue-grey-600;
 }
 
 .team-member-bio {
-	margin: var(--space-medium) 0 0;
+	margin: var(--medium) 0 0;
 }
