@@ -491,7 +491,7 @@ function route() {
 
 	var path_name = window.location.pathname;
 
-	console.log("path_name == " + pathname);
+	console.log("path_name == " + path_name);
 
 	initBrain();
 	initSettings();
