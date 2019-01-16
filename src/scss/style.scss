@@ -399,7 +399,7 @@ body {
 	animation: slice-tool 0.5s;
 
 	@keyframes slice-tool {
-		0% {
+		25% {
 			background: $grey-600;
 		}
 	}
@@ -437,8 +437,7 @@ body {
 	padding: 0 var(--small);
 	line-height: calc(2rem - 10px);
 	border-radius: 0;
-	background: transparent;
-	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='20' height='20' viewBox='0 0 8 8'%3e%3cpath d='M 2 1 L 2 7 M 4 1 L 4 7 M 6 1 L 6 7' stroke='%23eceff1' stroke-width='1' fill='none' stroke-linecap='round'%3e%3c/path%3e%3c/svg%3e");
+	background: $grey-800;
 
 	@media (min-width: $desktop) {
 		padding: var(--small) var(--medium);
@@ -457,8 +456,7 @@ body {
 	}
 
 	&:hover {
-		transition-duration: var(--transition-hover);
-		opacity: 1;
+		background: $grey-700;
 	}
 
 	input[type="radio"]:checked + & {
@@ -499,11 +497,15 @@ body {
 	height: 2rem;
 	margin-top: -0.25rem;
 	border-radius: 50%;
-	background: $grey-800;
 	border: 2px solid $white;
 	cursor: col-resize;
+	background-color: $grey-800;
 
 	&:hover {
+		background: $grey-700;
+	}
+
+	&:active {
 		background: $white;
 	}
 }
