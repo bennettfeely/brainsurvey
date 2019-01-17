@@ -220,6 +220,7 @@ body {
 	height: auto;
 	margin: 0 0 var(--large);
 	transition: color var(--transition);
+	max-width: var(--sidebar-width);
 
 	.icon {
 		width: 1.5em;
@@ -418,10 +419,6 @@ body {
 		margin: 0;
 	}
 
-	input[type="radio"] {
-		display: none;
-	}
-
 	&:hover,
 	&:focus-within {
 		opacity: 1;
@@ -433,10 +430,15 @@ body {
 	margin: 0 var(--medium);
 }
 
+.slice-button-wrapper {
+	display: inline-block;
+	position: relative;
+}
+
 .slice-button {
 	@extend %no-tap;
 
-	display: inline-block;
+	display: block;
 	border: 2px solid $white;
 	color: $white;
 	padding: 0 var(--small);
@@ -463,8 +465,19 @@ body {
 	&:hover {
 		background: $grey-700;
 	}
+}
 
-	input[type="radio"]:checked + & {
+input[type="radio"] {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+
+	&:focus + .slice-button {
+		outline: -webkit-focus-ring-color auto 5px;
+	}
+
+	&:checked + .slice-button {
 		background: $white;
 		color: $black;
 
@@ -472,14 +485,14 @@ body {
 			content: "-axis";
 		}
 	}
+}
 
-	&.close-slice-tool {
-		margin: 0 0 0 var(--medium);
-		border-radius: var(--radius);
+.close-slice-tool {
+	margin: 0 0 0 var(--medium);
+	border-radius: var(--radius);
 
-		&:before {
-			content: "";
-		}
+	&:before {
+		content: "";
 	}
 }
 
@@ -492,7 +505,6 @@ body {
 	background: linear-gradient;
 
 	&:focus {
-		outline: 0;
 	}
 }
 
@@ -762,13 +774,18 @@ body {
 .box-toggle {
 	@extend %no-select;
 
+	position: relative;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	cursor: pointer;
 
 	input[type="checkbox"] {
-		display: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		opacity: 0;
+		pointer-events: none;
 
 		&:checked + .toggle {
 			background: $light-blue-500;
@@ -777,6 +794,11 @@ body {
 				transform: translate3d(100%, 0, 0) scale3d(1.15, 1.15, 1.15);
 				background: $light-blue-900;
 			}
+		}
+
+		&:focus + .toggle {
+			outline: 3px blue;
+			outline: -webkit-focus-ring-color auto 5px;
 		}
 	}
 }
@@ -854,4 +876,9 @@ body {
 
 .team-member-bio {
 	margin: var(--medium) 0 0;
+}
+
+// Accessibilty ==========================================================================
+html:not(.is-tabbing) .home * {
+	outline: none !important;
 }

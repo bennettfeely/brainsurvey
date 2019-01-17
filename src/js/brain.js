@@ -484,6 +484,8 @@ function init() {
 	if (settings.autosave == true) {
 		loadSettings();
 	}
+
+	detectTabbing();
 }
 
 function route() {
@@ -1185,6 +1187,18 @@ function warning(status) {
 	if (spinner !== null) {
 		spinner.parentNode.removeChild(spinner);
 	}
+}
+
+function detectTabbing() {
+	function handleFirstTab(e) {
+		let tab = 9;
+		if (e.keyCode === tab) {
+			document.querySelector("html").classList.add("is-tabbing");
+			window.removeEventListener("keydown", handleFirstTab);
+		}
+	}
+
+	window.addEventListener("keydown", handleFirstTab);
 }
 
 function loadSettings() {
