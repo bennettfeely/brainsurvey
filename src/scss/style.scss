@@ -292,7 +292,6 @@ body {
 	width: $spinner-size;
 	height: $spinner-size;
 	animation: loading 0.5s linear infinite;
-	transition: opacity var(--transition-decorative);
 	pointer-events: none;
 
 	@keyframes loading {

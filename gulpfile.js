@@ -133,7 +133,6 @@ gulp.task("scss", function() {
         path.extname = ".css";
       })
     )
-    .pipe(gulp.dest("./src/css"))
     .pipe(gulp.dest("./dist/css"))
     .pipe(
       browserSync.reload({
