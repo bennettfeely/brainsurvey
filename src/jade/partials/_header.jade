@@ -4,7 +4,8 @@ mixin header()
 	header.header-wrapper.container
 		a.site-logo(href="/")
 			+icon("brain")
-			| Human Brain Map
-		nav.site-links
-			a.site-link.home-link(href="/") Explorer
-			a.site-link.team-link(href="/team") Our Team
+			.site-logo-text
+				<span>Translational</span> <span>Brain</span> <span>Mapping</span>
+	nav.site-links
+		a.site-link.home-link(href="/") Explorer
+		a.site-link.team-link(href="/team") Our Team

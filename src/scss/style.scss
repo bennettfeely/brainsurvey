@@ -213,29 +213,42 @@ body {
 .site-logo {
 	display: block;
 	font-weight: bold;
-	font-size: 1.5em;
+	font-size: 1.2em;
 	text-decoration: none;
 	color: $black;
 	width: 100%;
 	height: auto;
-	margin: 0 0 var(--large);
 	transition: color var(--transition);
 	max-width: var(--sidebar-width);
 
 	.icon {
-		width: 1.5em;
-		height: 1.5em;
+		width: 2.5em;
+		height: 2.5em;
 	}
 
 	&:hover {
-		opacity: 0.75;
 		transition-duration: var(--transition-hover);
+	}
+}
+
+.site-logo-text {
+	display: inline-block;
+	vertical-align: top;
+	line-height: 1;
+
+	span {
+		display: block;
 	}
 }
 
 .site-links {
 	display: block;
-	margin-top: var(--small);
+	background: $white;
+	padding-left: var(--large);
+	// padding-bottom: var(--large);
+	// background: $light-blue-50;
+	// background: linear-gradient(90deg, $light-blue-50, $white);
+	border-top: 1px solid $blue-grey-50;
 }
 
 .site-link {
@@ -243,37 +256,28 @@ body {
 	@extend %no-select;
 
 	display: inline-block;
-	margin: 0 0 0 var(--small);
-	font-size: 0.9em;
+	font-size: 1em;
 	font-weight: 500;
 	text-decoration: none;
-	border-radius: var(--radius);
-	background: $light-blue-50;
-	padding: var(--small) var(--medium);
-	transition: background-color var(--transition), color var(--transition),
-		opacity var(--transition);
-	color: $light-blue-900;
-
-	&:first-child {
-		margin-left: 0;
-	}
+	padding: var(--small);
+	line-height: 1.4;
+	margin-right: var(--small);
+	border-top: 2px solid $light-blue-300;
+	margin-top: -1px;
 
 	&:hover {
-		background: $light-blue-100;
-		color: $light-blue-900;
-		transition: 0s;
+		color: $light-blue-800;
+		border-color: $light-blue-800;
 	}
 }
 
 .home .home-link,
 .team .team-link {
-	background: $light-blue-700;
-	color: $white;
-	font-weight: 700;
-
-	&:hover {
-		opacity: 0.9;
-	}
+	font-weight: 500;
+	background: $light-blue-50;
+	padding: var(--small) var(--medium);
+	border-color: $light-blue-800;
+	color: $light-blue-800;
 }
 
 // Browser issues wrapper ================================================================
