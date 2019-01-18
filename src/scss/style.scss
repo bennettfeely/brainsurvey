@@ -211,7 +211,8 @@ body {
 }
 
 .site-logo {
-	display: block;
+	display: flex;
+	align-items: center;
 	font-weight: bold;
 	font-size: 1.2em;
 	text-decoration: none;
@@ -220,6 +221,10 @@ body {
 	height: auto;
 	transition: color var(--transition);
 	max-width: var(--sidebar-width);
+
+	@media (min-width: $tablet) {
+		align-items: flex-start;
+	}
 
 	.icon {
 		width: 2.5em;
@@ -233,11 +238,12 @@ body {
 
 .site-logo-text {
 	display: inline-block;
-	vertical-align: top;
 	line-height: 1;
 
 	span {
-		display: block;
+		@media (min-width: $tablet) {
+			display: block;
+		}
 	}
 }
 
@@ -245,9 +251,6 @@ body {
 	display: block;
 	background: $white;
 	padding-left: var(--large);
-	// padding-bottom: var(--large);
-	// background: $light-blue-50;
-	// background: linear-gradient(90deg, $light-blue-50, $white);
 	border-top: 1px solid $blue-grey-50;
 }
 
