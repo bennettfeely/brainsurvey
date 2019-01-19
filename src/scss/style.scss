@@ -211,29 +211,18 @@ body {
 }
 
 .site-logo {
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	font-weight: bold;
-	font-size: 1.2em;
+	font-size: 1.5em;
 	text-decoration: none;
 	color: $black;
-	width: 100%;
-	height: auto;
 	transition: color var(--transition);
-	max-width: var(--sidebar-width);
-
-	@media (min-width: $tablet) {
-		align-items: flex-start;
-	}
+	margin-bottom: var(--medium);
 
 	.icon {
-		width: 1.75em;
-		height: 1.75em;
-
-		@media (min-width: $tablet) {
-			width: 2.5em;
-			height: 2.5em;
-		}
+		width: 1.5em;
+		height: 1.5em;
 	}
 
 	&:hover {
@@ -244,19 +233,10 @@ body {
 .site-logo-text {
 	display: inline-block;
 	line-height: 1;
-
-	span {
-		@media (min-width: $tablet) {
-			display: block;
-		}
-	}
 }
 
 .site-links {
 	display: block;
-	background: $white;
-	padding-left: var(--large);
-	border-top: 1px solid $blue-grey-50;
 }
 
 .site-link {
@@ -270,22 +250,24 @@ body {
 	padding: var(--small);
 	line-height: 1.4;
 	margin-right: var(--small);
-	border-top: 2px solid $light-blue-300;
-	margin-top: -1px;
+	border-radius: var(--radius);
+	border: 2px solid $light-blue-50;
 
 	&:hover {
-		color: $light-blue-800;
-		border-color: $light-blue-800;
+		background: $light-blue-100;
+		border-color: $light-blue-100;
 	}
 }
 
 .home .home-link,
 .team .team-link {
 	font-weight: 500;
-	background: $light-blue-50;
 	padding: var(--small) var(--medium);
-	border-color: $light-blue-800;
-	color: $light-blue-800;
+	background: $light-blue-50;
+
+	&:hover {
+		border-color: $light-blue-50;
+	}
 }
 
 // Browser issues wrapper ================================================================
