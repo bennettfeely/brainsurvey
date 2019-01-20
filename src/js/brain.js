@@ -1,4 +1,3 @@
-// prettier-ignore
 settings = {
 	autosave: false,
 
@@ -7,7 +6,7 @@ settings = {
 	head_model_path: "BertsHead_01/BertsHead_01_Remesh_01.gltf",
 
 	// Animations
-	orbit: true,
+	orbit: false,
 	orbit_speed: 4,
 
 	// Helpers
@@ -62,7 +61,7 @@ settings = {
 			z: 0
 		}
 	}
-}
+};
 
 regions_obj = {
 	Frontal_Pole_0: {
@@ -510,8 +509,11 @@ function route() {
 }
 
 function initBrain() {
-	var canvasWidth = brain_wrapper.offsetWidth;
-	var canvasHeight = brain_wrapper.offsetHeight;
+	// Get the canvas initial size
+	getSizes();
+
+	// Setup mouse for raycasting
+	mouse = new THREE.Vector2();
 
 	// Setup Camera
 	camera = new THREE.PerspectiveCamera(
@@ -649,6 +651,9 @@ function initBrain() {
 		}
 	);
 
+	// Setup raycaster
+	raycaster = new THREE.Raycaster();
+
 	// Render the canvas
 	renderer = new THREE.WebGLRenderer({
 		alpha: true,
@@ -657,31 +662,64 @@ function initBrain() {
 	});
 	renderer.setPixelRatio(window.devicePixelRatio);
 
-	setCanvasSize();
-
 	// Rendering settings
 	renderer.gammaOutput = true;
 
 	// Add canvas to page
+	setCanvasSize();
 	brain_wrapper.appendChild(renderer.domElement);
 
 	// Detect window resizing and resize canvas
 	window.addEventListener("resize", setCanvasSize, false);
+
+	// Detect mousemove for raycaster
+	document.addEventListener("mousemove", onDocumentMouseMove, false);
+}
+
+function getSizes() {
+	sizes = document.querySelector(".brain-wrapper").getBoundingClientRect();
 }
 
 function setCanvasSize() {
-	var brain_wrapper = document.querySelector(".brain-wrapper");
+	getSizes();
 
-	camera.aspect = brain_wrapper.offsetWidth / brain_wrapper.offsetHeight;
+	camera.aspect = sizes.width / sizes.height;
 	camera.updateProjectionMatrix();
 
-	renderer.setSize(brain_wrapper.offsetWidth, brain_wrapper.offsetHeight);
+	renderer.setSize(sizes.width, sizes.height);
+}
+
+function onDocumentMouseMove(e) {
+	e.preventDefault();
+	// mouse.x = (e.clientX / sizes.width) * 2 - 1;
+	// mouse.y = -(e.clientY / sizes.height) * 2 + 1;
+
+	console.log(sizes.left);
+
+	mouse.x = ((e.clientX - sizes.left) / sizes.width) * 2 - 1;
+	mouse.y = -((e.clientY - sizes.top) / sizes.height) * 2 + 1;
 }
 
 function animate() {
 	requestAnimationFrame(animate);
 
 	controls.update();
+
+	raycaster.setFromCamera(mouse, camera);
+
+	// scene.add(
+	// 	new THREE.ArrowHelper(
+	// 		raycaster.ray.direction,
+	// 		raycaster.ray.origin,
+	// 		30,
+	// 		0xffff00
+	// 	)
+	// );
+
+	var intersects = raycaster.intersectObjects(scene.children, true);
+	if (intersects.length > 0) {
+		intersects[0].object.material.color.set(0xff0000);
+	}
 
 	renderer.render(scene, camera);
 }
