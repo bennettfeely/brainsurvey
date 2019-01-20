@@ -707,18 +707,9 @@ function animate() {
 
 	raycaster.setFromCamera(mouse, camera);
 
-	// scene.add(
-	// 	new THREE.ArrowHelper(
-	// 		raycaster.ray.direction,
-	// 		raycaster.ray.origin,
-	// 		30,
-	// 		0xffff00
-	// 	)
-	// );
-
 	var intersects = raycaster.intersectObjects(scene.children, true);
 	if (intersects.length > 0) {
-		intersects[0].object.material.color.set(0xff0000);
+		// intersects[0].object.material.color.set(0xff0000);
 	}
 
 	renderer.render(scene, camera);
