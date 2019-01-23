@@ -47,7 +47,6 @@ settings = {
 			active: "darkred",
 			focus: "#fdfa00"
 		},
-		explode: 0,
 		offset: {
 			x: -2.25,
 			y: 0,
@@ -594,23 +593,7 @@ function initBrain() {
 					// Create separate material instance and local mesh styles
 					mesh.material = mesh.material.clone();
 
-					// Explode brain regions
-					if (settings.brain.explode > 0) {
-						mesh.geometry.computeBoundingSphere();
-
-						var x = mesh.geometry.boundingSphere.center.x;
-						var y = mesh.geometry.boundingSphere.center.y;
-						var z = mesh.geometry.boundingSphere.center.z;
-
-						mesh.position.set(
-							x * settings.brain.explode,
-							y * settings.brain.explode,
-							z * settings.brain.explode
-						);
-					}
-
 					// Add mesh object to regions object
-					// TODO: is this necessary?
 					regions_obj[mesh.name].mesh = mesh;
 
 					ray_objects.push(mesh);
@@ -736,10 +719,7 @@ function onCanvasMouseDown(e) {
 }
 
 function onCanvasMouseUp(e) {
-	// console.log("onDocumentMouseUp();");
-
-	// TODO
-	// Needs something test has_content == false
+	console.log("onDocumentMouseUp();");
 
 	if (raycaster_paused == true && settings.slice.visible == false) {
 		raycaster_paused = false;
