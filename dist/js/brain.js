@@ -654,9 +654,12 @@ function initBrain() {
 
 	// Setup raycaster
 	raycaster = new THREE.Raycaster();
-	mouse = new THREE.Vector2();
 	raycaster_paused = false;
 	last_intersected = null;
+
+	// Start mouse for raycaster  at point far away from brain
+	// to prevent central mesh from being highlighted
+	mouse = new THREE.Vector2(1000, 1000, 1000);
 
 	// Render the canvas
 	renderer = new THREE.WebGLRenderer({
