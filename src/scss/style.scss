@@ -395,27 +395,23 @@ body {
 	max-width: 100%;
 	white-space: nowrap;
 	background: $grey-800;
-	animation: slice-tool 0.5s;
+	animation: slice-tool 0.8s;
+	transform-origin: center top;
 
 	@keyframes slice-tool {
-		25% {
-			background: $grey-600;
+		20% {
+			background: $grey-500;
 		}
 	}
 
 	&.is-hidden {
 		display: none;
 	}
+}
 
-	h2 {
-		display: inline-block;
-		margin: 0;
-	}
-
-	&:hover,
-	&:focus-within {
-		opacity: 1;
-	}
+.slice-tool-title {
+	display: inline-block;
+	margin: 0;
 }
 
 .slice-tool-axes {

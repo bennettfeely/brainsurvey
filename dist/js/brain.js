@@ -38,10 +38,15 @@ settings = {
 
 	// Materials
 	brain: {
-		roughness: 0.1, // 0.1
-		metalness: 0.3, // 0.4
+		roughness: 0.1,
+		metalness: 0.3,
 		wireframe: false,
-		default_color: "lightcoral",
+		color: {
+			default: "salmon",
+			hover: "firebrick",
+			active: "darkred",
+			focus: "#fdfa00"
+		},
 		explode: 0,
 		offset: {
 			x: -2.25,
@@ -54,7 +59,9 @@ settings = {
 		roughness: 1,
 		metalness: 0,
 		wireframe: true,
-		default_color: "#333",
+		color: {
+			default: "#333"
+		},
 		offset: {
 			x: -2.25,
 			y: 0,
@@ -467,32 +474,21 @@ var brain_wrapper = document.querySelector(".brain-wrapper");
 init();
 
 function init() {
-	// Navigate to correct page
-	route();
-
 	// Warnings
-	if (WEBGL.isWebGLAvailable() === false) {
+	if (WEBGL.isWebGLAvailable() === true) {
+		// Navigate to correct page
+		route();
+	} else {
 		warning(
 			"Your web browser or graphics card doesn't support WebGL. Try another device or browser."
 		);
-	} else {
-		updateStatus("Loading model");
-	}
-
-	// Load any settings in localstorage
-	if (settings.autosave == true) {
-		loadSettings();
 	}
 
 	detectTabbing();
 }
 
 function route() {
-	console.log("route();");
-
 	var path_name = window.location.pathname;
-
-	console.log("path_name == " + path_name);
 
 	initBrain();
 	initSettings();
@@ -509,11 +505,10 @@ function route() {
 }
 
 function initBrain() {
+	updateStatus("Loading model");
+
 	// Get the canvas initial size
 	getSizes();
-
-	// Setup mouse for raycasting
-	mouse = new THREE.Vector2();
 
 	// Setup Camera
 	camera = new THREE.PerspectiveCamera(
@@ -555,12 +550,8 @@ function initBrain() {
 	// Set the scene
 	scene = new THREE.Scene();
 
-	// Lighting
-	var light = new THREE.HemisphereLight(0xff9999, 0.8);
-	scene.add(light);
-	var directionalLight = new THREE.DirectionalLight(0xafbfff, 0.5);
-	directionalLight.position.set(0, 10, 0);
-	scene.add(directionalLight);
+	// Create new object to capture ray objects;
+	ray_objects = [];
 
 	// Load manager
 	var brain_manager = new THREE.LoadingManager();
@@ -597,7 +588,7 @@ function initBrain() {
 					mesh.material.roughness = settings.brain.roughness;
 					mesh.material.metalness = settings.brain.metalness;
 					mesh.material.wireframe = settings.brain.wireframe;
-					mesh.material.color.setStyle(settings.brain.default_color);
+					mesh.material.color.setStyle(settings.brain.color.default);
 					mesh.material.side = THREE.DoubleSide;
 
 					// Create separate material instance and local mesh styles
@@ -622,9 +613,13 @@ function initBrain() {
 					// TODO: is this necessary?
 					regions_obj[mesh.name].mesh = mesh;
 
+					ray_objects.push(mesh);
+
 					// We're done traversing
 					if (i == Object.keys(regions_obj).length) {
 						setupRegionsFilter();
+
+						animate();
 					}
 				}
 			});
@@ -637,8 +632,6 @@ function initBrain() {
 			);
 
 			scene.add(gltf.scene);
-
-			animate();
 		},
 		function(xhr) {
 			// if (xhr.total !== 0) {
@@ -651,8 +644,19 @@ function initBrain() {
 		}
 	);
 
+	// Setup Lighting
+	var light = new THREE.HemisphereLight(0xff9999, 0.8);
+	scene.add(light);
+
+	var directionalLight = new THREE.DirectionalLight(0xafbfff, 0.5);
+	directionalLight.position.set(0, 10, 0);
+	scene.add(directionalLight);
+
 	// Setup raycaster
 	raycaster = new THREE.Raycaster();
+	mouse = new THREE.Vector2();
+	raycaster_paused = false;
+	last_intersected = null;
 
 	// Render the canvas
 	renderer = new THREE.WebGLRenderer({
@@ -672,8 +676,21 @@ function initBrain() {
 	// Detect window resizing and resize canvas
 	window.addEventListener("resize", setCanvasSize, false);
 
-	// Detect mousemove for raycaster
-	document.addEventListener("mousemove", onDocumentMouseMove, false);
+	// Raycaster events
+	var canvas = document.querySelector(".brain-wrapper canvas");
+	canvas.addEventListener("mousemove", onCanvasMouseMove, false);
+	canvas.addEventListener("mousedown", onCanvasMouseDown, false);
+	canvas.addEventListener("mouseup", onCanvasMouseUp, false);
+	// document.addEventListener("click", onDocumentClick, false);
+
+	// Detect click for back button
+	document
+		.querySelector(".back-button")
+		.addEventListener("click", function() {
+			reset();
+
+			raycaster_paused = false;
+		});
 }
 
 function getSizes() {
@@ -683,41 +700,124 @@ function getSizes() {
 function setCanvasSize() {
 	getSizes();
 
+	// Set the size of the <canvas> to fill the .brain_wrapper
 	camera.aspect = sizes.width / sizes.height;
 	camera.updateProjectionMatrix();
 
 	renderer.setSize(sizes.width, sizes.height);
 }
 
-function onDocumentMouseMove(e) {
-	e.preventDefault();
-	// mouse.x = (e.clientX / sizes.width) * 2 - 1;
-	// mouse.y = -(e.clientY / sizes.height) * 2 + 1;
+function onCanvasMouseMove(e) {
+	if (raycaster_paused == false && settings.slice.visible == false) {
+		e.preventDefault();
 
-	console.log(sizes.left);
+		// Get the mouse position and find the position relative to the brain wrapper
+		mouse.x = ((e.clientX - sizes.left) / sizes.width) * 2 - 1;
+		mouse.y = -((e.clientY - sizes.top) / sizes.height) * 2 + 1;
+	}
+}
 
-	mouse.x = ((e.clientX - sizes.left) / sizes.width) * 2 - 1;
-	mouse.y = -((e.clientY - sizes.top) / sizes.height) * 2 + 1;
+function onCanvasMouseDown(e) {
+	if (raycaster_paused == false && settings.slice.visible == false) {
+		console.log("onCanvasMouseDown();");
+
+		e.preventDefault();
+		mouse.x = ((e.clientX - sizes.left) / sizes.width) * 2 - 1;
+		mouse.y = -((e.clientY - sizes.top) / sizes.height) * 2 + 1;
+		raycaster.setFromCamera(mouse, camera);
+
+		last_intersected.material.color.setStyle(settings.brain.color.active);
+
+		raycaster_paused = true;
+	}
+}
+
+function onCanvasMouseUp(e) {
+	// console.log("onDocumentMouseUp();");
+
+	// TODO
+	// Needs something test has_content == false
+
+	if (raycaster_paused == true && settings.slice.visible == false) {
+		raycaster_paused = false;
+	}
+}
+
+function onDocumentClick(e) {
+	// if (raycaster_paused == false && settings.slice.visible == false) {
+	// 	console.log("onDocumentClick();");
+	// 	e.preventDefault();
+	// 	// mouse_click.x = ((e.clientX - sizes.left) / sizes.width) * 2 - 1;
+	// 	// mouse_click.y = -((e.clientY - sizes.top) / sizes.height) * 2 + 1;
+	// 	raycaster.setFromCamera(mouse_down, camera);
+	// 	var intersects = raycaster.intersectObjects(scene.children, true);
+	// 	if (intersects.length > 0) {
+	// 		// Force click event to happen after mouseup event
+	// 		raycaster_paused = true;
+	// 		last_intersected = intersects[0].object;
+	// 		switchRegion(last_intersected.name);
+	// 	}
+	// }
 }
 
 function animate() {
+	// Rerun animate() as fast as the browser can
 	requestAnimationFrame(animate);
 
+	// Hover effects on brain region meshes
+	rayCast();
+
 	controls.update();
-
-	raycaster.setFromCamera(mouse, camera);
-
-	var intersects = raycaster.intersectObjects(scene.children, true);
-	if (intersects.length > 0) {
-		// intersects[0].object.material.color.set(0xff0000);
-	}
 
 	renderer.render(scene, camera);
 }
 
+function rayCast() {
+	// Raycasting for hover events on brain regions
+	if (raycaster_paused == false && settings.slice.visible == false) {
+		// Set the raycaster with current mouse and camera position
+		raycaster.setFromCamera(mouse, camera);
+
+		// Get an array of intersecting brain region meshes
+		// scene.children[2] contains brain region meshes, excluding head mesh
+		var intersects = raycaster.intersectObjects(ray_objects);
+
+		// Set and unset brain region mesh color when hovered
+		if (intersects.length > 0) {
+			if (intersects[0].object != last_intersected) {
+				if (last_intersected) {
+					// A region different than the one previously hovered is last_intersected
+					last_intersected.material.color.setStyle(
+						settings.brain.color.default
+					);
+				}
+
+				// Nearest object to camera is intersects[0] which we will change color
+				last_intersected = intersects[0].object;
+				last_intersected.material.color.setStyle(
+					settings.brain.color.hover
+				);
+			}
+		} else {
+			if (last_intersected) {
+				// No meshes are last_intersected, set last last_intersected region to default color
+				last_intersected.material.color.setStyle(
+					settings.brain.color.default
+				);
+			}
+
+			last_intersected = null;
+		}
+	}
+}
+
 function setupRegionsFilter() {
-	var regions_filter = document.querySelector(".regions-filter");
-	regions_filter.onchange = e => {
+	// Add functionality to the <select> dropdown to select regions
+	document.querySelector(".regions-filter").onchange = e => {
+		console.log("change!");
+		// Pause raycasting
+		raycaster_paused = true;
+
 		var region_id = e.target.value;
 
 		switchRegion(region_id);
@@ -725,6 +825,7 @@ function setupRegionsFilter() {
 }
 
 function switchRegion(region_id) {
+	// Get the full region object by the region_id
 	var target_obj = regions_obj[region_id];
 
 	// Change the URL
@@ -799,22 +900,11 @@ function switchRegion(region_id) {
 }
 
 function initSettings() {
-	// Orbit Toggle
-	orbitToggle();
-
-	// Slice Toggle
 	sliceToggle();
-
-	// Head Toggle
+	orbitToggle();
 	headToggle();
-
-	// Square Grid Toggle
 	// squareGridToggle();
-
-	// Polar Grid Toggle
 	// polarGridToggle();
-
-	// Axes Toggle
 	// axesToggle();
 }
 
@@ -836,93 +926,88 @@ function orbitToggle() {
 }
 
 function sliceToggle() {
-	// Setup slice toggle inits
 	var slice_toggle = document.querySelector(".slice-toggle input");
-	slice_toggle.checked = settings.slice.visible;
-
-	setupSlice();
 
 	slice_toggle.addEventListener("change", function() {
 		if (slice_toggle.checked) {
-			settings.slice.visible = true;
+			setupSliceTool();
 		} else {
-			settings.slice.visible = false;
+			hideSliceTool();
 		}
-
-		setupSlice();
-
-		saveSettings();
 
 		scrollTop();
 	});
 }
 
-function setupSlice() {
-	if (settings.slice.visible == true) {
-		// Check the default slice axis button
-		document.querySelector(
-			'input[name="slice_axis"][value="' + settings.slice.axis + '"]'
-		).checked = true;
+function setupSliceTool() {
+	settings.slice.visible = true;
 
-		// Show the slice tool
-		document.querySelector(".slice-tool").classList.remove("is-hidden");
+	// Check the default slice axis button
+	document.querySelector(
+		'input[name="slice_axis"][value="' + settings.slice.axis + '"]'
+	).checked = true;
 
-		// Remove the spinner
-		var spinner = document.querySelector(".spinner");
-		if (spinner !== null) {
-			spinner.parentNode.removeChild(spinner);
-		}
+	// Show the slice tool
+	document.querySelector(".slice-tool").classList.remove("is-hidden");
 
-		// Slice things up to start
-		slice();
+	// Remove the spinner
+	var spinner = document.querySelector(".spinner");
+	if (spinner !== null) {
+		spinner.parentNode.removeChild(spinner);
+	}
 
-		// Adjust camera for full view of slice
-		sliceCameraCentering();
+	// Slice things up to start
+	slice();
 
-		// Detect change to slice axis buttons
-		document
-			.querySelectorAll('[name="slice_axis"]')
-			.forEach(function(axis_button) {
-				axis_button.addEventListener("change", function() {
-					// Set slice axis
-					settings.slice.axis = document.querySelector(
-						'[name="slice_axis"]:checked'
-					).value;
+	// Adjust camera for full view of slice
+	sliceCameraCentering();
 
-					saveSettings();
-
-					sliceCameraCentering();
-
-					slice();
-				});
-			});
-
-		// Detect change to slice range slider
-		document
-			.querySelector(".slice-range")
-			.addEventListener("input", function() {
-				// Stop orbiting
-				controls.autoRotate = false;
-
-				// Set slice position
-				settings.slice.position = this.value;
+	// Detect change to slice axis buttons
+	document
+		.querySelectorAll('[name="slice_axis"]')
+		.forEach(function(axis_button) {
+			axis_button.addEventListener("change", function() {
+				// Set slice axis
+				settings.slice.axis = document.querySelector(
+					'[name="slice_axis"]:checked'
+				).value;
 
 				saveSettings();
 
+				sliceCameraCentering();
+
 				slice();
 			});
-	} else {
-		// Hide slice tool
-		document.querySelector(".slice-tool").classList.add("is-hidden");
+		});
 
-		// Remove the slicing
-		renderer.localClippingEnabled = false;
-		renderer.clippingPlanes = [];
+	// Detect change to slice range slider
+	document
+		.querySelector(".slice-range")
+		.addEventListener("input", function() {
+			// Stop orbiting
+			controls.autoRotate = false;
 
-		// Untoggle slice toggle
-		var slice_toggle = document.querySelector(".slice-toggle input");
-		slice_toggle.checked = false;
-	}
+			// Set slice position
+			settings.slice.position = this.value;
+
+			saveSettings();
+
+			slice();
+		});
+}
+
+function hideSliceTool() {
+	settings.slice.visible = false;
+
+	// Hide slice tool
+	document.querySelector(".slice-tool").classList.add("is-hidden");
+
+	// Remove the slicing
+	renderer.localClippingEnabled = false;
+	renderer.clippingPlanes = [];
+
+	// Update the settings and toggle button
+	document.querySelector(".slice-toggle input").checked = false;
 }
 
 function sliceCameraCentering() {
@@ -1115,7 +1200,7 @@ function loadHead() {
 					mesh.material.roughness = settings.head.roughness;
 					mesh.material.metalness = settings.head.metalness;
 					mesh.material.wireframe = settings.head.wireframe;
-					mesh.material.color.setStyle(settings.head.default_color);
+					mesh.material.color.setStyle(settings.head.color.default);
 					mesh.visible = true;
 
 					if (settings.head.opacity < 1) {
@@ -1137,6 +1222,8 @@ function loadHead() {
 
 			// Add the head to the scene
 			scene.add(gltf.scene);
+
+			console.log(scene.children);
 		},
 		function(xhr) {
 			// if (xhr.total !== 0) {
@@ -1174,7 +1261,7 @@ function reset() {
 				if (settings.head.opacity < 1) {
 					mesh.material.transparent = true;
 					mesh.material.opacity = settings.head.opacity;
-					mesh.material.color.setStyle(settings.head.default_color);
+					mesh.material.color.setStyle(settings.head.color.default);
 				}
 			}
 		}
