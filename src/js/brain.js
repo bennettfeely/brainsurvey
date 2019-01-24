@@ -694,13 +694,11 @@ function setCanvasSize() {
 }
 
 function onCanvasMouseMove(e) {
-	if (raycaster_paused == false && settings.slice.visible == false) {
-		e.preventDefault();
+	e.preventDefault();
 
-		// Get the mouse position and find the position relative to the brain wrapper
-		mouse.x = ((e.clientX - sizes.left) / sizes.width) * 2 - 1;
-		mouse.y = -((e.clientY - sizes.top) / sizes.height) * 2 + 1;
-	}
+	// Get the mouse position and find the position relative to the brain wrapper
+	mouse.x = ((e.clientX - sizes.left) / sizes.width) * 2 - 1;
+	mouse.y = -((e.clientY - sizes.top) / sizes.height) * 2 + 1;
 }
 
 function onCanvasMouseDown(e) {
@@ -723,6 +721,8 @@ function onCanvasMouseUp(e) {
 
 	if (raycaster_paused == true && settings.slice.visible == false) {
 		raycaster_paused = false;
+
+		rayCast();
 	}
 }
 
@@ -780,6 +780,9 @@ function rayCast() {
 				last_intersected.material.color.setStyle(
 					settings.brain.color.hover
 				);
+
+				document.querySelector(".regions-filter").value =
+					last_intersected.name;
 			}
 		} else {
 			if (last_intersected) {
@@ -792,6 +795,16 @@ function rayCast() {
 			last_intersected = null;
 		}
 	}
+}
+
+function createVector(x, y, z, camera, width, height) {
+	var p = new THREE.Vector3(x, y, z);
+	var vector = p.project(camera);
+
+	vector.x = ((vector.x + 1) / 2) * width;
+	vector.y = (-(vector.y - 1) / 2) * height;
+
+	return vector;
 }
 
 function setupRegionsFilter() {
@@ -871,10 +884,11 @@ function switchRegion(region_id) {
 				"<p>" + data.query.pages[article_id].extract + "</p>";
 
 			document.querySelector(".content-wrapper .container").innerHTML +=
-				sub_heading + article_extract;
+				"<p>Unable to retrieve Wikipedia article summary.</p>";
 		},
 		error: function(error) {
-			console.log(error);
+			document.querySelector(".content-wrapper .container").innerHTML +=
+				"<p>Unable to retrieve Wikipedia article summary.</p>";
 		}
 	});
 
@@ -939,6 +953,9 @@ function setupSliceTool() {
 		spinner.parentNode.removeChild(spinner);
 	}
 
+	// Reset the regions filter
+	document.querySelector(".regions-filter").value = "";
+
 	// Slice things up to start
 	slice();
 
@@ -994,6 +1011,8 @@ function hideSliceTool() {
 }
 
 function sliceCameraCentering() {
+	// Positions brain slice in best angle for each axis
+
 	if (settings.slice.axis == "y") {
 		camera.position.set(50, 0, 0);
 	}
@@ -1259,6 +1278,9 @@ function reset() {
 
 	// Empty the content wrapper
 	document.querySelector(".content-wrapper .container").innerHTML = "";
+
+	// Reset the regions filter
+	document.querySelector(".regions-filter").value = "";
 
 	// Make the world orbit because it looks nice
 	if (settings.orbit == true) {

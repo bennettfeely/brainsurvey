@@ -276,7 +276,7 @@ body {
 	color: $white;
 }
 
-// Brain wrapper =========================================================================
+// Loaders ===============================================================================
 .spinner {
 	$spinner-size: 5rem;
 
@@ -299,6 +299,23 @@ body {
 	}
 }
 
+// Tooltips ===============================================================================
+// .tooltip {
+// 	position: absolute;
+// 	top: 50%;
+// 	left: 50%;
+// 	display: inline-block;
+// 	background: rgba($white, 0.95);
+// 	line-height: 1;
+// 	font-size: small;
+// 	padding: var(--small);
+// 	border-radius: var(--radius);
+// 	transform-origin: top left;
+// 	z-index: 100;
+// 	white-space: nowrap;
+// }
+
+// Brain wrapper =========================================================================
 .brain-wrapper {
 	position: relative;
 	width: 100%;
@@ -600,15 +617,19 @@ input[type="radio"] {
 			width: 50%;
 		}
 	}
+
+	.container:empty {
+		display: none;
+	}
 }
 
 .action-buttons-wrapper {
 	position: relative;
 	z-index: 100;
-	padding: 0 var(--large) var(--large);
+	padding: 0 var(--large);
 
 	@media (min-width: $tablet) {
-		padding: 0 var(--large);
+		padding: var(--large) var(--large) 0;
 	}
 }
 
@@ -622,7 +643,6 @@ input[type="radio"] {
 	font-weight: 500;
 	border-radius: var(--radius);
 	background: transparent;
-	margin: 0 var(--small) 0 0;
 	transition: opacity var(--transition);
 	opacity: 0.75;
 	cursor: pointer;
@@ -637,10 +657,6 @@ input[type="radio"] {
 		background: $blue-grey-700;
 		color: $white;
 		border-color: $white;
-	}
-
-	@media (min-width: $tablet) {
-		margin-top: var(--large);
 	}
 }
 
