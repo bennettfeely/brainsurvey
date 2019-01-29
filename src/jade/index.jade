@@ -40,13 +40,13 @@ body.home
 				.box-wrapper
 					+toggle("head-toggle", "Show Head")
 					+toggle("orbit-toggle", "Orbit")
-				//- .box-wrapper
-				//- 	+toggle("square-grid-toggle", "Square Grid")
-				//- 	+toggle("axes-toggle", "Axes")
+				.box-wrapper
+					// +toggle("square-grid-toggle", "Square Grid")
+					+toggle("axes-toggle", "Axes")
 		+footer()
-	script(src="js/three.js")
-	script(src="js/GLTFLoader.js")
-	script(src="js/OrbitControls.js")
-	script(src="js/WebGL.js")
-	script(src="js/JSONP.js")
+	script(src="js/three.min.js")
+	script(src="js/GLTFLoader.min.js")
+	script(src="js/OrbitControls.min.js")
+	script(src="js/WebGL.min.js")
+	script(src="js/jsonp.min.js")
 	script(src="js/brain.js")

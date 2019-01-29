@@ -353,6 +353,30 @@ body {
 		z-index: 10;
 		transform-origin: center;
 	}
+
+	// // Crosshairs
+	// &:before,
+	// &:after {
+	// 	display: block;
+	// 	position: absolute;
+	// 	content: "";
+	// 	z-index: 1000;
+	// 	background: blue;
+	// }
+
+	// &:before {
+	// 	left: 0;
+	// 	right: 0;
+	// 	top: calc(50% - 1px);
+	// 	height: 2px;
+	// }
+
+	// &:after {
+	// 	top: 0;
+	// 	bottom: 0;
+	// 	left: calc(50% - 1px);
+	// 	width: 2px;
+	// }
 }
 
 .has-region-content {

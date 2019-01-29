@@ -1,471 +1,5 @@
-settings = {
-	autosave: false,
-
-	// Models
-	brain_model_path: "Brain_05/Brain_005.gltf",
-	head_model_path: "BertsHead_01/BertsHead_01_Remesh_01.gltf",
-
-	// Animations
-	orbit: false,
-	orbit_speed: 4,
-
-	// Helpers
-	grid_size: 10,
-	square_grid: false,
-	polar_grid: false,
-	axes: false,
-
-	// Interactions
-	pan: false,
-	zoom: {
-		enabled: true,
-		min: 15,
-		max: 30
-	},
-
-	// Slicing and dicing
-	slice: {
-		visible: false,
-		axis: "y",
-		position: 0,
-		size: 0.25,
-		dimensions: {
-			x: 7,
-			y: 10,
-			z: 7
-		}
-	},
-
-	// Materials
-	brain: {
-		roughness: 0.1,
-		metalness: 0.3,
-		wireframe: false,
-		color: {
-			default: "salmon",
-			hover: "firebrick",
-			active: "darkred",
-			focus: "#fdfa00"
-		},
-		offset: {
-			x: -2.25,
-			y: 0,
-			z: 0
-		}
-	},
-	head: {
-		visible: false,
-		roughness: 1,
-		metalness: 0,
-		wireframe: true,
-		color: {
-			default: "#333"
-		},
-		offset: {
-			x: -2.25,
-			y: 0,
-			z: 0
-		}
-	}
-};
-
-regions_obj = {
-	Frontal_Pole_0: {
-		path: "frontal-pole",
-		wiki_path: "frontal_lobe",
-		full_name: "Frontal Pole"
-	},
-	Right_Insular_Cortex_1: {
-		path: "right-insular-cortex",
-		wiki_path: "insular_cortex",
-		full_name: "Right Insular Cortex"
-	},
-	Superior_Frontal_Gyrus_4: {
-		path: "superior-frontal-gyrus",
-		wiki_path: "frontal_gyrus",
-		full_name: "Superior Frontal Gyrus"
-	},
-	Right_Middle_Frontal_Gyrus_6: {
-		path: "right-middle-frontal-gyrus",
-		wiki_path: "frontal_gyrus",
-		full_name: "Right Middle Frontal Gyrus"
-	},
-	Left_Middle_Frontal_Gyrus_5: {
-		path: "left-middle-frontal-gyrus",
-		wiki_path: "frontal_gyrus",
-		full_name: "Left Middle Frontal Gyrus"
-	},
-	Left_Inferior_Frontal_Gyrus__pars_triangularis_8: {
-		path: "left-inferior-frontal-gyrus-pars-triangularis",
-		wiki_path: "frontal_gyrus",
-		full_name: "Left Inferior Frontal Gyrus pars triangularis"
-	},
-	Right_Inferior_Frontal_Gyrus__pars_triangularis_7: {
-		path: "right-inferior-frontal-gyrus-pars-triangularis",
-		wiki_path: "frontal_gyrus",
-		full_name: "Right Inferior Frontal Gyrus pars triangularis"
-	},
-	Right_Inferior_Frontal_Gyrus__pars_opercularis_9: {
-		path: "right-inferior-frontal-gyrus-pars-opercularis",
-		wiki_path: "frontal_gyrus",
-		full_name: "Right Inferior Frontal Gyrus pars opercularis"
-	},
-	Left_Inferior_Frontal_Gyrus__pars_opercularis_11: {
-		path: "left-inferior-frontal-gyrus-pars-opercularis",
-		wiki_path: "frontal_gyrus",
-		full_name: "Left Inferior Frontal Gyrus pars opercularis"
-	},
-	Precentral_Gyrus_12: {
-		path: "precentral-gyrus",
-		wiki_path: "precentral_gyrus",
-		full_name: "Precentral Gyrus"
-	},
-	Right_Temporal_Pole_13: {
-		path: "right-temporal-pole",
-		wiki_path: "cerebral_hemisphere",
-		full_name: "Right Temporal Pole"
-	},
-	Left_Temporal_Pole_14: {
-		path: "left-temporal-pole",
-		wiki_path: "cerebral_hemisphere",
-		full_name: "Left Temporal Pole"
-	},
-	Left_Middle_Temporal_Gyrus__anterior_division_15: {
-		path: "left-middle-temporal-gyrus-anterior-division",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Left Middle Temporal Gyrus anterior division"
-	},
-	Right_Middle_Temporal_Gyrus__anterior_division_16: {
-		path: "right-middle-temporal-gyrus-anterior-division",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Right Middle Temporal Gyrus anterior division"
-	},
-	RIght_Superior_Temporal_Gyrus__posterior_division_17: {
-		path: "right-superior-temporal-gyrus-posterior-division",
-		wiki_path: "superior_temporal_gyrus",
-		full_name: "RIght Superior Temporal Gyrus posterior division"
-	},
-	Left_Superior_Temporal_Gyrus__posterior_division_18: {
-		path: "left-superior-temporal-gyrus-posterior-division",
-		wiki_path: "superior_temporal_gyrus",
-		full_name: "Left Superior Temporal Gyrus posterior division"
-	},
-	Right_Inferior_Temporal_Gyrus__anterior_division_19: {
-		path: "right-inferior-temporal-gyrus-anterior-division",
-		wiki_path: "inferior_temporal_gyrus",
-		full_name: "Right Inferior Temporal Gyrus anterior division"
-	},
-	Left_Middle_Temporal_Gyrus__anterior_division_20: {
-		path: "left-middle-temporal-gyrus-anterior-division",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Left Middle Temporal Gyrus anterior division"
-	},
-	Right_Middle_Temporal_Gyrus__posterior_division_21: {
-		path: "right-middle-temporal-gyrus-posterior-division",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Right Middle Temporal Gyrus posterior division"
-	},
-	Left_Middle_Temporal_Gyrus__posterior_division_22: {
-		path: "left-middle-temporal-gyrus-posterior-division",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Left Middle Temporal Gyrus posterior division"
-	},
-	Right_Middle_Temporal_Gyrus__temporooccipital_part_23: {
-		path: "right-middle-temporal-gyrus-temporooccipital-part",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Right Middle Temporal Gyrus temporooccipital part"
-	},
-	Left_Middle_Temporal_Gyrus__temporooccipital_part_24: {
-		path: "left-middle-temporal-gyrus-temporooccipital-part",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Left Middle Temporal Gyrus temporooccipital part"
-	},
-	Left_Temporal_Fusiform_Cortex__anterior_division_25: {
-		path: "left-temporal-fusiform-cortex-anterior-division",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Temporal Fusiform Cortex anterior division"
-	},
-	Right_Inferior_Temporal_Gyrus__posterior_division_26: {
-		path: "right-inferior-temporal-gyrus-posterior-division",
-		wiki_path: "inferior_temporal_gyrus",
-		full_name: "Right Inferior Temporal Gyrus posterior division"
-	},
-	Right_Inferior_Temporal_Gyrus__posterior_division_28: {
-		path: "right-inferior-temporal-gyrus-posterior-division",
-		wiki_path: "inferior_temporal_gyrus",
-		full_name: "Right Inferior Temporal Gyrus posterior division"
-	},
-	Left_Inferior_Temporal_Gyrus__posterior_division_27: {
-		path: "left-inferior-temporal-gyrus-posterior-division",
-		wiki_path: "inferior_temporal_gyrus",
-		full_name: "Left Inferior Temporal Gyrus posterior division"
-	},
-	Left_Inferior_Temporal_Gyrus__posterior_division_29: {
-		path: "left-inferior-temporal-gyrus-posterior-division",
-		wiki_path: "inferior_temporal_gyrus",
-		full_name: "Left Inferior Temporal Gyrus posterior division"
-	},
-	Postcentral_Gyrus_30: {
-		path: "postcentral-gyrus",
-		wiki_path: "postcentral_gyrus",
-		full_name: "Postcentral Gyrus"
-	},
-	Left_Superior_Parietal_Lobule_31: {
-		path: "left-superior-parietal-lobule",
-		wiki_path: "superior_parietal_lobule",
-		full_name: "Left Superior Parietal Lobule"
-	},
-	Right_Superior_Parietal_Lobule_32: {
-		path: "right-superior-parietal-lobule",
-		wiki_path: "superior_parietal_lobule",
-		full_name: "Right Superior Parietal Lobule"
-	},
-	Left_Supramarginal_Gyrus__anterior_division_33: {
-		path: "left-supramarginal-gyrus-anterior-division",
-		wiki_path: "supramarginal_gyrus",
-		full_name: "Left Supramarginal Gyrus anterior division"
-	},
-	Right_Supramarginal_Gyrus__anterior_division_34: {
-		path: "right-supramarginal-gyrus-anterior-division",
-		wiki_path: "supramarginal_gyrus",
-		full_name: "Right Supramarginal Gyrus anterior division"
-	},
-	Left_Supramarginal_Gyrus__posterior_division_35: {
-		path: "left-supramarginal-gyrus-posterior-division",
-		wiki_path: "supramarginal_gyrus",
-		full_name: "Left Supramarginal Gyrus posterior division"
-	},
-	Right_Supramarginal_Gyrus__posterior_division_36: {
-		path: "right-supramarginal-gyrus-posterior-division",
-		wiki_path: "supramarginal_gyrus",
-		full_name: "Right Supramarginal Gyrus posterior division"
-	},
-	Left_Angular_Gyrus_37: {
-		path: "left-angular-gyrus",
-		wiki_path: "angular_gyrus",
-		full_name: "Left Angular Gyrus"
-	},
-	Right_Angular_Gyrus_38: {
-		path: "right-angular-gyrus",
-		wiki_path: "angular_gyrus",
-		full_name: "Right Angular Gyrus"
-	},
-	Right_Lateral_Occipital_Cortex__superior_division_39: {
-		path: "right-lateral-occipital-cortex-superior-division",
-		wiki_path: "visual_cortex",
-		full_name: "Right Lateral Occipital Cortex superior division"
-	},
-	Left_Lateral_Occipital_Cortex__superior_division_40: {
-		path: "left-lateral-occipital-cortex-superior-division",
-		wiki_path: "visual_cortex",
-		full_name: "Left Lateral Occipital Cortex superior division"
-	},
-	Right_Lateral_Occipital_Cortex__inferior_division_41: {
-		path: "right-lateral-occipital-cortex-inferior-division",
-		wiki_path: "visual_cortex",
-		full_name: "Right Lateral Occipital Cortex inferior division"
-	},
-	Left_Lateral_Occipital_Cortex__inferior_division_42: {
-		path: "left-lateral-occipital-cortex-inferior-division",
-		wiki_path: "visual_cortex",
-		full_name: "Left Lateral Occipital Cortex inferior division"
-	},
-	Lingual_Gyrus_43: {
-		path: "lingual-gyrus",
-		wiki_path: "lingual_gyrus",
-		full_name: "Lingual Gyrus"
-	},
-	Frontal_Medial_Cortex_44: {
-		path: "frontal-medial-cortex",
-		wiki_path: "prefrontal_cortex",
-		full_name: "Frontal Medial Cortex"
-	},
-	Superior_Frontal_Gyrus_45: {
-		path: "superior-frontal-gyrus",
-		wiki_path: "superior_frontal_gyrus",
-		full_name: "Superior Frontal Gyrus"
-	},
-	Subcallosal_Cortex_46: {
-		path: "subcallosal-cortex",
-		wiki_path: "brodmann_area_25",
-		full_name: "Subcallosal Cortex"
-	},
-	Paracingulate_Gyrus_47: {
-		path: "paracingulate-gyrus",
-		wiki_path: "cingulate_cortex",
-		full_name: "Paracingulate Gyrus"
-	},
-	Cingulate_Gyrus__anterior_division_48: {
-		path: "cingulate-gyrus-anterior-division",
-		wiki_path: "cingulate_cortex",
-		full_name: "Cingulate Gyrus anterior division"
-	},
-	Cingulate_Gyrus__posterior_division_49: {
-		path: "cingulate-gyrus-posterior-division",
-		wiki_path: "cingulate_cortex",
-		full_name: "Cingulate Gyrus posterior division"
-	},
-	Precuneous_Cortex_50: {
-		path: "precuneous-cortex",
-		wiki_path: "cuneus",
-		full_name: "Precuneous Cortex"
-	},
-	Cuneal_Cortex_51: {
-		path: "cuneal-cortex",
-		wiki_path: "cuneus",
-		full_name: "Cuneal Cortex"
-	},
-	Right_Frontal_Orbital_Cortex_52: {
-		path: "right-frontal-orbital-cortex",
-		wiki_path: "frontal_lobe",
-		full_name: "Right Frontal Orbital Cortex"
-	},
-	Left_Frontal_Orbital_Cortex_53: {
-		path: "left-frontal-orbital-cortex",
-		wiki_path: "frontal_lobe",
-		full_name: "Left Frontal Orbital Cortex"
-	},
-	Right_Parahippocampal_Gyrus__anterior_division_54: {
-		path: "right-parahippocampal-gyrus-anterior-division",
-		wiki_path: "parahippocampal_gyrus",
-		full_name: "Right Parahippocampal Gyrus anterior division"
-	},
-	Left_Parahippocampal_Gyrus__anterior_division_55: {
-		path: "left-parahippocampal-gyrus-anterior-division",
-		wiki_path: "parahippocampal_gyrus",
-		full_name: "Left Parahippocampal Gyrus anterior division"
-	},
-	Left_Parahippocampal_Gyrus__posterior_division_56: {
-		path: "left-parahippocampal-gyrus-posterior-division",
-		wiki_path: "parahippocampal_gyrus",
-		full_name: "Left Parahippocampal Gyrus posterior division"
-	},
-	Right_Parahippocampal_Gyrus__posterior_division_57: {
-		path: "right-parahippocampal-gyrus-posterior-division",
-		wiki_path: "parahippocampal_gyrus",
-		full_name: "Right Parahippocampal Gyrus posterior division"
-	},
-	Lingual_Gyrus_58: {
-		path: "lingual-gyrus",
-		wiki_path: "lingual_gyrus",
-		full_name: "Lingual Gyrus"
-	},
-	Left_Temporal_Fusiform_Cortex__anterior_division_59: {
-		path: "left-temporal-fusiform-cortex-anterior-division",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Temporal Fusiform Cortex anterior division"
-	},
-	Right_Temporal_Fusiform_Cortex__anterior_division_60: {
-		path: "right-temporal-fusiform-cortex-anterior-division",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Right Temporal Fusiform Cortex anterior division"
-	},
-	Right_Temporal_Fusiform_Cortex__posterior_division_61: {
-		path: "right-temporal-fusiform-cortex-posterior-division",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Right Temporal Fusiform Cortex posterior division"
-	},
-	Left_Temporal_Fusiform_Cortex__posterior_division_62: {
-		path: "left-temporal-fusiform-cortex-posterior-division",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Temporal Fusiform Cortex posterior division"
-	},
-	Right_Temporal_Occipital_Fusiform_Cortex_63: {
-		path: "right-temporal-occipital-fusiform-cortex",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Right Temporal Occipital Fusiform Cortex"
-	},
-	Left_Temporal_Occipital_Fusiform_Cortex_64: {
-		path: "left-temporal-occipital-fusiform-cortex",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Temporal Occipital Fusiform Cortex"
-	},
-	Right_Occipital_Fusiform_Gyrus_65: {
-		path: "right-occipital-fusiform-gyrus",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Right Occipital Fusiform Gyrus"
-	},
-	Left_Occipital_Fusiform_Gyrus_66: {
-		path: "left-occipital-fusiform-gyrus",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Occipital Fusiform Gyrus"
-	},
-	Left_Frontal_Operculum_Cortex_67: {
-		path: "left-frontal-operculum-cortex",
-		wiki_path: "operculum_(brain)",
-		full_name: "Left Frontal Operculum Cortex"
-	},
-	Right_Frontal_Operculum_Cortex_68: {
-		path: "right-frontal-operculum-cortex",
-		wiki_path: "operculum_(brain)",
-		full_name: "Right Frontal Operculum Cortex"
-	},
-	Left_Central_Opercular_Cortex_69: {
-		path: "left-central-opercular-cortex",
-		wiki_path: "operculum_(brain)",
-		full_name: "Left Central Opercular Cortex"
-	},
-	Right_Central_Opercular_Cortex_70: {
-		path: "right-central-opercular-cortex",
-		wiki_path: "operculum_(brain)",
-		full_name: "Right Central Opercular Cortex"
-	},
-	Right_Central_Opercular_Cortex_72: {
-		path: "right-central-opercular-cortex",
-		wiki_path: "operculum_(brain)",
-		full_name: "Right Central Opercular Cortex"
-	},
-	Left_Parietal_Operculum_Cortex_71: {
-		path: "left-parietal-operculum-cortex",
-		wiki_path: "operculum_(brain)",
-		full_name: "Left Parietal Operculum Cortex"
-	},
-	Right_Planum_Polare_73: {
-		path: "right-planum-polare",
-		wiki_path: "auditory_cortex",
-		full_name: "Right Planum Polare"
-	},
-	Right_Heschls_Gyrus__includes_H1_and_H2_75: {
-		path: "right-heschls-gyrus-includes-h-and-h",
-		wiki_path: "transverse_temporal_gyrus",
-		full_name: "Right Heschls Gyrus includes H and H"
-	},
-	Right_Heschls_Gyrus__includes_H1_and_H2_78: {
-		path: "right-heschls-gyrus-includes-h-and-h",
-		wiki_path: "transverse_temporal_gyrus",
-		full_name: "Right Heschls Gyrus includes H and H"
-	},
-	Left_Planum_Polare_74: {
-		path: "left-planum-polare",
-		wiki_path: "auditory_cortex",
-		full_name: "Left Planum Polare"
-	},
-	Left_Heschls_Gyrus__includes_H1_and_H2_77: {
-		path: "left-heschls-gyrus-includes-h-and-h",
-		wiki_path: "transverse_temporal_gyrus",
-		full_name: "Left Heschls Gyrus includes H and H"
-	},
-	Supracalcarine_Cortex_79: {
-		path: "supracalcarine-cortex",
-		wiki_path: "calcarine_sulcus",
-		full_name: "Supracalcarine Cortex"
-	},
-	Left_Insular_Cortex_3: {
-		path: "left-insular-cortex",
-		wiki_path: "insular_cortex",
-		full_name: "Left Insular Cortex"
-	},
-	Left_Heschls_Gyrus__includes_H1_and_H2_76: {
-		path: "left-heschls-gyrus-includes-h-and-h",
-		wiki_path: "transverse_temporal_gyrus",
-		full_name: "Left Heschls Gyrus includes H and H"
-	},
-	Occipital_Pole_82: {
-		path: "occipital-pole",
-		wiki_path: "cerebral_hemisphere",
-		full_name: "Occipital Pole"
-	}
-};
+// IDEA
+// get bounding box for whole brain for slice tool dimensions
 
 var html = document.querySelector("html");
 var brain_wrapper = document.querySelector(".brain-wrapper");
@@ -510,12 +44,7 @@ function initBrain() {
 	getSizes();
 
 	// Setup Camera
-	camera = new THREE.PerspectiveCamera(
-		50,
-		brain_wrapper.offsetWidth / brain_wrapper.offsetHeight,
-		0.1,
-		1000
-	);
+	camera = new THREE.PerspectiveCamera(50, sizes.width / sizes.height, 0.1, 1000);
 	camera.position.set(0, 5, 25);
 
 	// Setup controls
@@ -564,9 +93,9 @@ function initBrain() {
 
 	brain_manager.onProgress = function(url, itemsLoaded, itemsTotal) {
 		// Sometimes it will display 4/3 items loaded, this is a fix
-		if (itemsLoaded > itemsTotal) {
-			var itemsLoaded = itemsTotal;
-		}
+		// if (itemsLoaded > itemsTotal) {
+		// 	var itemsLoaded = itemsTotal;
+		// }
 
 		updateStatus("Loading brain (" + itemsLoaded + "/" + itemsTotal + ")");
 	};
@@ -581,24 +110,27 @@ function initBrain() {
 		function(gltf) {
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
+				console.log("meshs");
 				if (mesh.isMesh) {
+					console.log(mesh);
 					i++;
-					// Global mesh styles
+					// // Global mesh styles
 					mesh.material.roughness = settings.brain.roughness;
 					mesh.material.metalness = settings.brain.metalness;
 					mesh.material.wireframe = settings.brain.wireframe;
 					mesh.material.color.setStyle(settings.brain.color.default);
 					mesh.material.side = THREE.DoubleSide;
 
-					// Create separate material instance and local mesh styles
-					mesh.material = mesh.material.clone();
+					// // Create separate material instance and local mesh styles
+					// mesh.material = mesh.material.clone();
 
-					// Add mesh object to regions object
+					// // Add mesh object to regions object
+					console.log(mesh.name);
 					regions_obj[mesh.name].mesh = mesh;
 
 					ray_objects.push(mesh);
 
-					// We're done traversing
+					// // We're done traversing
 					if (i == Object.keys(regions_obj).length) {
 						setupRegionsFilter();
 
@@ -617,10 +149,10 @@ function initBrain() {
 			scene.add(gltf.scene);
 		},
 		function(xhr) {
-			// if (xhr.total !== 0) {
-			// 	var pct = (xhr.loaded / xhr.total) * 100;
-			// 	updateStatus("Loading brain model " + pct + "%");
-			// }
+			if (xhr.total !== 0) {
+				var pct = (xhr.loaded / xhr.total) * 100;
+				updateStatus("Loading brain " + pct + "%");
+			}
 		},
 		function(error) {
 			console.log(error);
@@ -628,12 +160,14 @@ function initBrain() {
 	);
 
 	// Setup Lighting
-	var light = new THREE.HemisphereLight(0xff9999, 0.8);
+	var light = new THREE.HemisphereLight(0xff9999, 1);
 	scene.add(light);
-
-	var directionalLight = new THREE.DirectionalLight(0xafbfff, 0.5);
-	directionalLight.position.set(0, 10, 0);
+	var directionalLight = new THREE.DirectionalLight(0xffd6d6, 0.5);
+	directionalLight.position.set(10, 30, 0);
 	scene.add(directionalLight);
+	// var directionalLight = new THREE.DirectionalLight(0xffd6d6, 0.1);
+	// directionalLight.position.set(30, -30, 0);
+	// scene.add(directionalLight);
 
 	// Setup raycaster
 	raycaster = new THREE.Raycaster();
@@ -664,10 +198,13 @@ function initBrain() {
 
 	// Raycaster events
 	var canvas = document.querySelector(".brain-wrapper canvas");
-	canvas.addEventListener("mousemove", onCanvasMouseMove, false);
-	canvas.addEventListener("mousedown", onCanvasMouseDown, false);
-	canvas.addEventListener("mouseup", onCanvasMouseUp, false);
-	// document.addEventListener("click", onDocumentClick, false);
+	canvas.addEventListener("mousemove", onCanvasMove, false);
+	canvas.addEventListener("mousedown", onCanvasDown, false);
+	canvas.addEventListener("mouseup", onCanvasUp, false);
+
+	canvas.addEventListener("touchmove", onCanvasMove, false);
+	canvas.addEventListener("touchstart", onCanvasDown, false);
+	canvas.addEventListener("touchend", onCanvasUp, false);
 
 	// Detect click for back button
 	document
@@ -693,69 +230,66 @@ function setCanvasSize() {
 	renderer.setSize(sizes.width, sizes.height);
 }
 
-function onCanvasMouseMove(e) {
+function getCanvasMousePosition(e) {
+	// Get the mouse/touch position and set it relative to the brain wrapper
+
+	if (e.type == "touchstart" || e.type == "touchmove") {
+		// Touch events
+		var x_pos = e.touches[0].pageX;
+		var y_pos = e.touches[0].pageY;
+	} else if (e.type = "mousemove") {
+		// Mouse events
+		var x_pos = e.clientX;
+		var y_pos = e.clientY;
+	}
+
+	mouse.x = ((x_pos - sizes.left) / sizes.width) * 2 - 1;
+	mouse.y = -((y_pos - sizes.top) / sizes.height) * 2 + 1;
+}
+
+function onCanvasMove(e) {
 	e.preventDefault();
 
-	// Get the mouse position and find the position relative to the brain wrapper
-	mouse.x = ((e.clientX - sizes.left) / sizes.width) * 2 - 1;
-	mouse.y = -((e.clientY - sizes.top) / sizes.height) * 2 + 1;
+	getCanvasMousePosition(e);
+
+	rayCast(settings.brain.color.hover);
 }
 
-function onCanvasMouseDown(e) {
-	if (raycaster_paused == false && settings.slice.visible == false) {
-		console.log("onCanvasMouseDown();");
+function onCanvasDown(e) {
+	console.log("onCanvasDown();");
 
-		e.preventDefault();
-		mouse.x = ((e.clientX - sizes.left) / sizes.width) * 2 - 1;
-		mouse.y = -((e.clientY - sizes.top) / sizes.height) * 2 + 1;
-		raycaster.setFromCamera(mouse, camera);
+	e.preventDefault();
 
-		last_intersected.material.color.setStyle(settings.brain.color.active);
+	getCanvasMousePosition(e);
 
-		raycaster_paused = true;
-	}
+	rayCast(settings.brain.color.active);
+
+	raycaster_paused = true;
 }
 
-function onCanvasMouseUp(e) {
+function onCanvasUp(e) {
 	console.log("onDocumentMouseUp();");
 
-	if (raycaster_paused == true && settings.slice.visible == false) {
-		raycaster_paused = false;
-
-		rayCast();
-	}
+	raycaster_paused = false;
 }
 
 function onDocumentClick(e) {
-	// if (raycaster_paused == false && settings.slice.visible == false) {
-	// 	console.log("onDocumentClick();");
-	// 	e.preventDefault();
-	// 	// mouse_click.x = ((e.clientX - sizes.left) / sizes.width) * 2 - 1;
-	// 	// mouse_click.y = -((e.clientY - sizes.top) / sizes.height) * 2 + 1;
-	// 	raycaster.setFromCamera(mouse_down, camera);
-	// 	var intersects = raycaster.intersectObjects(scene.children, true);
-	// 	if (intersects.length > 0) {
-	// 		// Force click event to happen after mouseup event
-	// 		raycaster_paused = true;
-	// 		last_intersected = intersects[0].object;
-	// 		switchRegion(last_intersected.name);
-	// 	}
-	// }
+	// 	last_intersected = intersects[0].object;
+	// 	switchRegion(last_intersected.name);
 }
 
 function animate() {
 	// Rerun animate() as fast as the browser can
 	requestAnimationFrame(animate);
 
-	// Hover effects on brain region meshes
-	rayCast();
-
 	controls.update();
 
 	renderer.render(scene, camera);
 }
 
-function rayCast() {
+function rayCast(color) {
+	console.log('raycast!');
+
 	// Raycasting for hover events on brain regions
 	if (raycaster_paused == false && settings.slice.visible == false) {
 		// Set the raycaster with current mouse and camera position
@@ -777,12 +311,7 @@ function rayCast() {
 
 				// Nearest object to camera is intersects[0] which we will change color
 				last_intersected = intersects[0].object;
-				last_intersected.material.color.setStyle(
-					settings.brain.color.hover
-				);
-
-				document.querySelector(".regions-filter").value =
-					last_intersected.name;
+				last_intersected.material.color.setStyle(color);
 			}
 		} else {
 			if (last_intersected) {
@@ -795,16 +324,6 @@ function rayCast() {
 			last_intersected = null;
 		}
 	}
-}
-
-function createVector(x, y, z, camera, width, height) {
-	var p = new THREE.Vector3(x, y, z);
-	var vector = p.project(camera);
-
-	vector.x = ((vector.x + 1) / 2) * width;
-	vector.y = (-(vector.y - 1) / 2) * height;
-
-	return vector;
 }
 
 function setupRegionsFilter() {
@@ -902,7 +421,7 @@ function initSettings() {
 	headToggle();
 	// squareGridToggle();
 	// polarGridToggle();
-	// axesToggle();
+	axesToggle();
 }
 
 function orbitToggle() {

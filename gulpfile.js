@@ -8,6 +8,7 @@ browserSync = require("browser-sync");
 rename = require("gulp-rename");
 jsImport = require("gulp-js-import");
 uglify = require("gulp-uglify");
+var concat = require("gulp-concat");
 
 pump = require("pump");
 path = require("path");
@@ -142,26 +143,37 @@ gulp.task("scss", function() {
 });
 
 // Compile JS ============================================================================
+// gulp.task("js", function() {
+//   return (
+//     gulp
+//       .src("src/js/brain.js")
+//       .pipe(gulp.dest("./dist/js"))
+//       .pipe(
+//         rename(function(path) {
+//           path.basename += ".min";
+//           path.extname = ".js";
+//         })
+//       )
+//       // .pipe(uglify())
+//       // .pipe(gulp.dest("./dist/js"))
+//       // .pipe(
+//       //   browserSync.reload({
+//       //     stream: true
+//       //   })
+//       // )
+//   );
+// });
+
 gulp.task("js", function() {
-  return (
-    gulp
-      .src("src/js/brain.js")
-      .pipe(jsImport({ hideConsole: true }))
-      .pipe(gulp.dest("./dist/js"))
-      .pipe(
-        rename(function(path) {
-          path.basename += ".min";
-          path.extname = ".js";
-        })
-      )
-      // .pipe(uglify())
-      .pipe(gulp.dest("./dist/js"))
-      .pipe(
-        browserSync.reload({
-          stream: true
-        })
-      )
-  );
+  return gulp
+    .src(["src/js/_settings.js", "src/js/_regions.js", "src/js/brain.js"])
+    .pipe(concat("brain.js"))
+    .pipe(gulp.dest("./dist/js"))
+    .pipe(
+      browserSync.reload({
+        stream: true
+      })
+    );
 });
 
 // Move _redirects =======================================================================

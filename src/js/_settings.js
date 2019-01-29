@@ -1,48 +1,55 @@
-// prettier-ignore
 settings = {
 	autosave: false,
 
 	// Models
-	brain_model_path: "Brain_05/Brain_005.gltf",
-	head_model_path: "BertsHead_01/BertsHead_01_Remesh_01.gltf",
+	brain_model_path: "Brain_06/Brain_006.gltf",
+	head_model_path: "Head_02/Head_02.gltf",
 
 	// Animations
-	orbit: true,
+	orbit: false,
 	orbit_speed: 4,
 
 	// Helpers
 	grid_size: 10,
 	square_grid: false,
 	polar_grid: false,
-	axes: false,
+	axes: true,
 
 	// Interactions
 	pan: false,
-	zoom: false,
+	zoom: {
+		enabled: true,
+		min: 15,
+		max: 30
+	},
 
 	// Slicing and dicing
 	slice: {
 		visible: false,
-		axis: "z",
+		axis: "y",
 		position: 0,
 		size: 0.25,
 		dimensions: {
 			x: 7,
-			y: 10,
+			y: 12,
 			z: 7
 		}
 	},
 
 	// Materials
 	brain: {
-		roughness: 0.1,
-		metalness: 0.4,
+		roughness: .7,
+		metalness: .3,
 		wireframe: false,
-		default_color: "lightcoral",
-		explode: 0,
+		color: {
+			default: "salmon",
+			hover: "firebrick",
+			active: "darkred",
+			focus: "#fdfa00"
+		},
 		offset: {
-			x: -2.25,
-			y: 0,
+			x: -1.8,
+			y: -1.5,
 			z: 0
 		}
 	},
@@ -51,11 +58,13 @@ settings = {
 		roughness: 1,
 		metalness: 0,
 		wireframe: true,
-		default_color: "#333",
+		color: {
+			default: "#333"
+		},
 		offset: {
-			x: -2.25,
-			y: 0,
+			x: -1.8,
+			y: -1.2,
 			z: 0
 		}
 	}
-}
+};
