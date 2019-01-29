@@ -8,7 +8,7 @@ browserSync = require("browser-sync");
 rename = require("gulp-rename");
 jsImport = require("gulp-js-import");
 uglify = require("gulp-uglify");
-var concat = require("gulp-concat");
+concat = require("gulp-concat");
 
 pump = require("pump");
 path = require("path");
@@ -18,6 +18,7 @@ del = require("del");
 // Import data
 teams = require("./src/js/_team.js");
 regions = require("./src/js/_regions.js");
+settings = require("./src/js/_settings.js");
 
 // Transform regions object to an array to add to regions filter =========================
 regions_arr = [];
@@ -39,6 +40,7 @@ gulp.task("jade", function() {
         pretty: true,
         data: {
           regions: regions_arr,
+          settings: settings,
           teams: team_arr
         }
       })
@@ -67,6 +69,7 @@ gulp.task("jade-subfolder", function() {
         pretty: true,
         data: {
           regions: regions_arr,
+          settings: settings,
           teams: team_arr
         }
       })
