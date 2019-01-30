@@ -709,8 +709,10 @@ function initBrain() {
 		},
 		function(xhr) {
 			console.log((xhr.loaded / xhr.total) * 100);
-			var pct = (xhr.loaded / xhr.total) * 100;
-			updateStatus("Loading brain " + pct + "%");
+			if (xhr.total !== 0) {
+				var pct = (xhr.loaded / xhr.total) * 100;
+				updateStatus("Loading brain " + pct + "%");
+			}
 		},
 		function(error) {
 			console.log(error);
