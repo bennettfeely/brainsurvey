@@ -38,8 +38,8 @@ settings = {
 
 	// Materials
 	brain: {
-		roughness: .7,
-		metalness: .3,
+		roughness: .15,
+		metalness: .25,
 		wireframe: false,
 		color: {
 			default: "salmon",
@@ -51,6 +51,14 @@ settings = {
 			x: -1.8,
 			y: -1.5,
 			z: 0
+		},
+		hemispheres: {
+			left: {
+				visible: true
+			},
+			right: {
+				visible: true
+			}
 		}
 	},
 	head: {

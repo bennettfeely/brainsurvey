@@ -715,6 +715,7 @@ input[type="radio"] {
 	border: 0;
 	height: 2.75em;
 	cursor: pointer;
+	margin-bottom: var(--large);
 
 	&:hover,
 	&:focus {

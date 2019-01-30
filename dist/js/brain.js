@@ -38,8 +38,8 @@ settings = {
 
 	// Materials
 	brain: {
-		roughness: .7,
-		metalness: .3,
+		roughness: .15,
+		metalness: .25,
 		wireframe: false,
 		color: {
 			default: "salmon",
@@ -51,6 +51,14 @@ settings = {
 			x: -1.8,
 			y: -1.5,
 			z: 0
+		},
+		hemispheres: {
+			left: {
+				visible: true
+			},
+			right: {
+				visible: true
+			}
 		}
 	},
 	head: {
@@ -637,6 +645,12 @@ function initBrain() {
 
 	brain_manager.onLoad = function() {
 		updateStatus("Rendering brain");
+
+		// Remove the spinner
+		var spinner = document.querySelector(".spinner");
+		if (spinner !== null) {
+			spinner.parentNode.removeChild(spinner);
+		}
 	};
 
 	brain_manager.onProgress = function(url, itemsLoaded, itemsTotal) {
@@ -658,9 +672,7 @@ function initBrain() {
 		function(gltf) {
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
-				console.log("meshs");
 				if (mesh.isMesh) {
-					console.log(mesh);
 					i++;
 					// // Global mesh styles
 					mesh.material.roughness = settings.brain.roughness;
@@ -669,11 +681,10 @@ function initBrain() {
 					mesh.material.color.setStyle(settings.brain.color.default);
 					mesh.material.side = THREE.DoubleSide;
 
-					// // Create separate material instance and local mesh styles
+					// Create separate material instance and local mesh styles
 					// mesh.material = mesh.material.clone();
 
-					// // Add mesh object to regions object
-					console.log(mesh.name);
+					// Add mesh object to regions object
 					regions_obj[mesh.name].mesh = mesh;
 
 					ray_objects.push(mesh);
@@ -949,9 +960,8 @@ function switchRegion(region_id) {
 			var article_id = Object.keys(data.query.pages)[0]; // Gets the first object in pages
 			var article_extract =
 				"<p>" + data.query.pages[article_id].extract + "</p>";
-
-			document.querySelector(".content-wrapper .container").innerHTML +=
-				"<p>Unable to retrieve Wikipedia article summary.</p>";
+			
+			document.querySelector(".content-wrapper .container").innerHTML += sub_heading + article_extract;
 		},
 		error: function(error) {
 			document.querySelector(".content-wrapper .container").innerHTML +=
@@ -964,12 +974,86 @@ function switchRegion(region_id) {
 }
 
 function initSettings() {
+	hemispheresToggle();
+
 	sliceToggle();
 	orbitToggle();
 	headToggle();
 	// squareGridToggle();
 	// polarGridToggle();
 	axesToggle();
+}
+
+function hemispheresToggle() {
+	// Toggle visibility of entire hemispheres
+	var left_hemisphere_toggle = document.querySelector(".left-hemisphere-toggle input");
+	var right_hemisphere_toggle = document.querySelector(".right-hemisphere-toggle input");
+
+	// Left hemisphere toggle
+	left_hemisphere_toggle.checked = settings.brain.hemispheres.left.visible;
+	left_hemisphere_toggle.addEventListener("change", function() {
+		if (left_hemisphere_toggle.checked) {
+			settings.brain.hemispheres.left.visible = true;
+		} else {
+			settings.brain.hemispheres.left.visible = false;
+
+			// If both hemispheres are off, show the other one
+			if (settings.brain.hemispheres.right.visible == false) {
+				settings.brain.hemispheres.right.visible = true;
+
+				right_hemisphere_toggle.checked = true;
+			}
+		}
+
+		isolateHemispheres();
+
+		saveSettings();
+	});
+
+	right_hemisphere_toggle.checked = settings.brain.hemispheres.right.visible;
+	right_hemisphere_toggle.addEventListener("change", function() {
+		if (right_hemisphere_toggle.checked) {
+			settings.brain.hemispheres.right.visible = true;
+		} else {
+			settings.brain.hemispheres.right.visible = false;
+
+			// If both hemispheres are off, show the other one
+			if (settings.brain.hemispheres.left.visible == false) {
+				settings.brain.hemispheres.left.visible = true;
+				left_hemisphere_toggle.checked = true;
+			}
+		}
+
+		isolateHemispheres();
+
+		saveSettings();
+	});
+}
+
+function isolateHemispheres() {
+	// Iterate through meshes, looking for matching L_ or R_ prefixes to toggle visibility
+	scene.traverse(function(mesh) {
+		if (mesh.isMesh) {
+			// Hide all meshes
+			if (mesh.name !== "Head") {
+				mesh.material.visible = false;
+			}
+
+			// Show left hemisphere meshes
+			if (settings.brain.hemispheres.left.visible == true) {
+				if (mesh.name.startsWith("L_")) {
+					mesh.material.visible = true;
+				}
+			}
+
+			// Show right hemisphere meshes
+			if (settings.brain.hemispheres.right.visible == true) {
+				if (mesh.name.startsWith("R_")) {
+					mesh.material.visible = true;
+				}
+			}
+		}
+	});
 }
 
 function orbitToggle() {
@@ -1013,12 +1097,6 @@ function setupSliceTool() {
 
 	// Show the slice tool
 	document.querySelector(".slice-tool").classList.remove("is-hidden");
-
-	// Remove the spinner
-	var spinner = document.querySelector(".spinner");
-	if (spinner !== null) {
-		spinner.parentNode.removeChild(spinner);
-	}
 
 	// Reset the regions filter
 	document.querySelector(".regions-filter").value = "";

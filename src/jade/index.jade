@@ -29,6 +29,9 @@ body.home
 					option(placeholder, value="") Select a brain region...
 					for region in regions
 						option(value=region.name)= region.full_name
+				.box-wrapper
+					+toggle("hemisphere-toggle left-hemisphere-toggle", "Left Hemisphere")
+					+toggle("hemisphere-toggle right-hemisphere-toggle", "Right Hemisphere")
 		section.tools-wrapper
 			.container
 				h2 Tools
