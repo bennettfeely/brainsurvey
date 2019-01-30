@@ -708,6 +708,7 @@ function initBrain() {
 			scene.add(gltf.scene);
 		},
 		function(xhr) {
+			console.log(xhr);
 			console.log((xhr.loaded / xhr.total) * 100);
 			if (xhr.total !== 0) {
 				var pct = (xhr.loaded / xhr.total) * 100;
