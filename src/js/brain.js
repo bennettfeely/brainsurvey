@@ -152,12 +152,8 @@ function initBrain() {
 			scene.add(gltf.scene);
 		},
 		function(xhr) {
-			console.log(xhr);
-			console.log((xhr.loaded / xhr.total) * 100);
-			if (xhr.total !== 0) {
-				var pct = (xhr.loaded / xhr.total) * 100;
-				updateStatus("Loading brain " + pct + "%");
-			}
+			var pct = (xhr.loaded / 122444) * 100;
+			updateStatus("Loading brain " + pct + "%");
 		},
 		function(error) {
 			console.log(error);
