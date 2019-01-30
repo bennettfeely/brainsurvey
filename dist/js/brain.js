@@ -659,7 +659,7 @@ function initBrain() {
 		// 	var itemsLoaded = itemsTotal;
 		// }
 
-		updateStatus("Loading brain (" + itemsLoaded + "/" + itemsTotal + ")");
+		// updateStatus("Loading brain (" + itemsLoaded + "/" + itemsTotal + ")");
 	};
 
 	brain_manager.onError = function(url) {
@@ -708,10 +708,9 @@ function initBrain() {
 			scene.add(gltf.scene);
 		},
 		function(xhr) {
-			if (xhr.total !== 0) {
-				var pct = (xhr.loaded / xhr.total) * 100;
-				updateStatus("Loading brain " + pct + "%");
-			}
+			console.log((xhr.loaded / xhr.total) * 100);
+			var pct = (xhr.loaded / xhr.total) * 100;
+			updateStatus("Loading brain " + pct + "%");
 		},
 		function(error) {
 			console.log(error);
