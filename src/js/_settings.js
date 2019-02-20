@@ -2,7 +2,7 @@ settings = {
 	autosave: false,
 
 	// Models
-	brain_model_path: "Brain_06/Brain_006.gltf",
+	brain_model_path: "Brain_07/Brain_007.gltf",
 	head_model_path: "Head_02/Head_02.gltf",
 
 	// Animations
@@ -13,7 +13,7 @@ settings = {
 	grid_size: 10,
 	square_grid: false,
 	polar_grid: false,
-	axes: true,
+	axes: false,
 
 	// Interactions
 	pan: false,
@@ -38,8 +38,8 @@ settings = {
 
 	// Materials
 	brain: {
-		roughness: .15,
-		metalness: .25,
+		roughness: 0.15,
+		metalness: 0.25,
 		wireframe: false,
 		color: {
 			default: "salmon",
@@ -49,7 +49,7 @@ settings = {
 		},
 		offset: {
 			x: -1.8,
-			y: -1.5,
+			y: -0.5,
 			z: 0
 		},
 		hemispheres: {
@@ -71,7 +71,7 @@ settings = {
 		},
 		offset: {
 			x: -1.8,
-			y: -1.2,
+			y: -0.2,
 			z: 0
 		}
 	}

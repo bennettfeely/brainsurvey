@@ -2,7 +2,7 @@ settings = {
 	autosave: false,
 
 	// Models
-	brain_model_path: "Brain_06/Brain_006.gltf",
+	brain_model_path: "Brain_07/Brain_007.gltf",
 	head_model_path: "Head_02/Head_02.gltf",
 
 	// Animations
@@ -13,7 +13,7 @@ settings = {
 	grid_size: 10,
 	square_grid: false,
 	polar_grid: false,
-	axes: true,
+	axes: false,
 
 	// Interactions
 	pan: false,
@@ -38,8 +38,8 @@ settings = {
 
 	// Materials
 	brain: {
-		roughness: .15,
-		metalness: .25,
+		roughness: 0.15,
+		metalness: 0.25,
 		wireframe: false,
 		color: {
 			default: "salmon",
@@ -49,7 +49,7 @@ settings = {
 		},
 		offset: {
 			x: -1.8,
-			y: -1.5,
+			y: -0.5,
 			z: 0
 		},
 		hemispheres: {
@@ -71,489 +71,13 @@ settings = {
 		},
 		offset: {
 			x: -1.8,
-			y: -1.2,
+			y: -0.2,
 			z: 0
 		}
 	}
 };
 
-regions_obj = {
-	R_Frontal_Pole_0: {
-		path: "right-frontal-pole",
-		wiki_path: "frontal_lobe",
-		full_name: "Right Frontal Pole"
-	},
-	R_Insular_Cortex_1: {
-		path: "right-insular-cortex",
-		wiki_path: "insular_cortex",
-		full_name: "Right Insular Cortex"
-	},
-	R_Middle_Frontal_Gyrus_3: {
-		path: "right-middle-frontal-gyrus",
-		wiki_path: "frontal_gyrus",
-		full_name: "Right Middle Frontal Gyrus"
-	},
-	R_Inferior_Frontal_Gyrus__pars_opercularis_5: {
-		path: "right-inferior-frontal-gyrus-(pars-opercularis)",
-		wiki_path: "frontal_gyrus",
-		full_name: "Right Inferior Frontal Gyrus (pars opercularis)"
-	},
-	R_Inferior_Frontal_Gyrus__pars_triangularis_4: {
-		path: "right-inferior-frontal-gyrus-(pars-triangularis)",
-		wiki_path: "frontal_gyrus",
-		full_name: "Right Inferior Frontal Gyrus (pars triangularis)"
-	},
-	R_Temporal_Pole_7: {
-		path: "right-temporal-pole",
-		wiki_path: "frontal_gyrus",
-		full_name: "Right Temporal Pole"
-	},
-	R_Precentral_Gyrus_6: {
-		path: "right-precentral-gyrus",
-		wiki_path: "frontal_gyrus",
-		full_name: "Right Precentral Gyrus"
-	},
-	R_Middle_Temporal_Gyrus__anterior_division_8: {
-		path: "right-middle-temporal-gyrus-(anterior-division)",
-		wiki_path: "frontal_gyrus",
-		full_name: "Right Middle Temporal Gyrus (anterior division)"
-	},
-	R_Superior_Temporal_Gyrus__posterior_division_9: {
-		path: "right-superior-temporal-gyrus-(posterior-division)",
-		wiki_path: "frontal_gyrus",
-		full_name: "Right Superior Temporal Gyrus (posterior division)"
-	},
-	R_Middle_Temporal_Gyrus__anterior_division_10: {
-		path: "right-middle-temporal-gyrus-(anterior-division)",
-		wiki_path: "precentral_gyrus",
-		full_name: "Right Middle Temporal Gyrus (anterior division)"
-	},
-	R_Middle_Temporal_Gyrus__posterior_division_11: {
-		path: "right-middle-temporal-gyrus-(posterior-division)",
-		wiki_path: "cerebral_hemisphere",
-		full_name: "Right Middle Temporal Gyrus (posterior division)"
-	},
-	R_Middle_Temporal_Gyrus__temporooccipital_part_12: {
-		path: "right-middle-temporal-gyrus-(temporooccipital-part)",
-		wiki_path: "cerebral_hemisphere",
-		full_name: "Right Middle Temporal Gyrus (temporooccipital part)"
-	},
-	R_Inferior_Temporal_Gyrus__posterior_division_13: {
-		path: "right-inferior-temporal-gyrus-(posterior-division)",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Right Inferior Temporal Gyrus (posterior division)"
-	},
-	R_Inferior_Temporal_Gyrus__temporooccipital_part_14: {
-		path: "right-inferior-temporal-gyrus-(temporooccipital-part)",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Right Inferior Temporal Gyrus (temporooccipital part)"
-	},
-	R_Postcentral_Gyrus_15: {
-		path: "right-postcentral-gyrus",
-		wiki_path: "superior_temporal_gyrus",
-		full_name: "Right Postcentral Gyrus"
-	},
-	R_Superior_Parietal_Lobule_16: {
-		path: "right-superior-parietal-lobule",
-		wiki_path: "superior_temporal_gyrus",
-		full_name: "Right Superior Parietal Lobule"
-	},
-	R_Supramarginal_Gyrus__anterior_division_17: {
-		path: "right-supramarginal-gyrus-(anterior-division)",
-		wiki_path: "inferior_temporal_gyrus",
-		full_name: "Right Supramarginal Gyrus (anterior division)"
-	},
-	R_Supramarginal_Gyrus__posterior_division_18: {
-		path: "right-supramarginal-gyrus-(posterior-division)",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Right Supramarginal Gyrus (posterior division)"
-	},
-	R_Angular_Gyrus_19: {
-		path: "right-angular-gyrus",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Right Angular Gyrus"
-	},
-	R_Lateral_Occipital_Cortex__superior_division_20: {
-		path: "right-lateral-occipital-cortex-(superior-division)",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Right Lateral Occipital Cortex (superior division)"
-	},
-	R_Lateral_Occipital_Cortex__inferior_division_21: {
-		path: "right-lateral-occipital-cortex-(inferior-division)",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Right Lateral Occipital Cortex (inferior division)"
-	},
-	R_Intracalcarine_Cortex_22: {
-		path: "right-intracalcarine-cortex",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Right Intracalcarine Cortex"
-	},
-	R_Frontal_Medial_Cortex_23: {
-		path: "right-frontal-medial-cortex",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Right Frontal Medial Cortex"
-	},
-	R_Juxtapositional_Lobule_Cortex__formerly_Supplementary_Motor_Cortex__24: {
-		path:
-			"right-juxtapositional-lobule-cortex-(formerly-supplementary-motor-cortex)",
-		wiki_path: "inferior_temporal_gyrus",
-		full_name:
-			"Right Juxtapositional Lobule Cortex (formerly Supplementary Motor Cortex)"
-	},
-	R_Paracingulate_Gyrus_26: {
-		path: "right-paracingulate-gyrus",
-		wiki_path: "inferior_temporal_gyrus",
-		full_name: "Right Paracingulate Gyrus"
-	},
-	R_Subcallosal_Cortex_25: {
-		path: "right-subcallosal-cortex",
-		wiki_path: "inferior_temporal_gyrus",
-		full_name: "Right Subcallosal Cortex"
-	},
-	R_Cingulate_Gyrus__anterior_division_27: {
-		path: "right-cingulate-gyrus-(anterior-division)",
-		wiki_path: "inferior_temporal_gyrus",
-		full_name: "Right Cingulate Gyrus (anterior division)"
-	},
-	R_Cingulate_Gyrus__posterior_division_28: {
-		path: "right-cingulate-gyrus-(posterior-division)",
-		wiki_path: "postcentral_gyrus",
-		full_name: "Right Cingulate Gyrus (posterior division)"
-	},
-	R_Precuneous_Cortex_29: {
-		path: "right-precuneous-cortex",
-		wiki_path: "superior_parietal_lobule",
-		full_name: "Right Precuneous Cortex"
-	},
-	R_Cuneal_Cortex_30: {
-		path: "right-cuneal-cortex",
-		wiki_path: "superior_parietal_lobule",
-		full_name: "Right Cuneal Cortex"
-	},
-	R_Frontal_Orbital_Cortex_31: {
-		path: "right-frontal-orbital-cortex",
-		wiki_path: "supramarginal_gyrus",
-		full_name: "Right Frontal Orbital Cortex"
-	},
-	R_Parahippocampal_Gyrus__anterior_division_32: {
-		path: "right-parahippocampal-gyrus-(anterior-division)",
-		wiki_path: "supramarginal_gyrus",
-		full_name: "Right Parahippocampal Gyrus (anterior division)"
-	},
-	R_Parahippocampal_Gyrus__posterior_division_33: {
-		path: "right-parahippocampal-gyrus-(posterior-division)",
-		wiki_path: "supramarginal_gyrus",
-		full_name: "Right Parahippocampal Gyrus (posterior division)"
-	},
-	R_Lingual_Gyrus_34: {
-		path: "right-lingual-gyrus",
-		wiki_path: "supramarginal_gyrus",
-		full_name: "Right Lingual Gyrus"
-	},
-	R_Angular_Gyrus_35: {
-		path: "right-angular-gyrus",
-		wiki_path: "angular_gyrus",
-		full_name: "Right Angular Gyrus"
-	},
-	R_Temporal_Fusiform_Cortex__posterior_division_36: {
-		path: "right-temporal-fusiform-cortex-(posterior-division)",
-		wiki_path: "angular_gyrus",
-		full_name: "Right Temporal Fusiform Cortex (posterior division)"
-	},
-	R_Temporal_Occipital_Fusiform_Cortex_37: {
-		path: "right-temporal-occipital-fusiform-cortex",
-		wiki_path: "visual_cortex",
-		full_name: "Right Temporal Occipital Fusiform Cortex"
-	},
-	R_Occipital_Fusiform_Gyrus_38: {
-		path: "right-occipital-fusiform-gyrus",
-		wiki_path: "visual_cortex",
-		full_name: "Right Occipital Fusiform Gyrus"
-	},
-	R_Frontal_Operculum_Cortex_39: {
-		path: "right-frontal-operculum-cortex",
-		wiki_path: "visual_cortex",
-		full_name: "Right Frontal Operculum Cortex"
-	},
-	R_Central_Opercular_Cortex_40: {
-		path: "right-central-opercular-cortex",
-		wiki_path: "visual_cortex",
-		full_name: "Right Central Opercular Cortex"
-	},
-	R_Parietal_Operculum_Cortex_41: {
-		path: "right-parietal-operculum-cortex",
-		wiki_path: "lingual_gyrus",
-		full_name: "Right Parietal Operculum Cortex"
-	},
-	R_Planum_Polare_42: {
-		path: "right-planum-polare",
-		wiki_path: "prefrontal_cortex",
-		full_name: "Right Planum Polare"
-	},
-	R_Heschl_s_Gyrus__includes_H1_and_H2__43: {
-		path: "right-heschl's-gyrus-(includes-h-and-h)",
-		wiki_path: "superior_frontal_gyrus",
-		full_name: "Right Heschl's Gyrus (includes H and H)"
-	},
-	R_Planum_Temporale_44: {
-		path: "right-planum-temporale",
-		wiki_path: "brodmann_area_25",
-		full_name: "Right Planum Temporale"
-	},
-	R_Supracalcarine_Cortex_45: {
-		path: "right-supracalcarine-cortex",
-		wiki_path: "cingulate_cortex",
-		full_name: "Right Supracalcarine Cortex"
-	},
-	R_Occipital_Pole_47: {
-		path: "right-occipital-pole",
-		wiki_path: "cingulate_cortex",
-		full_name: "Right Occipital Pole"
-	},
-	R_Superior_Frontal_Gyrus_2: {
-		path: "right-superior-frontal-gyrus",
-		wiki_path: "cingulate_cortex",
-		full_name: "Right Superior Frontal Gyrus"
-	},
-	L_Middle_Temporal_Gyrus__anterior_division_10: {
-		path: "left-middle-temporal-gyrus-(anterior-division)",
-		wiki_path: "cuneus",
-		full_name: "Left Middle Temporal Gyrus (anterior division)"
-	},
-	L_Temporal_Occipital_Fusiform_Cortex_38: {
-		path: "left-temporal-occipital-fusiform-cortex",
-		wiki_path: "cuneus",
-		full_name: "Left Temporal Occipital Fusiform Cortex"
-	},
-	L_Supramarginal_Gyrus__anterior_division_18: {
-		path: "left-supramarginal-gyrus-(anterior-division)",
-		wiki_path: "frontal_lobe",
-		full_name: "Left Supramarginal Gyrus (anterior division)"
-	},
-	L_Insular_Cortex_1: {
-		path: "left-insular-cortex",
-		wiki_path: "frontal_lobe",
-		full_name: "Left Insular Cortex"
-	},
-	L_Juxtapositional_Lobule_Cortex__formerly_Supplementary_Motor_Cortex__25: {
-		path:
-			"left-juxtapositional-lobule-cortex-(formerly-supplementary-motor-cortex)",
-		wiki_path: "parahippocampal_gyrus",
-		full_name:
-			"Left Juxtapositional Lobule Cortex (formerly Supplementary Motor Cortex)"
-	},
-	L_Inferior_Frontal_Gyrus__pars_opercularis_5: {
-		path: "left-inferior-frontal-gyrus-(pars-opercularis)",
-		wiki_path: "parahippocampal_gyrus",
-		full_name: "Left Inferior Frontal Gyrus (pars opercularis)"
-	},
-	L_Frontal_Orbital_Cortex_32: {
-		path: "left-frontal-orbital-cortex",
-		wiki_path: "parahippocampal_gyrus",
-		full_name: "Left Frontal Orbital Cortex"
-	},
-	L_Middle_Temporal_Gyrus__posterior_division_11: {
-		path: "left-middle-temporal-gyrus-(posterior-division)",
-		wiki_path: "parahippocampal_gyrus",
-		full_name: "Left Middle Temporal Gyrus (posterior division)"
-	},
-	L_Occipital_Fusiform_Gyrus_39: {
-		path: "left-occipital-fusiform-gyrus",
-		wiki_path: "lingual_gyrus",
-		full_name: "Left Occipital Fusiform Gyrus"
-	},
-	L_Supramarginal_Gyrus__posterior_division_19: {
-		path: "left-supramarginal-gyrus-(posterior-division)",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Supramarginal Gyrus (posterior division)"
-	},
-	L_Supracalcarine_Cortex_46: {
-		path: "left-supracalcarine-cortex",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Supracalcarine Cortex"
-	},
-	L_Paracingulate_Gyrus_27: {
-		path: "left-paracingulate-gyrus",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Paracingulate Gyrus"
-	},
-	L_Inferior_Frontal_Gyrus__pars_triangularis_4: {
-		path: "left-inferior-frontal-gyrus-(pars-triangularis)",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Inferior Frontal Gyrus (pars triangularis)"
-	},
-	L_Parahippocampal_Gyrus__anterior_division_33: {
-		path: "left-parahippocampal-gyrus-(anterior-division)",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Parahippocampal Gyrus (anterior division)"
-	},
-	L_Middle_Temporal_Gyrus__temporooccipital_part_12: {
-		path: "left-middle-temporal-gyrus-(temporooccipital-part)",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Middle Temporal Gyrus (temporooccipital part)"
-	},
-	L_Frontal_Operculum_Cortex_40: {
-		path: "left-frontal-operculum-cortex",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Frontal Operculum Cortex"
-	},
-	L_Angular_Gyrus_20: {
-		path: "left-angular-gyrus",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Angular Gyrus"
-	},
-	L_Subcallosal_Cortex_26: {
-		path: "left-subcallosal-cortex",
-		wiki_path: "operculum_(brain)",
-		full_name: "Left Subcallosal Cortex"
-	},
-	L_Planum_Temporale_45: {
-		path: "left-planum-temporale",
-		wiki_path: "operculum_(brain)",
-		full_name: "Left Planum Temporale"
-	},
-	L_Parahippocampal_Gyrus__posterior_division_34: {
-		path: "left-parahippocampal-gyrus-(posterior-division)",
-		wiki_path: "operculum_(brain)",
-		full_name: "Left Parahippocampal Gyrus (posterior division)"
-	},
-	L_Inferior_Temporal_Gyrus__posterior_division_13: {
-		path: "left-inferior-temporal-gyrus-(posterior-division)",
-		wiki_path: "operculum_(brain)",
-		full_name: "Left Inferior Temporal Gyrus (posterior division)"
-	},
-	L_Central_Opercular_Cortex_41: {
-		path: "left-central-opercular-cortex",
-		wiki_path: "operculum_(brain)",
-		full_name: "Left Central Opercular Cortex"
-	},
-	L_Lateral_Occipital_Cortex__superior_division_21: {
-		path: "left-lateral-occipital-cortex-(superior-division)",
-		wiki_path: "operculum_(brain)",
-		full_name: "Left Lateral Occipital Cortex (superior division)"
-	},
-	L_Lingual_Gyrus_35: {
-		path: "left-lingual-gyrus",
-		wiki_path: "auditory_cortex",
-		full_name: "Left Lingual Gyrus"
-	},
-	L_Heschl_s_Gyrus__includes_H1_and_H2__44: {
-		path: "left-heschl's-gyrus-(includes-h-and-h)",
-		wiki_path: "transverse_temporal_gyrus",
-		full_name: "Left Heschl's Gyrus (includes H and H)"
-	},
-	L_Cingulate_Gyrus__anterior_division_28: {
-		path: "left-cingulate-gyrus-(anterior-division)",
-		wiki_path: "transverse_temporal_gyrus",
-		full_name: "Left Cingulate Gyrus (anterior division)"
-	},
-	L_Precentral_Gyrus_6: {
-		path: "left-precentral-gyrus",
-		wiki_path: "auditory_cortex",
-		full_name: "Left Precentral Gyrus"
-	},
-	L_Temporal_Pole_7: {
-		path: "left-temporal-pole",
-		wiki_path: "transverse_temporal_gyrus",
-		full_name: "Left Temporal Pole"
-	},
-	L_Inferior_Temporal_Gyrus__temporooccipital_part_14: {
-		path: "left-inferior-temporal-gyrus-(temporooccipital-part)",
-		wiki_path: "calcarine_sulcus",
-		full_name: "Left Inferior Temporal Gyrus (temporooccipital part)"
-	},
-	L_Superior_Frontal_Gyrus_2: {
-		path: "left-superior-frontal-gyrus",
-		wiki_path: "insular_cortex",
-		full_name: "Left Superior Frontal Gyrus"
-	},
-	L_Lateral_Occipital_Cortex__inferior_division_22: {
-		path: "left-lateral-occipital-cortex-(inferior-division)",
-		wiki_path: "transverse_temporal_gyrus",
-		full_name: "Left Lateral Occipital Cortex (inferior division)"
-	},
-	L_Cingulate_Gyrus__posterior_division_29: {
-		path: "left-cingulate-gyrus-(posterior-division)",
-		wiki_path: "cerebral_hemisphere",
-		full_name: "Left Cingulate Gyrus (posterior division)"
-	},
-	L_Middle_Temporal_Gyrus__anterior_division_8: {
-		path: "left-middle-temporal-gyrus-(anterior-division)",
-		wiki_path: "calcarine_sulcus",
-		full_name: "Left Middle Temporal Gyrus (anterior division)"
-	},
-	L_Angular_Gyrus_36: {
-		path: "left-angular-gyrus",
-		wiki_path: "fusiform_gyrus",
-		full_name: "Left Angular Gyrus"
-	},
-	L_Parietal_Operculum_Cortex_42: {
-		path: "left-parietal-operculum-cortex",
-		wiki_path: "operculum_(brain)",
-		full_name: "Left Parietal Operculum Cortex"
-	},
-	L_Postcentral_Gyrus_16: {
-		path: "left-postcentral-gyrus",
-		wiki_path: "superior_temporal_gyrus",
-		full_name: "Left Postcentral Gyrus"
-	},
-	L_Planum_Polare_43: {
-		path: "left-planum-polare",
-		wiki_path: "superior_temporal_gyrus",
-		full_name: "Left Planum Polare"
-	},
-	L_Intracalcarine_Cortex_23: {
-		path: "left-intracalcarine-cortex",
-		wiki_path: "middle_temporal_gyrus",
-		full_name: "Left Intracalcarine Cortex"
-	},
-	L_Precuneous_Cortex_30: {
-		path: "left-precuneous-cortex",
-		wiki_path: "superior_parietal_lobule",
-		full_name: "Left Precuneous Cortex"
-	},
-	L_Superior_Temporal_Gyrus__posterior_division_9: {
-		path: "left-superior-temporal-gyrus-(posterior-division)",
-		wiki_path: "calcarine_sulcus",
-		full_name: "Left Superior Temporal Gyrus (posterior division)"
-	},
-	L_Temporal_Fusiform_Cortex__posterior_division_37: {
-		path: "left-temporal-fusiform-cortex-(posterior-division)",
-		wiki_path: "angular_gyrus",
-		full_name: "Left Temporal Fusiform Cortex (posterior division)"
-	},
-	L_Superior_Parietal_Lobule_17: {
-		path: "left-superior-parietal-lobule",
-		wiki_path: "superior_temporal_gyrus",
-		full_name: "Left Superior Parietal Lobule"
-	},
-	L_Frontal_Pole_0: {
-		path: "left-frontal-pole",
-		wiki_path: "frontal_gyrus",
-		full_name: "Left Frontal Pole"
-	},
-	L_Frontal_Medial_Cortex_24: {
-		path: "left-frontal-medial-cortex",
-		wiki_path: "frontal_gyrus",
-		full_name: "Left Frontal Medial Cortex"
-	},
-	L_Middle_Frontal_Gyrus_3: {
-		path: "left-middle-frontal-gyrus",
-		wiki_path: "frontal_gyrus",
-		full_name: "Left Middle Frontal Gyrus"
-	},
-	L_Cuneal_Cortex_31: {
-		path: "left-cuneal-cortex",
-		wiki_path: "superior_parietal_lobule",
-		full_name: "Left Cuneal Cortex"
-	},
-	L_Occipital_Pole_48: {
-		path: "left-occipital-pole",
-		wiki_path: "cingulate_cortex",
-		full_name: "Left Occipital Pole"
-	}
-};
-
+regions_obj={ R_Frontal_Pole_0:{path:"right-frontal-pole",full_name:"Right Frontal Pole"},R_Insular_Cortex_1:{path:"right-insular-cortex",full_name:"Right Insular Cortex"},R_Middle_Frontal_Gyrus_3:{path:"right-middle-frontal-gyrus",full_name:"Right Middle Frontal Gyrus"},R_Inferior_Frontal_Gyrus__pars_opercularis_5:{path:"right-inferior-frontal-gyrus-(pars-opercularis)",full_name:"Right Inferior Frontal Gyrus (pars opercularis)"},R_Inferior_Frontal_Gyrus__pars_triangularis_4:{path:"right-inferior-frontal-gyrus-(pars-triangularis)",full_name:"Right Inferior Frontal Gyrus (pars triangularis)"},R_Temporal_Pole_7:{path:"right-temporal-pole",full_name:"Right Temporal Pole"},R_Precentral_Gyrus_6:{path:"right-precentral-gyrus",full_name:"Right Precentral Gyrus"},R_Middle_Temporal_Gyrus__anterior_division_8:{path:"right-middle-temporal-gyrus-(anterior-division)",full_name:"Right Middle Temporal Gyrus (anterior division)"},R_Superior_Temporal_Gyrus__posterior_division_9:{path:"right-superior-temporal-gyrus-(posterior-division)",full_name:"Right Superior Temporal Gyrus (posterior division)"},R_Middle_Temporal_Gyrus__anterior_division_10:{path:"right-middle-temporal-gyrus-(anterior-division)",full_name:"Right Middle Temporal Gyrus (anterior division)"},R_Middle_Temporal_Gyrus__posterior_division_11:{path:"right-middle-temporal-gyrus-(posterior-division)",full_name:"Right Middle Temporal Gyrus (posterior division)"},R_Middle_Temporal_Gyrus__temporooccipital_part_12:{path:"right-middle-temporal-gyrus-(temporooccipital-part)",full_name:"Right Middle Temporal Gyrus (temporooccipital part)"},R_Inferior_Temporal_Gyrus__posterior_division_13:{path:"right-inferior-temporal-gyrus-(posterior-division)",full_name:"Right Inferior Temporal Gyrus (posterior division)"},R_Inferior_Temporal_Gyrus__temporooccipital_part_14:{path:"right-inferior-temporal-gyrus-(temporooccipital-part)",full_name:"Right Inferior Temporal Gyrus (temporooccipital part)"},R_Postcentral_Gyrus_15:{path:"right-postcentral-gyrus",full_name:"Right Postcentral Gyrus"},R_Superior_Parietal_Lobule_16:{path:"right-superior-parietal-lobule",full_name:"Right Superior Parietal Lobule"},R_Supramarginal_Gyrus__anterior_division_17:{path:"right-supramarginal-gyrus-(anterior-division)",full_name:"Right Supramarginal Gyrus (anterior division)"},R_Supramarginal_Gyrus__posterior_division_18:{path:"right-supramarginal-gyrus-(posterior-division)",full_name:"Right Supramarginal Gyrus (posterior division)"},R_Angular_Gyrus_19:{path:"right-angular-gyrus",full_name:"Right Angular Gyrus"},R_Lateral_Occipital_Cortex__superior_division_20:{path:"right-lateral-occipital-cortex-(superior-division)",full_name:"Right Lateral Occipital Cortex (superior division)"},R_Lateral_Occipital_Cortex__inferior_division_21:{path:"right-lateral-occipital-cortex-(inferior-division)",full_name:"Right Lateral Occipital Cortex (inferior division)"},R_Intracalcarine_Cortex_22:{path:"right-intracalcarine-cortex",full_name:"Right Intracalcarine Cortex"},R_Frontal_Medial_Cortex_23:{path:"right-frontal-medial-cortex",full_name:"Right Frontal Medial Cortex"},R_Juxtapositional_Lobule_Cortex__formerly_Supplementary_Motor_Cortex__24:{path:"right-juxtapositional-lobule-cortex-(formerly-supplementary-motor-cortex)",full_name:"Right Juxtapositional Lobule Cortex (formerly Supplementary Motor Cortex)"},R_Paracingulate_Gyrus_26:{path:"right-paracingulate-gyrus",full_name:"Right Paracingulate Gyrus"},R_Subcallosal_Cortex_25:{path:"right-subcallosal-cortex",full_name:"Right Subcallosal Cortex"},R_Cingulate_Gyrus__anterior_division_27:{path:"right-cingulate-gyrus-(anterior-division)",full_name:"Right Cingulate Gyrus (anterior division)"},R_Cingulate_Gyrus__posterior_division_28:{path:"right-cingulate-gyrus-(posterior-division)",full_name:"Right Cingulate Gyrus (posterior division)"},R_Precuneous_Cortex_29:{path:"right-precuneous-cortex",full_name:"Right Precuneous Cortex"},R_Cuneal_Cortex_30:{path:"right-cuneal-cortex",full_name:"Right Cuneal Cortex"},R_Frontal_Orbital_Cortex_31:{path:"right-frontal-orbital-cortex",full_name:"Right Frontal Orbital Cortex"},R_Parahippocampal_Gyrus__anterior_division_32:{path:"right-parahippocampal-gyrus-(anterior-division)",full_name:"Right Parahippocampal Gyrus (anterior division)"},R_Parahippocampal_Gyrus__posterior_division_33:{path:"right-parahippocampal-gyrus-(posterior-division)",full_name:"Right Parahippocampal Gyrus (posterior division)"},R_Lingual_Gyrus_34:{path:"right-lingual-gyrus",full_name:"Right Lingual Gyrus"},R_Angular_Gyrus_35:{path:"right-angular-gyrus",full_name:"Right Angular Gyrus"},R_Temporal_Fusiform_Cortex__posterior_division_36:{path:"right-temporal-fusiform-cortex-(posterior-division)",full_name:"Right Temporal Fusiform Cortex (posterior division)"},R_Temporal_Occipital_Fusiform_Cortex_37:{path:"right-temporal-occipital-fusiform-cortex",full_name:"Right Temporal Occipital Fusiform Cortex"},R_Occipital_Fusiform_Gyrus_38:{path:"right-occipital-fusiform-gyrus",full_name:"Right Occipital Fusiform Gyrus"},R_Frontal_Operculum_Cortex_39:{path:"right-frontal-operculum-cortex",full_name:"Right Frontal Operculum Cortex"},R_Central_Opercular_Cortex_40:{path:"right-central-opercular-cortex",full_name:"Right Central Opercular Cortex"},R_Parietal_Operculum_Cortex_41:{path:"right-parietal-operculum-cortex",full_name:"Right Parietal Operculum Cortex"},R_Planum_Polare_42:{path:"right-planum-polare",full_name:"Right Planum Polare"},R_Heschl_s_Gyrus__includes_H1_and_H2__43:{path:"right-heschl's-gyrus-(includes-h1-and-h2)",full_name:"Right Heschl's Gyrus (includes H1 and H2)"},R_Planum_Temporale_44:{path:"right-planum-temporale",full_name:"Right Planum Temporale"},R_Supracalcarine_Cortex_45:{path:"right-supracalcarine-cortex",full_name:"Right Supracalcarine Cortex"},R_Occipital_Pole_47:{path:"right-occipital-pole",full_name:"Right Occipital Pole"},R_Superior_Frontal_Gyrus_2:{path:"right-superior-frontal-gyrus",full_name:"Right Superior Frontal Gyrus"},L_Middle_Temporal_Gyrus__anterior_division_10:{path:"left-middle-temporal-gyrus-(anterior-division)",full_name:"Left Middle Temporal Gyrus (anterior division)"},L_Temporal_Occipital_Fusiform_Cortex_38:{path:"left-temporal-occipital-fusiform-cortex",full_name:"Left Temporal Occipital Fusiform Cortex"},L_Supramarginal_Gyrus__anterior_division_18:{path:"left-supramarginal-gyrus-(anterior-division)",full_name:"Left Supramarginal Gyrus (anterior division)"},L_Insular_Cortex_1:{path:"left-insular-cortex",full_name:"Left Insular Cortex"},L_Juxtapositional_Lobule_Cortex__formerly_Supplementary_Motor_Cortex__25:{path:"left-juxtapositional-lobule-cortex-(formerly-supplementary-motor-cortex)",full_name:"Left Juxtapositional Lobule Cortex (formerly Supplementary Motor Cortex)"},L_Inferior_Frontal_Gyrus__pars_opercularis_5:{path:"left-inferior-frontal-gyrus-(pars-opercularis)",full_name:"Left Inferior Frontal Gyrus (pars opercularis)"},L_Frontal_Orbital_Cortex_32:{path:"left-frontal-orbital-cortex",full_name:"Left Frontal Orbital Cortex"},L_Middle_Temporal_Gyrus__posterior_division_11:{path:"left-middle-temporal-gyrus-(posterior-division)",full_name:"Left Middle Temporal Gyrus (posterior division)"},L_Occipital_Fusiform_Gyrus_39:{path:"left-occipital-fusiform-gyrus",full_name:"Left Occipital Fusiform Gyrus"},L_Supramarginal_Gyrus__posterior_division_19:{path:"left-supramarginal-gyrus-(posterior-division)",full_name:"Left Supramarginal Gyrus (posterior division)"},L_Supracalcarine_Cortex_46:{path:"left-supracalcarine-cortex",full_name:"Left Supracalcarine Cortex"},L_Paracingulate_Gyrus_27:{path:"left-paracingulate-gyrus",full_name:"Left Paracingulate Gyrus"},L_Inferior_Frontal_Gyrus__pars_triangularis_4:{path:"left-inferior-frontal-gyrus-(pars-triangularis)",full_name:"Left Inferior Frontal Gyrus (pars triangularis)"},L_Parahippocampal_Gyrus__anterior_division_33:{path:"left-parahippocampal-gyrus-(anterior-division)",full_name:"Left Parahippocampal Gyrus (anterior division)"},L_Middle_Temporal_Gyrus__temporooccipital_part_12:{path:"left-middle-temporal-gyrus-(temporooccipital-part)",full_name:"Left Middle Temporal Gyrus (temporooccipital part)"},L_Frontal_Operculum_Cortex_40:{path:"left-frontal-operculum-cortex",full_name:"Left Frontal Operculum Cortex"},L_Angular_Gyrus_20:{path:"left-angular-gyrus",full_name:"Left Angular Gyrus"},L_Subcallosal_Cortex_26:{path:"left-subcallosal-cortex",full_name:"Left Subcallosal Cortex"},L_Planum_Temporale_45:{path:"left-planum-temporale",full_name:"Left Planum Temporale"},L_Parahippocampal_Gyrus__posterior_division_34:{path:"left-parahippocampal-gyrus-(posterior-division)",full_name:"Left Parahippocampal Gyrus (posterior division)"},L_Inferior_Temporal_Gyrus__anterior_division_13:{path:"left-inferior-temporal-gyrus-(anterior-division)",full_name:"Left Inferior Temporal Gyrus (anterior division)"},L_Central_Opercular_Cortex_41:{path:"left-central-opercular-cortex",full_name:"Left Central Opercular Cortex"},L_Lateral_Occipital_Cortex__superior_division_21:{path:"left-lateral-occipital-cortex-(superior-division)",full_name:"Left Lateral Occipital Cortex (superior division)"},L_Lingual_Gyrus_35:{path:"left-lingual-gyrus",full_name:"Left Lingual Gyrus"},L_Heschl_s_Gyrus__includes_H1_and_H2__44:{path:"left-heschl's-gyrus-(includes-h1-and-h2)",full_name:"Left Heschl's Gyrus (includes H1 and H2)"},L_Cingulate_Gyrus__anterior_division_28:{path:"left-cingulate-gyrus-(anterior-division)",full_name:"Left Cingulate Gyrus (anterior division)"},L_Precentral_Gyrus_6:{path:"left-precentral-gyrus",full_name:"Left Precentral Gyrus"},L_Temporal_Pole_7:{path:"left-temporal-pole",full_name:"Left Temporal Pole"},L_Inferior_Temporal_Gyrus__temporooccipital_part_15:{path:"left-inferior-temporal-gyrus-(temporooccipital-part)",full_name:"Left Inferior Temporal Gyrus (temporooccipital part)"},L_Superior_Frontal_Gyrus_2:{path:"left-superior-frontal-gyrus",full_name:"Left Superior Frontal Gyrus"},L_Lateral_Occipital_Cortex__inferior_division_22:{path:"left-lateral-occipital-cortex-(inferior-division)",full_name:"Left Lateral Occipital Cortex (inferior division)"},L_Cingulate_Gyrus__posterior_division_29:{path:"left-cingulate-gyrus-(posterior-division)",full_name:"Left Cingulate Gyrus (posterior division)"},L_Middle_Temporal_Gyrus__anterior_division_8:{path:"left-middle-temporal-gyrus-(anterior-division)",full_name:"Left Middle Temporal Gyrus (anterior division)"},L_Angular_Gyrus_36:{path:"left-angular-gyrus",full_name:"Left Angular Gyrus"},L_Parietal_Operculum_Cortex_42:{path:"left-parietal-operculum-cortex",full_name:"Left Parietal Operculum Cortex"},L_Postcentral_Gyrus_16:{path:"left-postcentral-gyrus",full_name:"Left Postcentral Gyrus"},L_Planum_Polare_43:{path:"left-planum-polare",full_name:"Left Planum Polare"},L_Intracalcarine_Cortex_23:{path:"left-intracalcarine-cortex",full_name:"Left Intracalcarine Cortex"},L_Precuneous_Cortex_30:{path:"left-precuneous-cortex",full_name:"Left Precuneous Cortex"},L_Superior_Temporal_Gyrus__posterior_division_9:{path:"left-superior-temporal-gyrus-(posterior-division)",full_name:"Left Superior Temporal Gyrus (posterior division)"},L_Temporal_Fusiform_Cortex__posterior_division_37:{path:"left-temporal-fusiform-cortex-(posterior-division)",full_name:"Left Temporal Fusiform Cortex (posterior division)"},L_Superior_Parietal_Lobule_17:{path:"left-superior-parietal-lobule",full_name:"Left Superior Parietal Lobule"},L_Frontal_Pole_0:{path:"left-frontal-pole",full_name:"Left Frontal Pole"},L_Frontal_Medial_Cortex_24:{path:"left-frontal-medial-cortex",full_name:"Left Frontal Medial Cortex"},L_Middle_Frontal_Gyrus_3:{path:"left-middle-frontal-gyrus",full_name:"Left Middle Frontal Gyrus"},L_Cuneal_Cortex_31:{path:"left-cuneal-cortex",full_name:"Left Cuneal Cortex"},L_Occipital_Pole_48:{path:"left-occipital-pole",full_name:"Left Occipital Pole"},L_Inferior_Temporal_Gyrus__posterior_division_14:{path:"left-inferior-temporal-gyrus-(posterior-division)",full_name:"Left Inferior Temporal Gyrus (posterior division)"},Left_Lateral_Ventricle_3:{path:"left-lateral-ventricle",full_name:"Left Lateral Ventricle"},Left_Thalamus_4:{path:"left-thalamus",full_name:"Left Thalamus"},Left_Caudate_5:{path:"left-caudate",full_name:"Left Caudate"},Left_Putamen_7:{path:"left-putamen",full_name:"Left Putamen"},Left_Pallidum_8:{path:"left-pallidum",full_name:"Left Pallidum"},Brain_Stem_9:{path:"brain-stem",full_name:"Brain Stem"},Left_Hippocampus_10:{path:"left-hippocampus",full_name:"Left Hippocampus"},Left_Amygdala_11:{path:"left-amygdala",full_name:"Left Amygdala"},Left_Accumbens_12:{path:"left-accumbens",full_name:"Left Accumbens"},Right_Lateral_Ventricle_15:{path:"right-lateral-ventricle",full_name:"Right Lateral Ventricle"},Right_Thalamus_16:{path:"right-thalamus",full_name:"Right Thalamus"},Right_Caudate_17:{path:"right-caudate",full_name:"Right Caudate"},Right_Putamen_18:{path:"right-putamen",full_name:"Right Putamen"},Right_Pallidum_19:{path:"right-pallidum",full_name:"Right Pallidum"},Right_Hippocampus_20:{path:"right-hippocampus",full_name:"Right Hippocampus"},Right_Amygdala_21:{path:"right-amygdala",full_name:"Right Amygdala"},Right_Accumbens_22:{path:"right-accumbens",full_name:"Right Accumbens"}}	
 // IDEA
 // get bounding box for whole brain for slice tool dimensions
 
@@ -673,13 +197,15 @@ function initBrain() {
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
 				if (mesh.isMesh) {
+					console.log(mesh.name)
+
 					i++;
 					// // Global mesh styles
 					mesh.material.roughness = settings.brain.roughness;
 					mesh.material.metalness = settings.brain.metalness;
 					mesh.material.wireframe = settings.brain.wireframe;
 					mesh.material.color.setStyle(settings.brain.color.default);
-					mesh.material.side = THREE.DoubleSide;
+					// mesh.material.side = THREE.DoubleSide;
 
 					// Create separate material instance and local mesh styles
 					// mesh.material = mesh.material.clone();
@@ -689,7 +215,7 @@ function initBrain() {
 
 					ray_objects.push(mesh);
 
-					// // We're done traversing
+					// We're done traversing
 					if (i == Object.keys(regions_obj).length) {
 						setupRegionsFilter();
 
@@ -935,37 +461,37 @@ function switchRegion(region_id) {
 	document.querySelector("html").classList.add("is-loaded");
 
 	// Set content of content wrapper
-	var request_url =
-		"https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=true&exintro=true&redirects=true&titles=" +
-		target_obj.wiki_path +
-		"&callback=?";
+	// var request_url =
+	// 	"https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=true&exintro=true&redirects=true&titles=" +
+	// 	target_obj.wiki_path +
+	// 	"&callback=?";
 
 	// Set the title
 	document.querySelector(".content-wrapper .container").innerHTML +=
 		"<h2>" + target_obj.full_name + "</h2>";
 
 	// Get Wikipedia summary
-	JSONP({
-		url: request_url,
-		success: function(data) {
-			// We got the summary
-			var sub_heading =
-				'<cite>From the article <a href="https://en.wikipedia.org/wiki/' +
-				target_obj.wiki_path +
-				'">' +
-				data.query.normalized[0].to +
-				"</a> on Wikipedia.</cite>";
-			var article_id = Object.keys(data.query.pages)[0]; // Gets the first object in pages
-			var article_extract =
-				"<p>" + data.query.pages[article_id].extract + "</p>";
+	// JSONP({
+	// 	url: request_url,
+	// 	success: function(data) {
+	// 		// We got the summary
+	// 		var sub_heading =
+	// 			'<cite>From the article <a href="https://en.wikipedia.org/wiki/' +
+	// 			target_obj.wiki_path +
+	// 			'">' +
+	// 			data.query.normalized[0].to +
+	// 			"</a> on Wikipedia.</cite>";
+	// 		var article_id = Object.keys(data.query.pages)[0]; // Gets the first object in pages
+	// 		var article_extract =
+	// 			"<p>" + data.query.pages[article_id].extract + "</p>";
 			
-			document.querySelector(".content-wrapper .container").innerHTML += sub_heading + article_extract;
-		},
-		error: function(error) {
-			document.querySelector(".content-wrapper .container").innerHTML +=
-				"<p>Unable to retrieve Wikipedia article summary.</p>";
-		}
-	});
+	// 		document.querySelector(".content-wrapper .container").innerHTML += sub_heading + article_extract;
+	// 	},
+	// 	error: function(error) {
+	// 		document.querySelector(".content-wrapper .container").innerHTML +=
+	// 			"<p>Unable to retrieve Wikipedia article summary.</p>";
+	// 	}
+	// });
 
 	// Scroll to top of page
 	scrollTop();
@@ -1005,6 +531,8 @@ function hemispheresToggle() {
 
 		isolateHemispheres();
 
+		scrollTop();
+
 		saveSettings();
 	});
 
@@ -1023,6 +551,8 @@ function hemispheresToggle() {
 		}
 
 		isolateHemispheres();
+
+		scrollTop();
 
 		saveSettings();
 	});
@@ -1077,11 +607,11 @@ function sliceToggle() {
 	slice_toggle.addEventListener("change", function() {
 		if (slice_toggle.checked) {
 			setupSliceTool();
+
+			scrollTop();
 		} else {
 			hideSliceTool();
 		}
-
-		scrollTop();
 	});
 }
 
@@ -1185,6 +715,9 @@ function slice() {
 		settings.slice.dimensions[settings.slice.axis] *
 		settings.slice.position;
 
+	// var sectionHelper = new THREE.SectionHelper( mesh, 0xffffff );
+ //  	scene.add(sectionHelper);
+
 	var clip_plane = [
 		new THREE.Plane(
 			new THREE.Vector3(slice_base[0], slice_base[1], slice_base[2]),
@@ -1260,6 +793,8 @@ function polarGridToggle() {
 			scene.remove(polarGridHelper);
 		}
 
+		scrollTop();
+
 		saveSettings();
 	});
 }
@@ -1283,6 +818,8 @@ function axesToggle() {
 			settings.axes = false;
 			scene.remove(axesHelper);
 		}
+
+		scrollTop();
 
 		saveSettings();
 	});
@@ -1312,6 +849,8 @@ function headToggle() {
 			// Toggle head mesh off
 			head_mesh.visible = false;
 		}
+
+		scrollTop();
 
 		saveSettings();
 	});
@@ -1347,11 +886,6 @@ function loadHead() {
 					mesh.material.wireframe = settings.head.wireframe;
 					mesh.material.color.setStyle(settings.head.color.default);
 					mesh.visible = true;
-
-					if (settings.head.opacity < 1) {
-						mesh.material.transparent = true;
-						mesh.material.opacity = settings.head.opacity;
-					}
 
 					// Save the mesh to a global variable so we can modify it later
 					head_mesh = mesh;
@@ -1406,7 +940,7 @@ function reset() {
 				if (settings.head.opacity < 1) {
 					mesh.material.transparent = true;
 					mesh.material.opacity = settings.head.opacity;
-					mesh.material.color.setStyle(settings.head.color.default);
+					// mesh.material.color.setStyle(settings.head.color.default);
 				}
 			}
 		}
@@ -1431,7 +965,6 @@ function reset() {
 		controls.autoRotate = true;
 	}
 
-	// Scroll to top of page
 	scrollTop();
 }
 
@@ -1451,6 +984,8 @@ function warning(status) {
 	if (spinner !== null) {
 		spinner.parentNode.removeChild(spinner);
 	}
+
+	scrollTop();
 }
 
 function detectTabbing() {

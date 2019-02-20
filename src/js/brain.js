@@ -117,13 +117,15 @@ function initBrain() {
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
 				if (mesh.isMesh) {
+					console.log(mesh.name)
+
 					i++;
 					// // Global mesh styles
 					mesh.material.roughness = settings.brain.roughness;
 					mesh.material.metalness = settings.brain.metalness;
 					mesh.material.wireframe = settings.brain.wireframe;
 					mesh.material.color.setStyle(settings.brain.color.default);
-					mesh.material.side = THREE.DoubleSide;
+					// mesh.material.side = THREE.DoubleSide;
 
 					// Create separate material instance and local mesh styles
 					// mesh.material = mesh.material.clone();
@@ -133,7 +135,7 @@ function initBrain() {
 
 					ray_objects.push(mesh);
 
-					// // We're done traversing
+					// We're done traversing
 					if (i == Object.keys(regions_obj).length) {
 						setupRegionsFilter();
 
@@ -379,37 +381,37 @@ function switchRegion(region_id) {
 	document.querySelector("html").classList.add("is-loaded");
 
 	// Set content of content wrapper
-	var request_url =
-		"https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=true&exintro=true&redirects=true&titles=" +
-		target_obj.wiki_path +
-		"&callback=?";
+	// var request_url =
+	// 	"https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=true&exintro=true&redirects=true&titles=" +
+	// 	target_obj.wiki_path +
+	// 	"&callback=?";
 
 	// Set the title
 	document.querySelector(".content-wrapper .container").innerHTML +=
 		"<h2>" + target_obj.full_name + "</h2>";
 
 	// Get Wikipedia summary
-	JSONP({
-		url: request_url,
-		success: function(data) {
-			// We got the summary
-			var sub_heading =
-				'<cite>From the article <a href="https://en.wikipedia.org/wiki/' +
-				target_obj.wiki_path +
-				'">' +
-				data.query.normalized[0].to +
-				"</a> on Wikipedia.</cite>";
-			var article_id = Object.keys(data.query.pages)[0]; // Gets the first object in pages
-			var article_extract =
-				"<p>" + data.query.pages[article_id].extract + "</p>";
+	// JSONP({
+	// 	url: request_url,
+	// 	success: function(data) {
+	// 		// We got the summary
+	// 		var sub_heading =
+	// 			'<cite>From the article <a href="https://en.wikipedia.org/wiki/' +
+	// 			target_obj.wiki_path +
+	// 			'">' +
+	// 			data.query.normalized[0].to +
+	// 			"</a> on Wikipedia.</cite>";
+	// 		var article_id = Object.keys(data.query.pages)[0]; // Gets the first object in pages
+	// 		var article_extract =
+	// 			"<p>" + data.query.pages[article_id].extract + "</p>";
 			
-			document.querySelector(".content-wrapper .container").innerHTML += sub_heading + article_extract;
-		},
-		error: function(error) {
-			document.querySelector(".content-wrapper .container").innerHTML +=
-				"<p>Unable to retrieve Wikipedia article summary.</p>";
-		}
-	});
+	// 		document.querySelector(".content-wrapper .container").innerHTML += sub_heading + article_extract;
+	// 	},
+	// 	error: function(error) {
+	// 		document.querySelector(".content-wrapper .container").innerHTML +=
+	// 			"<p>Unable to retrieve Wikipedia article summary.</p>";
+	// 	}
+	// });
 
 	// Scroll to top of page
 	scrollTop();
@@ -449,6 +451,8 @@ function hemispheresToggle() {
 
 		isolateHemispheres();
 
+		scrollTop();
+
 		saveSettings();
 	});
 
@@ -467,6 +471,8 @@ function hemispheresToggle() {
 		}
 
 		isolateHemispheres();
+
+		scrollTop();
 
 		saveSettings();
 	});
@@ -521,11 +527,11 @@ function sliceToggle() {
 	slice_toggle.addEventListener("change", function() {
 		if (slice_toggle.checked) {
 			setupSliceTool();
+
+			scrollTop();
 		} else {
 			hideSliceTool();
 		}
-
-		scrollTop();
 	});
 }
 
@@ -629,6 +635,9 @@ function slice() {
 		settings.slice.dimensions[settings.slice.axis] *
 		settings.slice.position;
 
+	// var sectionHelper = new THREE.SectionHelper( mesh, 0xffffff );
+ //  	scene.add(sectionHelper);
+
 	var clip_plane = [
 		new THREE.Plane(
 			new THREE.Vector3(slice_base[0], slice_base[1], slice_base[2]),
@@ -704,6 +713,8 @@ function polarGridToggle() {
 			scene.remove(polarGridHelper);
 		}
 
+		scrollTop();
+
 		saveSettings();
 	});
 }
@@ -727,6 +738,8 @@ function axesToggle() {
 			settings.axes = false;
 			scene.remove(axesHelper);
 		}
+
+		scrollTop();
 
 		saveSettings();
 	});
@@ -756,6 +769,8 @@ function headToggle() {
 			// Toggle head mesh off
 			head_mesh.visible = false;
 		}
+
+		scrollTop();
 
 		saveSettings();
 	});
@@ -791,11 +806,6 @@ function loadHead() {
 					mesh.material.wireframe = settings.head.wireframe;
 					mesh.material.color.setStyle(settings.head.color.default);
 					mesh.visible = true;
-
-					if (settings.head.opacity < 1) {
-						mesh.material.transparent = true;
-						mesh.material.opacity = settings.head.opacity;
-					}
 
 					// Save the mesh to a global variable so we can modify it later
 					head_mesh = mesh;
@@ -850,7 +860,7 @@ function reset() {
 				if (settings.head.opacity < 1) {
 					mesh.material.transparent = true;
 					mesh.material.opacity = settings.head.opacity;
-					mesh.material.color.setStyle(settings.head.color.default);
+					// mesh.material.color.setStyle(settings.head.color.default);
 				}
 			}
 		}
@@ -875,7 +885,6 @@ function reset() {
 		controls.autoRotate = true;
 	}
 
-	// Scroll to top of page
 	scrollTop();
 }
 
@@ -895,6 +904,8 @@ function warning(status) {
 	if (spinner !== null) {
 		spinner.parentNode.removeChild(spinner);
 	}
+
+	scrollTop();
 }
 
 function detectTabbing() {
