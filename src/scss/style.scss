@@ -704,7 +704,7 @@ input[type="radio"] {
 	background-color: $blue-grey-100;
 }
 
-.regions-filter {
+.regions-search {
 	width: 100%;
 	font-size: 1em;
 	font-weight: 500;
@@ -715,12 +715,25 @@ input[type="radio"] {
 	border: 0;
 	height: 2.75em;
 	cursor: pointer;
-	margin-bottom: var(--large);
+	padding: 0 var(--medium);
 
 	&:hover,
 	&:focus {
 		background: $white;
 	}
+}
+
+.regions-results {
+	padding-bottom: var(--large);
+}
+
+.regions-result {
+	font-size: smaller;
+	margin-top: 1px;
+	padding: var(--small) var(--medium);
+	background: $white;
+	border-radius: var(--radius);
+	cursor: pointer;
 }
 
 // Tools wrapper =========================================================================

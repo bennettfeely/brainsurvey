@@ -7,12 +7,9 @@ settings = {
 
 	// Animations
 	orbit: true,
-	orbit_speed: 4,
+	orbit_speed: 3,
 
 	// Helpers
-	grid_size: 10,
-	square_grid: false,
-	polar_grid: false,
 	axes: false,
 
 	// Interactions

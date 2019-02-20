@@ -25,10 +25,13 @@ body.home
 		section.regions-wrapper
 			.container
 				h2 Regions
-				select.regions-filter
-					option(placeholder, value="") Select a brain region...
-					for region in regions
-						option(value=region.name)= region.full_name
+				//- select.regions-filter
+				//- 	option(placeholder, value="") Select a brain region...
+				//- 	for region in regions
+				//- 		option(value=region.name)= region.full_name
+				.regions-filter
+					input.regions-search(placeholder = "Search brain regions..")
+					.regions-results
 				.box-wrapper
 					+toggle("hemisphere-toggle left-hemisphere-toggle", "Left Hemisphere")
 					+toggle("hemisphere-toggle right-hemisphere-toggle", "Right Hemisphere")
@@ -44,12 +47,12 @@ body.home
 					+toggle("head-toggle", "Show Head")
 					+toggle("orbit-toggle", "Orbit")
 				.box-wrapper
-					// +toggle("square-grid-toggle", "Square Grid")
-					+toggle("axes-toggle", "Axes")
+					+toggle("axes-toggle", "Show Axes")
 		+footer()
 	script(src="js/three.min.js")
 	script(src="js/GLTFLoader.min.js")
 	script(src="js/OrbitControls.min.js")
 	script(src="js/WebGL.min.js")
 	script(src="js/jsonp.min.js")
+	script(src="js/fuse.min.js")
 	script(src="js/brain.js")

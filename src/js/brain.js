@@ -80,6 +80,7 @@ function initBrain() {
 
 	// Create new object to capture ray objects;
 	ray_objects = [];
+	filter_objects = [];
 
 	// Load manager
 	var brain_manager = new THREE.LoadingManager();
@@ -117,9 +118,8 @@ function initBrain() {
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
 				if (mesh.isMesh) {
-					console.log(mesh.name)
-
 					i++;
+
 					// // Global mesh styles
 					mesh.material.roughness = settings.brain.roughness;
 					mesh.material.metalness = settings.brain.metalness;
@@ -134,6 +134,11 @@ function initBrain() {
 					regions_obj[mesh.name].mesh = mesh;
 
 					ray_objects.push(mesh);
+
+					filter_objects.push({
+						full_name: regions_obj[mesh.name].full_name,
+						region_id: mesh.name,
+					});
 
 					// We're done traversing
 					if (i == Object.keys(regions_obj).length) {
@@ -330,15 +335,42 @@ function rayCast(color) {
 }
 
 function setupRegionsFilter() {
-	// Add functionality to the <select> dropdown to select regions
-	document.querySelector(".regions-filter").onchange = e => {
-		console.log("change!");
+	var options = {
+		shouldSort: true,
+		threshold: 0.6,
+		location: 0,
+		distance: 100,
+		maxPatternLength: 20,
+		minMatchCharLength: 5,
+		keys: ["full_name"]
+	};
+
+	console.log(filter_objects);
+
+	var fuse = new Fuse(filter_objects, options); // "list" is the item array
+
+	var regions_results = document.querySelector('.regions-results');
+
+	document.querySelector(".regions-search").onkeyup = e => {
+		console.log(e.target.value);
+
+		var results = fuse.search(e.target.value).slice(0, 5);
+
+		console.log(results);
+
+		// Clear the regions results
+		regions_results.innerHTML = '';
+
+		results.forEach(function(result) {
+			regions_results.innerHTML += '<div class="regions-result">' + result.full_name + '</div>';
+		});
+
 		// Pause raycasting
-		raycaster_paused = true;
+		// raycaster_paused = true;
 
-		var region_id = e.target.value;
+		// var region_id = e.target.value;
 
-		switchRegion(region_id);
+		// switchRegion(region_id);
 	};
 }
 
@@ -423,8 +455,6 @@ function initSettings() {
 	sliceToggle();
 	orbitToggle();
 	headToggle();
-	// squareGridToggle();
-	// polarGridToggle();
 	axesToggle();
 }
 
@@ -653,72 +683,6 @@ function slice() {
 	renderer.clippingPlanes = clip_plane;
 }
 
-function squareGridToggle() {
-	var square_grid_toggle = document.querySelector(
-		".square-grid-toggle input"
-	);
-
-	var squareGridHelper = new THREE.GridHelper(
-		settings.grid_size * 2,
-		settings.grid_size / 2
-	);
-
-	square_grid_toggle.checked = settings.square_grid;
-
-	if (settings.square_grid == true) {
-		scene.add(squareGridHelper);
-	} else {
-		scene.remove(squareGridHelper);
-	}
-
-	square_grid_toggle.addEventListener("change", function() {
-		if (square_grid_toggle.checked) {
-			settings.square_grid = true;
-			scene.add(squareGridHelper);
-		} else {
-			settings.square_grid = false;
-			scene.remove(squareGridHelper);
-		}
-
-		saveSettings();
-	});
-}
-
-function polarGridToggle() {
-	var polar_grid_toggle = document.querySelector(".polar-grid-toggle input");
-
-	var polarGridHelper = new THREE.PolarGridHelper(
-		settings.grid_size,
-		8,
-		5,
-		64,
-		0x777777,
-		0x777777
-	);
-
-	polar_grid_toggle.checked = settings.polar_grid;
-
-	if (settings.polar_grid == true) {
-		scene.add(polarGridHelper);
-	} else {
-		scene.remove(polarGridHelper);
-	}
-
-	polar_grid_toggle.addEventListener("change", function() {
-		if (polar_grid_toggle.checked) {
-			settings.polar_grid = true;
-			scene.add(polarGridHelper);
-		} else {
-			settings.polar_grid = false;
-			scene.remove(polarGridHelper);
-		}
-
-		scrollTop();
-
-		saveSettings();
-	});
-}
-
 function axesToggle() {
 	var axes_toggle = document.querySelector(".axes-toggle input");
 	var axesHelper = new THREE.AxesHelper(settings.grid_size);
@@ -821,8 +785,6 @@ function loadHead() {
 
 			// Add the head to the scene
 			scene.add(gltf.scene);
-
-			console.log(scene.children);
 		},
 		function(xhr) {
 			// if (xhr.total !== 0) {
