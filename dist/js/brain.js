@@ -644,20 +644,20 @@ function isolateHemispheres() {
 		if (mesh.isMesh) {
 			// Hide all meshes
 			if (mesh.name !== "Head") {
-				mesh.material.visible = false;
+				mesh.visible = false;
 			}
 
 			// Show left hemisphere meshes
 			if (settings.brain.hemispheres.left.visible == true) {
 				if (mesh.name.startsWith("L_")) {
-					mesh.material.visible = true;
+					mesh.visible = true;
 				}
 			}
 
 			// Show right hemisphere meshes
 			if (settings.brain.hemispheres.right.visible == true) {
 				if (mesh.name.startsWith("R_")) {
-					mesh.material.visible = true;
+					mesh.visible = true;
 				}
 			}
 		}
