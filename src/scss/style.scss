@@ -579,7 +579,38 @@ input[type="radio"] {
 	@include slice-slider-track;
 }
 
-// Loading indicator =====================================================================
+// Tooltip ===============================================================================
+.tooltip-wrapper {
+	position: absolute;
+	z-index: 100;
+	outline: thin solid red;
+}
+
+.tooltip {
+	transform: translate(-50%, -50%);
+	display: inline-block;
+	background: $grey-100;
+	border-radius: var(--radius);
+	padding: var(--medium);
+	line-height: 1;
+	white-space: nowrap;
+	cursor: pointer;
+	pointer-events: none;
+	opacity: 0.9;
+	font-size: smaller;
+	animation: fade 1s 2s both;
+
+	&:hover {
+		background: $white;
+	}
+}
+
+.tooltip-content {
+	display: inline;
+	padding-right: var(--small);
+}
+
+// Status ================================================================================
 .status-wrapper {
 	display: inline-block;
 	position: absolute;

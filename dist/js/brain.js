@@ -6,8 +6,8 @@ settings = {
 	head_model_path: "Head_02/Head_02.gltf",
 
 	// Animations
-	orbit: false,
-	orbit_speed: 3,
+	orbit: true,
+	orbit_speed: 2,
 
 	// Helpers
 	axes: false,
@@ -332,12 +332,12 @@ function getCanvasMousePosition(e) {
 
 	if (e.type == "touchstart" || e.type == "touchmove") {
 		// Touch events
-		var x_pos = e.touches[0].pageX;
-		var y_pos = e.touches[0].pageY;
+		x_pos = e.touches[0].pageX;
+		y_pos = e.touches[0].pageY;
 	} else if (e.type = "mousemove") {
 		// Mouse events
-		var x_pos = e.clientX;
-		var y_pos = e.clientY;
+		x_pos = e.clientX;
+		y_pos = e.clientY;
 	}
 
 	mouse.x = ((x_pos - sizes.left) / sizes.width) * 2 - 1;
@@ -412,9 +412,12 @@ function rayCast(color) {
 				last_intersected = intersects[0].object;
 				last_intersected.material.color.setStyle(color);
 
-				// Update the status wrapper with the name of the region
-				var full_name = regions_obj[last_intersected.name].full_name;
-				updateStatus(full_name, "(Double-click to learn more)");
+				updateStatus(regions_obj[last_intersected.name].full_name, "Double click brain region to explore");
+
+				// var tooltip_wrapper = document.querySelector('.tooltip-wrapper');
+				// var translation = 'translate3d(' + (x_pos - sizes.left) + 'px, ' + y_pos + 'px, 0)';
+				// tooltip_wrapper.style.transform = translation;
+				// tooltip_wrapper.innerHTML = '<div class="tooltip">' + regions_obj[last_intersected.name].full_name + '</div>';
 			}
 		} else {
 			if (last_intersected) {
@@ -428,6 +431,29 @@ function rayCast(color) {
 		}
 	}
 }
+
+// function toolTip(last_intersected) {
+// 	var geometry = last_intersected.geometry;
+//     geometry.computeBoundingBox();   
+//     var center = geometry.boundingBox.getCenter();
+
+// 	var offset = 1.5;
+//     var pos = new THREE.Vector3(
+//     	center.x * offset, 
+//     	center.y * offset, 
+//     	center.z * offset
+//     );
+//     var vector = pos.project(camera);
+
+//     vector.x = ((vector.x + 1) / 2) * sizes.width;
+//     vector.y = -((vector.y - 1) / 2) * sizes.height;
+
+//     var tooltip_wrapper = document.querySelector('.tooltip-wrapper');
+//     var tooltip_content = document.querySelector('.tooltip-content');
+
+//     tooltip_wrapper.style.transform = 'translate3d(' + vector.x + 'px, ' + vector.y + 'px, 0)';
+//     tooltip_content.innerHTML = regions_obj[last_intersected.name].full_name;
+// }
 
 function setupRegionsFilter() {
 	// Fuse search options
