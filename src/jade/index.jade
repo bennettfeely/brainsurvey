@@ -25,13 +25,10 @@ body.home
 		section.regions-wrapper
 			.container
 				h2 Regions
-				//- select.regions-filter
-				//- 	option(placeholder, value="") Select a brain region...
-				//- 	for region in regions
-				//- 		option(value=region.name)= region.full_name
-				.regions-filter
+				label.regions-filter
 					input.regions-search(placeholder = "Search brain regions..")
-					.regions-results
+					+icon("search-icon")
+				.regions-results
 				.box-wrapper
 					+toggle("hemisphere-toggle left-hemisphere-toggle", "Left Hemisphere")
 					+toggle("hemisphere-toggle right-hemisphere-toggle", "Right Hemisphere")

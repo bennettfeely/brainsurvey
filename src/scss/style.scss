@@ -299,22 +299,6 @@ body {
 	}
 }
 
-// Tooltips ===============================================================================
-// .tooltip {
-// 	position: absolute;
-// 	top: 50%;
-// 	left: 50%;
-// 	display: inline-block;
-// 	background: rgba($white, 0.95);
-// 	line-height: 1;
-// 	font-size: small;
-// 	padding: var(--small);
-// 	border-radius: var(--radius);
-// 	transform-origin: top left;
-// 	z-index: 100;
-// 	white-space: nowrap;
-// }
-
 // Brain wrapper =========================================================================
 .brain-wrapper {
 	position: relative;
@@ -597,13 +581,19 @@ input[type="radio"] {
 
 // Loading indicator =====================================================================
 .status-wrapper {
+	display: inline-block;
 	position: absolute;
 	z-index: 100;
-	bottom: 0;
-	right: 0;
 	color: $blue-grey-50;
 	font-weight: 500;
 	pointer-events: none;
+	bottom: 0;
+	right: 0;
+	text-align: right;
+
+	@media (min-width: $tablet) {
+		position: fixed;
+	}
 }
 
 .status {
@@ -614,6 +604,11 @@ input[type="radio"] {
 			opacity: 0;
 		}
 	}
+}
+
+.sub-status {
+	opacity: 0.75;
+	font-size: smaller;
 }
 
 // Content Wrapper =======================================================================
@@ -704,18 +699,24 @@ input[type="radio"] {
 	background-color: $blue-grey-100;
 }
 
+.regions-filter {
+	display: flex;
+	align-items: center;
+	background: $grey-50;
+	padding: 0 var(--medium);
+	cursor: pointer;
+	border-radius: var(--radius);
+}
+
 .regions-search {
-	width: 100%;
+	flex: 1;
 	font-size: 1em;
 	font-weight: 500;
 	line-height: 1.25;
-	border-radius: var(--radius);
 	font-weight: 500;
 	background: $grey-50;
 	border: 0;
 	height: 2.75em;
-	cursor: pointer;
-	padding: 0 var(--medium);
 
 	&:hover,
 	&:focus {
@@ -729,11 +730,23 @@ input[type="radio"] {
 
 .regions-result {
 	font-size: smaller;
-	margin-top: 1px;
-	padding: var(--small) var(--medium);
-	background: $white;
-	border-radius: var(--radius);
+	padding: var(--medium);
+	background: $grey-50;
 	cursor: pointer;
+	box-shadow: inset 0 -1px rgba($black, 0.1);
+
+	&:first-child {
+		border-radius: var(--radius) var(--radius) 0 0;
+		margin-top: var(--small);
+	}
+	&:last-child {
+		border-radius: 0 0 var(--radius) var(--radius);
+	}
+
+	&:hover {
+		background: $light-blue-100;
+		box-shadow: none;
+	}
 }
 
 // Tools wrapper =========================================================================
@@ -776,7 +789,6 @@ input[type="radio"] {
 	display: block;
 	position: relative;
 	background: rgba($white, 0.8);
-	box-shadow: $shadow;
 	color: $black;
 	box-shadow: inset 0 -1px rgba($black, 0.1);
 	transition: transform var(--transition);

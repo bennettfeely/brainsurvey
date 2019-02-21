@@ -6,7 +6,7 @@ settings = {
 	head_model_path: "Head_02/Head_02.gltf",
 
 	// Animations
-	orbit: true,
+	orbit: false,
 	orbit_speed: 3,
 
 	// Helpers

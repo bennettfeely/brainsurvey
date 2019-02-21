@@ -3,6 +3,7 @@
 
 var html = document.querySelector("html");
 var brain_wrapper = document.querySelector(".brain-wrapper");
+is_region_page = false;
 
 init();
 
@@ -38,7 +39,7 @@ function route() {
 }
 
 function initBrain() {
-	updateStatus("Loading model");
+	updateStatus("Loading model...");
 
 	// Get the canvas initial size
 	getSizes();
@@ -89,7 +90,7 @@ function initBrain() {
 	};
 
 	brain_manager.onLoad = function() {
-		updateStatus("Rendering brain");
+		updateStatus("Rendering brain...");
 
 		// Remove the spinner
 		var spinner = document.querySelector(".spinner");
@@ -159,7 +160,7 @@ function initBrain() {
 			scene.add(gltf.scene);
 		},
 		function(xhr) {
-			var pct = (xhr.loaded / 122444) * 100;
+			var pct = Math.round((xhr.loaded / xhr.total) * 100);
 			updateStatus("Loading brain " + pct + "%");
 		},
 		function(error) {
@@ -209,6 +210,8 @@ function initBrain() {
 	canvas.addEventListener("mousemove", onCanvasMove, false);
 	canvas.addEventListener("mousedown", onCanvasDown, false);
 	canvas.addEventListener("mouseup", onCanvasUp, false);
+	canvas.addEventListener("mousedown", onCanvasDown, false);
+	canvas.addEventListener("dblclick", onCanvasDblClick, false);
 
 	canvas.addEventListener("touchmove", onCanvasMove, false);
 	canvas.addEventListener("touchstart", onCanvasDown, false);
@@ -236,6 +239,15 @@ function setCanvasSize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize(sizes.width, sizes.height);
+}
+
+function animate() {
+	// Rerun animate() as fast as the browser can
+	requestAnimationFrame(animate);
+
+	controls.update();
+
+	renderer.render(scene, camera);
 }
 
 function getCanvasMousePosition(e) {
@@ -278,28 +290,30 @@ function onCanvasDown(e) {
 function onCanvasUp(e) {
 	console.log("onDocumentMouseUp();");
 
-	raycaster_paused = false;
+	if (is_region_page == false && settings.slice.visible == false) {
+		raycaster_paused = false;
+	}
 }
 
-function onDocumentClick(e) {
-	// 	last_intersected = intersects[0].object;
-	// 	switchRegion(last_intersected.name);
-}
+function onCanvasDblClick(e) {
+	console.log('dblclick1');
 
-function animate() {
-	// Rerun animate() as fast as the browser can
-	requestAnimationFrame(animate);
+	e.preventDefault();
 
-	controls.update();
+	getCanvasMousePosition(e);
 
-	renderer.render(scene, camera);
+	rayCast(settings.brain.color.active);
+
+	raycaster_paused = true;
+
+	switchRegion(last_intersected.name);
 }
 
 function rayCast(color) {
 	console.log('raycast!');
 
 	// Raycasting for hover events on brain regions
-	if (raycaster_paused == false && settings.slice.visible == false) {
+	if (is_region_page == false && raycaster_paused == false && settings.slice.visible == false) {
 		// Set the raycaster with current mouse and camera position
 		raycaster.setFromCamera(mouse, camera);
 
@@ -320,6 +334,10 @@ function rayCast(color) {
 				// Nearest object to camera is intersects[0] which we will change color
 				last_intersected = intersects[0].object;
 				last_intersected.material.color.setStyle(color);
+
+				// Update the status wrapper with the name of the region
+				var full_name = regions_obj[last_intersected.name].full_name;
+				updateStatus(full_name, "(Double-click to learn more)");
 			}
 		} else {
 			if (last_intersected) {
@@ -335,9 +353,10 @@ function rayCast(color) {
 }
 
 function setupRegionsFilter() {
+	// Fuse search options
 	var options = {
 		shouldSort: true,
-		threshold: 0.6,
+		threshold: 0.4,
 		location: 0,
 		distance: 100,
 		maxPatternLength: 20,
@@ -345,36 +364,40 @@ function setupRegionsFilter() {
 		keys: ["full_name"]
 	};
 
-	console.log(filter_objects);
-
-	var fuse = new Fuse(filter_objects, options); // "list" is the item array
-
+	var fuse = new Fuse(filter_objects, options);
 	var regions_results = document.querySelector('.regions-results');
 
 	document.querySelector(".regions-search").onkeyup = e => {
-		console.log(e.target.value);
+		raycaster_paused = true;
 
+		// Search the regions with fuse
 		var results = fuse.search(e.target.value).slice(0, 5);
-
-		console.log(results);
 
 		// Clear the regions results
 		regions_results.innerHTML = '';
 
+		// Iterate over the results and append them to the dropdown
 		results.forEach(function(result) {
-			regions_results.innerHTML += '<div class="regions-result">' + result.full_name + '</div>';
+			console.log(result);
+			var region_result = document.createElement("div");
+				region_result.textContent = result.full_name;
+				region_result.className = "regions-result";
+				region_result.dataset.region_id = result.region_id;
+
+				region_result.addEventListener("click", function(item){
+					var region_id = item.target.dataset.region_id;
+
+					switchRegion(region_id);;
+				});
+
+			regions_results.appendChild(region_result);
 		});
-
-		// Pause raycasting
-		// raycaster_paused = true;
-
-		// var region_id = e.target.value;
-
-		// switchRegion(region_id);
 	};
 }
 
 function switchRegion(region_id) {
+	is_region_page = true;
+
 	// Get the full region object by the region_id
 	var target_obj = regions_obj[region_id];
 
@@ -394,6 +417,10 @@ function switchRegion(region_id) {
 
 	// Reset the content wrapper
 	document.querySelector(".content-wrapper .container").innerHTML = "";
+
+	// Clear the regions results
+	document.querySelector('.regions-search').value = "";
+	document.querySelector('.regions-results').innerHTML = "";
 
 	// Make all other regions transparent
 	scene.traverse(function(mesh) {
@@ -576,9 +603,6 @@ function setupSliceTool() {
 	// Show the slice tool
 	document.querySelector(".slice-tool").classList.remove("is-hidden");
 
-	// Reset the regions filter
-	document.querySelector(".regions-filter").value = "";
-
 	// Slice things up to start
 	slice();
 
@@ -685,7 +709,7 @@ function slice() {
 
 function axesToggle() {
 	var axes_toggle = document.querySelector(".axes-toggle input");
-	var axesHelper = new THREE.AxesHelper(settings.grid_size);
+	var axesHelper = new THREE.AxesHelper(10);
 
 	axes_toggle.checked = settings.axes;
 	if (settings.axes == true) {
@@ -747,7 +771,7 @@ function loadHead() {
 	};
 
 	head_manager.onLoad = function() {
-		updateStatus("Rendering head");
+		updateStatus("Rendering head...");
 	};
 
 	head_manager.onProgress = function(url, itemsLoaded, itemsTotal) {
@@ -762,7 +786,7 @@ function loadHead() {
 	loader.load(
 		"models/" + settings.head_model_path,
 		function(gltf) {
-			updateStatus("Rendering Head");
+			updateStatus("Rendering Head...");
 			gltf.scene.traverse(function(mesh) {
 				if (mesh.isMesh) {
 					mesh.material.roughness = settings.head.roughness;
@@ -802,6 +826,8 @@ function loadHead() {
 function reset() {
 	console.log("reset();");
 
+	is_region_page = false;
+
 	// Change the URL
 	history.pushState(null, null, "/");
 
@@ -838,9 +864,6 @@ function reset() {
 	// Empty the content wrapper
 	document.querySelector(".content-wrapper .container").innerHTML = "";
 
-	// Reset the regions filter
-	document.querySelector(".regions-filter").value = "";
-
 	// Make the world orbit because it looks nice
 	if (settings.orbit == true) {
 		document.querySelector(".orbit-toggle input").checked = true;
@@ -850,11 +873,21 @@ function reset() {
 	scrollTop();
 }
 
-function updateStatus(status) {
-	var message = '<div class="status container">' + status + "...</div>";
+function updateStatus(status, sub_status) {
+	if (sub_status == undefined) {
+		var message = '<div class="status container">' + status + "</div>";
+	} else {
+		var message = '<div class="status container">' 
+				+ status 
+				+ '<div class="sub-status">' + sub_status + '</div>'
+			+ "</div>";
+	}
+
+	console.log(status)
 
 	document.querySelector(".status-wrapper").innerHTML = message;
 }
+
 
 function warning(status) {
 	var message = '<p class="container">' + status + "</p>";
