@@ -1,12 +1,8 @@
 settings = {
 	autosave: false,
 
-	// Models
-	brain_model_path: "Brain_07/Brain_007.gltf",
-	head_model_path: "Head_02/Head_02.gltf",
-
 	// Animations
-	orbit: true,
+	orbit: false,
 	orbit_speed: 2,
 
 	// Helpers
@@ -35,6 +31,8 @@ settings = {
 
 	// Materials
 	brain: {
+		model_path: "Brain_07/Brain_007.gltf",
+		model_size: 41239260,
 		roughness: 0.15,
 		metalness: 0.25,
 		wireframe: false,
@@ -59,6 +57,8 @@ settings = {
 		}
 	},
 	head: {
+		model_path: "Head_02/Head_02.gltf",
+		model_size: 1419210,
 		visible: false,
 		roughness: 1,
 		metalness: 0,

@@ -105,7 +105,7 @@ function initBrain() {
 		// 	var itemsLoaded = itemsTotal;
 		// }
 
-		// updateStatus("Loading brain (" + itemsLoaded + "/" + itemsTotal + ")");
+		updateStatus("Loading brain (" + itemsLoaded + "/" + itemsTotal + ")");
 	};
 
 	brain_manager.onError = function(url) {
@@ -114,7 +114,7 @@ function initBrain() {
 
 	var loader = new THREE.GLTFLoader(brain_manager);
 	loader.load(
-		"models/" + settings.brain_model_path,
+		"models/" + settings.brain.model_path,
 		function(gltf) {
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
@@ -155,7 +155,7 @@ function initBrain() {
 			scene.add(gltf.scene);
 		},
 		function(xhr) {
-			var pct = Math.round((xhr.loaded / xhr.total) * 100);
+			var pct = Math.round((xhr.loaded / settings.brain.model_size) * 100);
 			updateStatus("Loading brain " + pct + "%");
 		},
 		function(error) {
@@ -829,7 +829,7 @@ function loadHead() {
 
 	var loader = new THREE.GLTFLoader(head_manager);
 	loader.load(
-		"models/" + settings.head_model_path,
+		"models/" + settings.head.model_path,
 		function(gltf) {
 			updateStatus("Rendering Head...");
 			gltf.scene.traverse(function(mesh) {
@@ -856,10 +856,8 @@ function loadHead() {
 			scene.add(gltf.scene);
 		},
 		function(xhr) {
-			// if (xhr.total !== 0) {
-			// 	var pct = (xhr.loaded / xhr.total) * 100;
-			// 	updateStatus("Loading model of head " + pct + "%");
-			// }
+			var pct = Math.round((xhr.loaded / settings.head.model_size) * 100);
+			updateStatus("Loading model of head " + pct + "%");
 		},
 		function(error) {
 			console.log(error);

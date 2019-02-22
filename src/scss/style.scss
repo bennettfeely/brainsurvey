@@ -314,6 +314,11 @@ body {
 		cursor: grab;
 		cursor: -moz-grab;
 		cursor: -webkit-grab;
+		// background: url(../img/brain.png);
+		// background-position: center center;
+		// background-size: 50%;
+		// background-repeat: no-repeat;
+		// background-blend-mode: screen;
 
 		&:active {
 			cursor: grabbing;

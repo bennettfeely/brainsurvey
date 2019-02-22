@@ -1,12 +1,8 @@
 settings = {
 	autosave: false,
 
-	// Models
-	brain_model_path: "Brain_07/Brain_007.gltf",
-	head_model_path: "Head_02/Head_02.gltf",
-
 	// Animations
-	orbit: true,
+	orbit: false,
 	orbit_speed: 2,
 
 	// Helpers
@@ -35,6 +31,8 @@ settings = {
 
 	// Materials
 	brain: {
+		model_path: "Brain_07/Brain_007.gltf",
+		model_size: 41239260,
 		roughness: 0.15,
 		metalness: 0.25,
 		wireframe: false,
@@ -59,6 +57,8 @@ settings = {
 		}
 	},
 	head: {
+		model_path: "Head_02/Head_02.gltf",
+		model_size: 1419210,
 		visible: false,
 		roughness: 1,
 		metalness: 0,
@@ -182,7 +182,7 @@ function initBrain() {
 		// 	var itemsLoaded = itemsTotal;
 		// }
 
-		// updateStatus("Loading brain (" + itemsLoaded + "/" + itemsTotal + ")");
+		updateStatus("Loading brain (" + itemsLoaded + "/" + itemsTotal + ")");
 	};
 
 	brain_manager.onError = function(url) {
@@ -191,7 +191,7 @@ function initBrain() {
 
 	var loader = new THREE.GLTFLoader(brain_manager);
 	loader.load(
-		"models/" + settings.brain_model_path,
+		"models/" + settings.brain.model_path,
 		function(gltf) {
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
@@ -232,7 +232,7 @@ function initBrain() {
 			scene.add(gltf.scene);
 		},
 		function(xhr) {
-			var pct = Math.round((xhr.loaded / xhr.total) * 100);
+			var pct = Math.round((xhr.loaded / settings.brain.model_size) * 100);
 			updateStatus("Loading brain " + pct + "%");
 		},
 		function(error) {
@@ -906,7 +906,7 @@ function loadHead() {
 
 	var loader = new THREE.GLTFLoader(head_manager);
 	loader.load(
-		"models/" + settings.head_model_path,
+		"models/" + settings.head.model_path,
 		function(gltf) {
 			updateStatus("Rendering Head...");
 			gltf.scene.traverse(function(mesh) {
@@ -933,10 +933,8 @@ function loadHead() {
 			scene.add(gltf.scene);
 		},
 		function(xhr) {
-			// if (xhr.total !== 0) {
-			// 	var pct = (xhr.loaded / xhr.total) * 100;
-			// 	updateStatus("Loading model of head " + pct + "%");
-			// }
+			var pct = Math.round((xhr.loaded / settings.head.model_size) * 100);
+			updateStatus("Loading model of head " + pct + "%");
 		},
 		function(error) {
 			console.log(error);
