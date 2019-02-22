@@ -32,7 +32,7 @@ settings = {
 	// Materials
 	brain: {
 		model_path: "Brain_07/Brain_007.gltf",
-		model_size: 41239260,
+		model_size: 3542464,
 		roughness: 0.15,
 		metalness: 0.25,
 		wireframe: false,

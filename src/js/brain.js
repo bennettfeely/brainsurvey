@@ -3,7 +3,10 @@
 
 var html = document.querySelector("html");
 var brain_wrapper = document.querySelector(".brain-wrapper");
+
 is_region_page = false;
+is_tapping = false;
+is_raycaster_paused = false;
 
 init();
 
@@ -169,13 +172,9 @@ function initBrain() {
 	var directionalLight = new THREE.DirectionalLight(0xffd6d6, 0.5);
 	directionalLight.position.set(10, 30, 0);
 	scene.add(directionalLight);
-	// var directionalLight = new THREE.DirectionalLight(0xffd6d6, 0.1);
-	// directionalLight.position.set(30, -30, 0);
-	// scene.add(directionalLight);
 
 	// Setup raycaster
 	raycaster = new THREE.Raycaster();
-	raycaster_paused = false;
 	last_intersected = null;
 
 	// Start mouse for raycaster  at point far away from brain
@@ -200,13 +199,13 @@ function initBrain() {
 	// Detect window resizing and resize canvas
 	window.addEventListener("resize", setCanvasSize, false);
 
-	// Raycaster events
+	// Interactions with the brain
 	var canvas = document.querySelector(".brain-wrapper canvas");
 	canvas.addEventListener("mousemove", onCanvasMove, false);
 	canvas.addEventListener("mousedown", onCanvasDown, false);
 	canvas.addEventListener("mouseup", onCanvasUp, false);
 	canvas.addEventListener("mousedown", onCanvasDown, false);
-	canvas.addEventListener("click", onCanvasClick, false);
+
 	canvas.addEventListener("dblclick", onCanvasDblClick, false);
 
 	canvas.addEventListener("touchmove", onCanvasMove, false);
@@ -214,12 +213,13 @@ function initBrain() {
 	canvas.addEventListener("touchend", onCanvasUp, false);
 
 	// Detect click for back button
+	// TODO: Look into attaching reset() to html button itself
 	document
 		.querySelector(".back-button")
 		.addEventListener("click", function() {
 			reset();
 
-			raycaster_paused = false;
+			is_raycaster_paused = false;
 		});
 }
 
@@ -230,7 +230,7 @@ function getSizes() {
 function setCanvasSize() {
 	getSizes();
 
-	// Set the size of the <canvas> to fill the .brain_wrapper
+	// Set the size of the canvas to fill the .brain-wrapper
 	camera.aspect = sizes.width / sizes.height;
 	camera.updateProjectionMatrix();
 
@@ -238,7 +238,7 @@ function setCanvasSize() {
 }
 
 function animate() {
-	// Rerun animate() as fast as the browser can
+	// Rerun animate() as fast as possible
 	requestAnimationFrame(animate);
 
 	controls.update();
@@ -247,20 +247,20 @@ function animate() {
 }
 
 function getCanvasMousePosition(e) {
-	// Get the mouse/touch position and set it relative to the brain wrapper
-
+	// Get the mouse/touch position and set it relative to .brain-wrapper
 	if (e.type == "touchstart" || e.type == "touchmove") {
 		// Touch events
+		is_tapping = true;
+
 		x_pos = e.touches[0].pageX;
 		y_pos = e.touches[0].pageY;
 
-		tapping = true;
 	} else if (e.type = "mousemove") {
 		// Mouse events
+		is_tapping = false;
+
 		x_pos = e.clientX;
 		y_pos = e.clientY;
-
-		tapping = false;
 	}
 
 	mouse.x = ((x_pos - sizes.left) / sizes.width) * 2 - 1;
@@ -276,52 +276,36 @@ function onCanvasMove(e) {
 }
 
 function onCanvasDown(e) {
-	console.log("onCanvasDown();");
-
 	e.preventDefault();
 
 	getCanvasMousePosition(e);
 
-	rayCast(settings.brain.color.active);
-
-	raycaster_paused = true;
+	rayCast(settings.brain.color.hover);
 }
 
 function onCanvasUp(e) {
-	console.log("onDocumentMouseUp();");
-
-	 var now = new Date().getTime();
+	e.preventDefault();
 
 	if (is_region_page == false && settings.slice.visible == false) {
-		raycaster_paused = false;
+		is_raycaster_paused = false;
 	}
 }
 
-function onCanvasClick(e) {
-	e.preventDefault();
-
-	getCanvasMousePosition(e);
-
-	rayCast(settings.brain.color.active);
-}
-
 function onCanvasDblClick(e) {
-	console.log('dblclick1');
-
 	e.preventDefault();
 
 	getCanvasMousePosition(e);
 
 	rayCast(settings.brain.color.active);
 
-	raycaster_paused = true;
+	is_raycaster_paused = true;
 
 	switchRegion(last_intersected.name);
 }
 
 function rayCast(color) {
 	// Raycasting for hover events on brain regions
-	if (is_region_page == false && raycaster_paused == false && settings.slice.visible == false) {
+	if (is_region_page == false && is_raycaster_paused == false && settings.slice.visible == false) {
 		// Set the raycaster with current mouse and camera position
 		raycaster.setFromCamera(mouse, camera);
 
@@ -343,16 +327,16 @@ function rayCast(color) {
 				last_intersected = intersects[0].object;
 				last_intersected.material.color.setStyle(color);
 
-				if (tapping == true) {
-					updateStatus(regions_obj[last_intersected.name].full_name, "Double tap brain region to explore");
+				if (is_tapping == true) {
+					updateStatus(regions_obj[last_intersected.name].full_name, "Tap here to explore region");
+					
+					// Switch to region when sub status is clicked
+					document.querySelector(".status-wrapper .sub-status").onclick = function() {
+						switchRegion(last_intersected.name);
+					};
 				} else {
 					updateStatus(regions_obj[last_intersected.name].full_name, "Double click brain region to explore");
 				}
-
-				// var tooltip_wrapper = document.querySelector('.tooltip-wrapper');
-				// var translation = 'translate3d(' + (x_pos - sizes.left) + 'px, ' + y_pos + 'px, 0)';
-				// tooltip_wrapper.style.transform = translation;
-				// tooltip_wrapper.innerHTML = '<div class="tooltip">' + regions_obj[last_intersected.name].full_name + '</div>';
 			}
 		} else {
 			if (last_intersected) {
@@ -366,29 +350,6 @@ function rayCast(color) {
 		}
 	}
 }
-
-// function toolTip(last_intersected) {
-// 	var geometry = last_intersected.geometry;
-//     geometry.computeBoundingBox();   
-//     var center = geometry.boundingBox.getCenter();
-
-// 	var offset = 1.5;
-//     var pos = new THREE.Vector3(
-//     	center.x * offset, 
-//     	center.y * offset, 
-//     	center.z * offset
-//     );
-//     var vector = pos.project(camera);
-
-//     vector.x = ((vector.x + 1) / 2) * sizes.width;
-//     vector.y = -((vector.y - 1) / 2) * sizes.height;
-
-//     var tooltip_wrapper = document.querySelector('.tooltip-wrapper');
-//     var tooltip_content = document.querySelector('.tooltip-content');
-
-//     tooltip_wrapper.style.transform = 'translate3d(' + vector.x + 'px, ' + vector.y + 'px, 0)';
-//     tooltip_content.innerHTML = regions_obj[last_intersected.name].full_name;
-// }
 
 function setupRegionsFilter() {
 	// Fuse search options
@@ -406,7 +367,7 @@ function setupRegionsFilter() {
 	var regions_results = document.querySelector('.regions-results');
 
 	document.querySelector(".regions-search").onkeyup = e => {
-		raycaster_paused = true;
+		is_raycaster_paused = true;
 
 		// Search the regions with fuse
 		var results = fuse.search(e.target.value).slice(0, 5);
@@ -425,7 +386,7 @@ function setupRegionsFilter() {
 				region_result.addEventListener("click", function(item){
 					var region_id = item.target.dataset.region_id;
 
-					switchRegion(region_id);;
+					switchRegion(region_id);
 				});
 
 			regions_results.appendChild(region_result);
@@ -446,6 +407,9 @@ function switchRegion(region_id) {
 	document
 		.querySelector("html")
 		.classList.add("has-region-content", "has-content");
+	
+	// Clear the status
+	updateStatus("");
 
 	// Rerender the page
 	renderer.render(scene, camera);
@@ -917,16 +881,14 @@ function reset() {
 }
 
 function updateStatus(status, sub_status) {
-	if (sub_status == undefined) {
-		var message = '<div class="status container">' + status + "</div>";
-	} else {
+	if (sub_status !== undefined) {
 		var message = '<div class="status container">' 
 				+ status 
 				+ '<div class="sub-status">' + sub_status + '</div>'
 			+ "</div>";
+	} else {
+		var message = '<div class="status container">' + status + "</div>";
 	}
-
-	console.log(status)
 
 	document.querySelector(".status-wrapper").innerHTML = message;
 }
