@@ -281,6 +281,8 @@ function onCanvasDown(e) {
 	getCanvasMousePosition(e);
 
 	rayCast(settings.brain.color.hover);
+
+	is_raycaster_paused = true;
 }
 
 function onCanvasUp(e) {

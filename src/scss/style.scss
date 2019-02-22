@@ -770,8 +770,7 @@ input[type="radio"] {
 	background: $light-blue-50;
 	color: $light-blue-900;
 	cursor: pointer;
-	margin-top: 1px;
-	border-radius: var(--radius);
+	box-shadow: inset 0 -1px rgba($black, 0.1);
 
 	&:first-child {
 		margin-top: var(--small);
@@ -781,11 +780,11 @@ input[type="radio"] {
 	&:last-child {
 		border-bottom-left-radius: var(--radius);
 		border-bottom-right-radius: var(--radius);
+		box-shadow: none;
 	}
 
 	&:hover {
 		background: $light-blue-100;
-		text-decoration: underline;
 	}
 
 	&:active {
