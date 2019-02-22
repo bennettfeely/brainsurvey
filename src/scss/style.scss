@@ -760,23 +760,32 @@ input[type="radio"] {
 }
 
 .regions-result {
+	@extend %no-select;
 	font-size: smaller;
 	padding: var(--medium);
-	background: $grey-50;
+	background: $light-blue-50;
+	color: $light-blue-900;
 	cursor: pointer;
-	box-shadow: inset 0 -1px rgba($black, 0.1);
+	margin-top: 1px;
+	border-radius: var(--radius);
 
 	&:first-child {
-		border-radius: var(--radius) var(--radius) 0 0;
 		margin-top: var(--small);
+		border-top-left-radius: var(--radius);
+		border-top-right-radius: var(--radius);
 	}
 	&:last-child {
-		border-radius: 0 0 var(--radius) var(--radius);
+		border-bottom-left-radius: var(--radius);
+		border-bottom-right-radius: var(--radius);
 	}
 
 	&:hover {
 		background: $light-blue-100;
-		box-shadow: none;
+		text-decoration: underline;
+	}
+
+	&:active {
+		background: $light-blue-200;
 	}
 }
 

@@ -198,21 +198,16 @@ function initBrain() {
 				if (mesh.isMesh) {
 					i++;
 
-					// // Global mesh styles
+					// Global mesh styles
 					mesh.material.roughness = settings.brain.roughness;
 					mesh.material.metalness = settings.brain.metalness;
 					mesh.material.wireframe = settings.brain.wireframe;
 					mesh.material.color.setStyle(settings.brain.color.default);
-					// mesh.material.side = THREE.DoubleSide;
+					mesh.material.side = THREE.DoubleSide;
 
-					// Create separate material instance and local mesh styles
-					// mesh.material = mesh.material.clone();
-
-					// Add mesh object to regions object
+					// Add mesh object to other object groupings
 					regions_obj[mesh.name].mesh = mesh;
-
 					ray_objects.push(mesh);
-
 					filter_objects.push({
 						full_name: regions_obj[mesh.name].full_name,
 						region_id: mesh.name,
@@ -288,6 +283,7 @@ function initBrain() {
 	canvas.addEventListener("mousedown", onCanvasDown, false);
 	canvas.addEventListener("mouseup", onCanvasUp, false);
 	canvas.addEventListener("mousedown", onCanvasDown, false);
+	canvas.addEventListener("click", onCanvasClick, false);
 	canvas.addEventListener("dblclick", onCanvasDblClick, false);
 
 	canvas.addEventListener("touchmove", onCanvasMove, false);
@@ -334,10 +330,14 @@ function getCanvasMousePosition(e) {
 		// Touch events
 		x_pos = e.touches[0].pageX;
 		y_pos = e.touches[0].pageY;
+
+		tapping = true;
 	} else if (e.type = "mousemove") {
 		// Mouse events
 		x_pos = e.clientX;
 		y_pos = e.clientY;
+
+		tapping = false;
 	}
 
 	mouse.x = ((x_pos - sizes.left) / sizes.width) * 2 - 1;
@@ -367,9 +367,19 @@ function onCanvasDown(e) {
 function onCanvasUp(e) {
 	console.log("onDocumentMouseUp();");
 
+	 var now = new Date().getTime();
+
 	if (is_region_page == false && settings.slice.visible == false) {
 		raycaster_paused = false;
 	}
+}
+
+function onCanvasClick(e) {
+	e.preventDefault();
+
+	getCanvasMousePosition(e);
+
+	rayCast(settings.brain.color.active);
 }
 
 function onCanvasDblClick(e) {
@@ -387,8 +397,6 @@ function onCanvasDblClick(e) {
 }
 
 function rayCast(color) {
-	console.log('raycast!');
-
 	// Raycasting for hover events on brain regions
 	if (is_region_page == false && raycaster_paused == false && settings.slice.visible == false) {
 		// Set the raycaster with current mouse and camera position
@@ -412,7 +420,11 @@ function rayCast(color) {
 				last_intersected = intersects[0].object;
 				last_intersected.material.color.setStyle(color);
 
-				updateStatus(regions_obj[last_intersected.name].full_name, "Double click brain region to explore");
+				if (tapping == true) {
+					updateStatus(regions_obj[last_intersected.name].full_name, "Double tap brain region to explore");
+				} else {
+					updateStatus(regions_obj[last_intersected.name].full_name, "Double click brain region to explore");
+				}
 
 				// var tooltip_wrapper = document.querySelector('.tooltip-wrapper');
 				// var translation = 'translate3d(' + (x_pos - sizes.left) + 'px, ' + y_pos + 'px, 0)';
@@ -642,23 +654,33 @@ function isolateHemispheres() {
 	// Iterate through meshes, looking for matching L_ or R_ prefixes to toggle visibility
 	scene.traverse(function(mesh) {
 		if (mesh.isMesh) {
-			// Hide all meshes
-			if (mesh.name !== "Head") {
-				mesh.visible = false;
-			}
+
+			mesh.visible = false;
 
 			// Show left hemisphere meshes
 			if (settings.brain.hemispheres.left.visible == true) {
-				if (mesh.name.startsWith("L_")) {
+				if (mesh.name.startsWith("L_") || mesh.name.startsWith("Left_")) {
 					mesh.visible = true;
 				}
 			}
 
 			// Show right hemisphere meshes
 			if (settings.brain.hemispheres.right.visible == true) {
-				if (mesh.name.startsWith("R_")) {
+				if (mesh.name.startsWith("R_") || mesh.name.startsWith("Right_")) {
 					mesh.visible = true;
 				}
+			}
+
+
+			if (settings.brain.hemispheres.left.visible == true && settings.brain.hemispheres.right.visible == true) {
+				if (mesh.name == "Brain_Stem_9") {
+					mesh.visible = true;
+				}
+			}
+
+
+			if (mesh.name == "Head") {
+				mesh.visible = true;
 			}
 		}
 	});
@@ -791,9 +813,6 @@ function slice() {
 	var computed_slice_position =
 		settings.slice.dimensions[settings.slice.axis] *
 		settings.slice.position;
-
-	// var sectionHelper = new THREE.SectionHelper( mesh, 0xffffff );
- //  	scene.add(sectionHelper);
 
 	var clip_plane = [
 		new THREE.Plane(
