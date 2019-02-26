@@ -2,7 +2,7 @@ settings = {
 	autosave: false,
 
 	// Animations
-	orbit: false,
+	orbit: true,
 	orbit_speed: 2,
 
 	// Helpers
@@ -58,13 +58,13 @@ settings = {
 	},
 	head: {
 		model_path: "Head_02/Head_02.gltf",
-		model_size: 1419210,
+		model_size: 567684,
 		visible: false,
 		roughness: 1,
 		metalness: 0,
 		wireframe: true,
 		color: {
-			default: "#333"
+			default: "#1a1a1a"
 		},
 		offset: {
 			x: -1.8,

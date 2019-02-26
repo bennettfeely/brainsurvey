@@ -444,37 +444,46 @@ function switchRegion(region_id) {
 	document.querySelector("html").classList.add("is-loaded");
 
 	// Set content of content wrapper
-	// var request_url =
-	// 	"https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=true&exintro=true&redirects=true&titles=" +
-	// 	target_obj.wiki_path +
-	// 	"&callback=?";
+	var request_url =
+		"https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=true&exintro=true&redirects=true&titles=" +
+		target_obj.wiki +
+		"&callback=?";
 
 	// Set the title
 	document.querySelector(".content-wrapper .container").innerHTML +=
 		"<h2>" + target_obj.full_name + "</h2>";
 
 	// Get Wikipedia summary
-	// JSONP({
-	// 	url: request_url,
-	// 	success: function(data) {
-	// 		// We got the summary
-	// 		var sub_heading =
-	// 			'<cite>From the article <a href="https://en.wikipedia.org/wiki/' +
-	// 			target_obj.wiki_path +
-	// 			'">' +
-	// 			data.query.normalized[0].to +
-	// 			"</a> on Wikipedia.</cite>";
-	// 		var article_id = Object.keys(data.query.pages)[0]; // Gets the first object in pages
-	// 		var article_extract =
-	// 			"<p>" + data.query.pages[article_id].extract + "</p>";
+	JSONP({
+		url: request_url,
+		success: function(data) {
+			// Get the article id, the first object
+			var article_id = Object.keys(data.query.pages)[0];
+
+			console.log(article_id);
+			console.log(data);
+
+			// We got the summary
+			var sub_heading =
+				'<cite>From the article <a href="https://en.wikipedia.org/wiki/' +
+				target_obj.wiki +
+				'">' +
+				data.query.pages[article_id].title +
+				"</a> on Wikipedia.</cite>";
+
+			document.querySelector(".content-wrapper .container").innerHTML += sub_heading;
+
+			var article_extract =
+				"<p>" + data.query.pages[article_id].extract + "</p>";
 			
-	// 		document.querySelector(".content-wrapper .container").innerHTML += sub_heading + article_extract;
-	// 	},
-	// 	error: function(error) {
-	// 		document.querySelector(".content-wrapper .container").innerHTML +=
-	// 			"<p>Unable to retrieve Wikipedia article summary.</p>";
-	// 	}
-	// });
+			document.querySelector(".content-wrapper .container").innerHTML += article_extract;
+		},
+		error: function(error) {
+			console.log(error);
+			document.querySelector(".content-wrapper .container").innerHTML +=
+				"<p>Unable to retrieve Wikipedia article summary.</p>";
+		}
+	});
 
 	// Scroll to top of page
 	scrollTop();
@@ -833,8 +842,6 @@ function loadHead() {
 }
 
 function reset() {
-	console.log("reset();");
-
 	is_region_page = false;
 
 	// Change the URL

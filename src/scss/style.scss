@@ -86,7 +86,7 @@ h3 {
 
 h1 {
 	font-weight: 600;
-	font-size: 1.6em;
+	font-size: 1.5em;
 }
 h2 {
 	font-weight: 400;
@@ -112,6 +112,7 @@ p {
 }
 
 cite {
+	@extend %no-select;
 	display: block;
 	font-size: 0.8em;
 	opacity: 0.75;
@@ -214,15 +215,14 @@ body {
 	display: inline-flex;
 	align-items: center;
 	font-weight: bold;
-	font-size: 1.5em;
 	text-decoration: none;
 	color: $black;
 	transition: color var(--transition);
 	margin-bottom: var(--medium);
 
 	.icon {
-		width: 1.5em;
-		height: 1.5em;
+		width: 2em;
+		height: 2em;
 	}
 
 	&:hover {
@@ -442,6 +442,16 @@ body {
 .slice-tool-title {
 	display: inline-block;
 	margin: 0;
+
+	&:after {
+		content: "Slice";
+	}
+
+	@media (min-width: $tablet) {
+		&:after {
+			content: "Slice Tool";
+		}
+	}
 }
 
 .slice-tool-axes {
@@ -625,6 +635,7 @@ input[type="radio"] {
 	bottom: 0;
 	right: 0;
 	text-align: right;
+	cursor: default;
 
 	@media (min-width: $tablet) {
 		position: fixed;
@@ -735,28 +746,32 @@ input[type="radio"] {
 }
 
 .regions-filter {
+	display: block;
+}
+
+.regions-search-wrapper {
 	display: flex;
 	align-items: center;
 	background: $grey-50;
-	padding: 0 var(--medium);
-	cursor: pointer;
 	border-radius: var(--radius);
+	cursor: text;
+	padding: 0 var(--small);
+
+	&:hover,
+	&:focus-within {
+		background: $white;
+	}
 }
 
 .regions-search {
 	flex: 1;
-	font-size: 1em;
+	font-size: 1rem;
+	line-height: 2.25rem;
 	font-weight: 500;
-	line-height: 1.25;
-	font-weight: 500;
-	background: $grey-50;
+	background: transparent;
 	border: 0;
-	height: 2.75em;
-
-	&:hover,
-	&:focus {
-		background: $white;
-	}
+	height: 2.75rem;
+	padding: 0.25em var(--small);
 }
 
 .regions-results {

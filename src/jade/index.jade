@@ -27,8 +27,9 @@ body.home
 			.container
 				h2 Regions
 				label.regions-filter
-					input.regions-search(type="text", placeholder="Search brain regions..")
-					+icon("search-icon")
+					.regions-search-wrapper
+						input.regions-search(type="text", placeholder="Search brain regions...")
+						+icon("search-icon")
 				.regions-results
 				.box-wrapper
 					+toggle("hemisphere-toggle left-hemisphere-toggle", "Left Hemisphere")
