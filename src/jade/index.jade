@@ -34,6 +34,8 @@ body.home
 				.box-wrapper
 					+toggle("hemisphere-toggle left-hemisphere-toggle", "Left Hemisphere")
 					+toggle("hemisphere-toggle right-hemisphere-toggle", "Right Hemisphere")
+				.box-wrapper
+					+toggle("head-toggle", "Show Head")
 		section.tools-wrapper
 			.container
 				h2 Tools
@@ -43,9 +45,7 @@ body.home
 			.container
 				h2 Settings
 				.box-wrapper
-					+toggle("head-toggle", "Show Head")
 					+toggle("orbit-toggle", "Orbit")
-				.box-wrapper
 					+toggle("axes-toggle", "Show Axes")
 		+footer()
 	script(src="js/three.min.js")

@@ -3,7 +3,7 @@ settings = {
 
 	// Animations
 	orbit: true,
-	orbit_speed: 2,
+	orbit_speed: 3,
 
 	// Helpers
 	axes: false,
