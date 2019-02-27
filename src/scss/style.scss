@@ -209,6 +209,7 @@ body {
 // Header ================================================================================
 .header-wrapper {
 	background-color: $white;
+	line-height: 1;
 }
 
 .site-logo {
@@ -218,7 +219,8 @@ body {
 	text-decoration: none;
 	color: $black;
 	transition: color var(--transition);
-	margin-bottom: var(--medium);
+	margin: 0 var(--large) 0 0;
+	vertical-align: middle;
 
 	.icon {
 		width: 2em;
@@ -236,7 +238,12 @@ body {
 }
 
 .site-links {
-	display: block;
+	display: inline-block;
+
+	@media (min-width: $tablet) {
+		display: block;
+		margin-top: var(--medium);
+	}
 }
 
 .site-link {
@@ -248,10 +255,17 @@ body {
 	font-weight: 500;
 	text-decoration: none;
 	padding: var(--small);
-	line-height: 1.4;
-	margin-right: var(--small);
 	border-radius: var(--radius);
 	border: 2px solid $light-blue-50;
+	line-height: 1.5em;
+
+	@media (min-width: $tablet) {
+		line-height: 1.2em;
+	}
+
+	&:first-child {
+		margin-right: var(--small);
+	}
 
 	&:hover {
 		background: $light-blue-100;

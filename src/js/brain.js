@@ -491,11 +491,13 @@ function switchRegion(region_id) {
 
 function initSettings() {
 	hemispheresToggle();
+	headToggle();
 
 	sliceToggle();
+
 	orbitToggle();
-	headToggle();
-	axesToggle();
+	fullscreenToggle();
+	// axesToggle();
 }
 
 function hemispheresToggle() {
@@ -727,30 +729,50 @@ function slice() {
 	renderer.clippingPlanes = clip_plane;
 }
 
-function axesToggle() {
-	var axes_toggle = document.querySelector(".axes-toggle input");
-	var axesHelper = new THREE.AxesHelper(10);
+// function axesToggle() {
+// 	var axes_toggle = document.querySelector(".axes-toggle input");
+// 	var axesHelper = new THREE.AxesHelper(10);
 
-	axes_toggle.checked = settings.axes;
-	if (settings.axes == true) {
-		scene.add(axesHelper);
+// 	axes_toggle.checked = settings.axes;
+// 	if (settings.axes == true) {
+// 		scene.add(axesHelper);
+// 	} else {
+// 		scene.remove(axesHelper);
+// 	}
+
+// 	axes_toggle.addEventListener("change", function() {
+// 		if (axes_toggle.checked) {
+// 			settings.axes = true;
+// 			scene.add(axesHelper);
+// 		} else {
+// 			settings.axes = false;
+// 			scene.remove(axesHelper);
+// 		}
+
+// 		scrollTop();
+
+// 		saveSettings();
+// 	});
+// }
+
+function fullscreenToggle() {
+	var fullscreen = document.querySelector(".fullscreen-toggle");
+	
+	if (screenfull.enabled) {
+		console.log("screenfull.enabled == true")
+		var fullscreen_toggle = document.querySelector(".fullscreen-toggle input");
+
+		fullscreen_toggle.addEventListener("change", function() {
+			console.log("change!")
+			if (fullscreen_toggle.checked) {
+				screenfull.request();
+			} else {
+				screenfull.exit();
+			}
+		});
 	} else {
-		scene.remove(axesHelper);
+		fullscreen.parentNode.removeChild(fullscreen);
 	}
-
-	axes_toggle.addEventListener("change", function() {
-		if (axes_toggle.checked) {
-			settings.axes = true;
-			scene.add(axesHelper);
-		} else {
-			settings.axes = false;
-			scene.remove(axesHelper);
-		}
-
-		scrollTop();
-
-		saveSettings();
-	});
 }
 
 function headToggle() {
@@ -783,6 +805,7 @@ function headToggle() {
 		saveSettings();
 	});
 }
+
 
 function loadHead() {
 	var head_manager = new THREE.LoadingManager();
@@ -901,7 +924,6 @@ function updateStatus(status, sub_status) {
 
 	document.querySelector(".status-wrapper").innerHTML = message;
 }
-
 
 function warning(status) {
 	var message = '<p class="container">' + status + "</p>";
