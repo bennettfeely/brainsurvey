@@ -86,7 +86,7 @@ h3 {
 
 h1 {
 	font-weight: 600;
-	font-size: 1.5em;
+	font-size: 1.4em;
 }
 h2 {
 	font-weight: 400;
@@ -238,12 +238,8 @@ body {
 }
 
 .site-links {
-	display: inline-block;
-
-	@media (min-width: $tablet) {
-		display: block;
-		margin-top: var(--medium);
-	}
+	display: block;
+	margin-top: var(--medium);
 }
 
 .site-link {
