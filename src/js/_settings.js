@@ -2,7 +2,7 @@ settings = {
 	autosave: false,
 
 	// Animations
-	orbit: true,
+	orbit: false,
 	orbit_speed: 3,
 
 	// Helpers

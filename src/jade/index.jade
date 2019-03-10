@@ -11,7 +11,7 @@ body.home
 	.main-wrapper
 		+slice_tool()
 		section.brain-wrapper
-			+icon("spinner")
+			// +icon("spinner")
 		section.content-wrapper
 			.action-buttons-wrapper
 				button.back-button.outline-button
@@ -50,8 +50,9 @@ body.home
 					// +toggle("axes-toggle", "Show Axes")
 		+footer()
 	script(src="js/three.min.js")
-	script(src="js/GLTFLoader.min.js")
 	script(src="js/OrbitControls.min.js")
+	// script(src="js/GLTFLoader.min.js")
+	script(src="js/potree.min.js")
 	script(src="js/WebGL.min.js")
 	script(src="js/jsonp.min.js")
 	script(src="js/fuse.min.js")

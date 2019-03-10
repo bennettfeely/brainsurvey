@@ -317,26 +317,6 @@ body {
 	overflow: hidden;
 	transition: transform var(--transition-decorative);
 
-	canvas {
-		position: relative;
-		z-index: 10;
-		cursor: move;
-		cursor: grab;
-		cursor: -moz-grab;
-		cursor: -webkit-grab;
-		// background: url(../img/brain.png);
-		// background-position: center center;
-		// background-size: 50%;
-		// background-repeat: no-repeat;
-		// background-blend-mode: screen;
-
-		&:active {
-			cursor: grabbing;
-			cursor: -moz-grabbing;
-			cursor: -webkit-grabbing;
-		}
-	}
-
 	@media (min-width: $tablet) {
 		height: 100vh;
 		transform-origin: center top;
@@ -351,6 +331,25 @@ body {
 		bottom: 0;
 		z-index: 10;
 		transform-origin: center;
+	}
+
+	canvas {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 10;
+		cursor: move;
+		cursor: grab;
+		cursor: -moz-grab;
+		cursor: -webkit-grab;
+
+		&:active {
+			cursor: grabbing;
+			cursor: -moz-grabbing;
+			cursor: -webkit-grabbing;
+		}
 	}
 
 	// // Crosshairs
