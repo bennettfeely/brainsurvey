@@ -54,7 +54,7 @@ function setupCanvas() {
 		document.querySelector(".orbit-toggle input").checked = false;
 	});
 
-	// Axes
+	// Axes helper
 	var axesHelper = new THREE.AxesHelper(5);
 	scene.add(axesHelper);
 
@@ -72,15 +72,18 @@ function setupCanvas() {
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.gammaOutput = true;
 
-	setCanvasSize();
+	// Add the canvas to the page
 	document.querySelector(".brain-wrapper").appendChild(canvas);
 
-	// Detect window resizing and resize canvas
+	// Initally resize canvas and resize when necessary
+	setCanvasSize();
 	window.addEventListener("resize", setCanvasSize, false);
 
+	// Setup point cloud
 	points = new Potree.BasicGroup();
 	points.setPointBudget(100);
 
+	// Iterate through regions object twice for each hemisphere
 	["Left", "Right"].forEach(hemisphere => {
 		Object.keys(regions_obj).forEach(function(region_name) {
 			loadCloudRegion(hemisphere, region_name);
@@ -93,7 +96,6 @@ function setupCanvas() {
 		renderer.render(scene, camera);
 		requestAnimationFrame(loop);
 	}
-
 	loop();
 }
 
