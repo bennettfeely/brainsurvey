@@ -365,6 +365,7 @@ function setupCanvas() {
 		document.querySelector(".orbit-toggle input").checked = false;
 	});
 
+	// Axes
 	var axesHelper = new THREE.AxesHelper(5);
 	scene.add(axesHelper);
 
