@@ -107,7 +107,7 @@ function setupCanvas() {
 		});
 	});
 
-	loadBrain();
+	loadHead();
 
 	// Rerender the canvas as fast as possible
 	function loop() {
@@ -141,11 +141,14 @@ function loadCloudRegion(hemisphere, region_name) {
 	});
 }
 
-function loadBrain() {
+function loadHead() {
 	var url = "models/" + settings.clouds.head.path + "/cloud.js";
 
 	Potree.loadPointCloud(url, "Head", function(data) {
 		var pointcloud = data.pointcloud;
+		pointcloud.skinning = true;
+
+		console.log(pointcloud);
 
 		points.add(pointcloud);
 	});
