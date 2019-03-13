@@ -6,7 +6,8 @@ settings = {
 	orbit_speed: 3,
 
 	// Helpers
-	axes: false,
+	axes: true,
+	stats: true,
 
 	// Interactions
 	pan: false,
@@ -29,47 +30,12 @@ settings = {
 		}
 	},
 
-	// Materials
-	brain: {
-		model_path: "Brain_07/Brain_007.gltf",
-		model_size: 3542464,
-		roughness: 0.15,
-		metalness: 0.25,
-		wireframe: false,
-		color: {
-			default: "salmon",
-			hover: "firebrick",
-			active: "darkred",
-			focus: "#fdfa00"
+	clouds: {
+		brain: {
+			path: "LR_HighRes_v4"
 		},
-		offset: {
-			x: -1.8,
-			y: -0.5,
-			z: 0
-		},
-		hemispheres: {
-			left: {
-				visible: true
-			},
-			right: {
-				visible: true
-			}
-		}
-	},
-	head: {
-		model_path: "Head_02/Head_02.gltf",
-		model_size: 567684,
-		visible: false,
-		roughness: 1,
-		metalness: 0,
-		wireframe: true,
-		color: {
-			default: "#1a1a1a"
-		},
-		offset: {
-			x: -1.8,
-			y: -0.2,
-			z: 0
+		head: {
+			path: "Head_v3"
 		}
 	}
 };

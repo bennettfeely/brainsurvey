@@ -58,9 +58,8 @@ $shadow-hover: none;
 // Base Styles ===========================================================================
 body {
 	font-size: var(--root-size);
-	font-family: Catamaran, Helvetica Neue, Helvetica, sans-serif;
+	font-family: "Catamaran", "Helvetica Neue", "Helvetica", sans-serif;
 	line-height: 1.5;
-	background: $blue-grey-400;
 	color: $blue-grey-900;
 }
 
@@ -316,6 +315,7 @@ body {
 	height: 90vw;
 	overflow: hidden;
 	transition: transform var(--transition-decorative);
+	background: black;
 
 	@media (min-width: $tablet) {
 		height: 100vh;

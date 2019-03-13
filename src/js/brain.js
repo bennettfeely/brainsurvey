@@ -55,8 +55,25 @@ function setupCanvas() {
 	});
 
 	// Axes helper
-	var axesHelper = new THREE.AxesHelper(5);
-	scene.add(axesHelper);
+	if (settings.axes == true) {
+		var axesHelper = new THREE.AxesHelper(5);
+		scene.add(axesHelper);
+	}
+
+	// FPS stats helper
+	if (settings.stats == true) {
+		var script = document.createElement("script");
+		script.onload = function() {
+			var stats = new Stats();
+			brain_wrapper.appendChild(stats.dom);
+			requestAnimationFrame(function loop() {
+				stats.update();
+				requestAnimationFrame(loop);
+			});
+		};
+		script.src = "https://mrdoob.github.io/stats.js/build/stats.min.js";
+		document.head.appendChild(script);
+	}
 
 	canvas = document.createElement("canvas");
 
@@ -70,7 +87,7 @@ function setupCanvas() {
 
 	// Rendering settings
 	renderer.setPixelRatio(window.devicePixelRatio);
-	renderer.gammaOutput = true;
+	renderer.gammaOutput = false;
 
 	// Add the canvas to the page
 	document.querySelector(".brain-wrapper").appendChild(canvas);
@@ -81,7 +98,7 @@ function setupCanvas() {
 
 	// Setup point cloud
 	points = new Potree.BasicGroup();
-	points.setPointBudget(100);
+	points.setPointBudget(100000);
 
 	// Iterate through regions object twice for each hemisphere
 	["Left", "Right"].forEach(hemisphere => {
@@ -89,6 +106,8 @@ function setupCanvas() {
 			loadCloudRegion(hemisphere, region_name);
 		});
 	});
+
+	loadBrain();
 
 	// Rerender the canvas as fast as possible
 	function loop() {
@@ -100,20 +119,33 @@ function setupCanvas() {
 }
 
 function loadCloudRegion(hemisphere, region_name) {
-	let region_url =
-		"models/LR_HighRes_v2/" + hemisphere + "/" + region_name + "/cloud.js";
-	let region_full_name =
+	console.log(hemisphere, region_name);
+	var region_url =
+		"models/" +
+		settings.clouds.brain.path +
+		"/" +
+		hemisphere +
+		"/" +
+		region_name +
+		"/cloud.js";
+
+	var region_full_name =
 		hemisphere + " " + regions_obj[region_name].full_name;
 
 	scene.add(points);
 
 	Potree.loadPointCloud(region_url, region_name, function(data) {
 		var pointcloud = data.pointcloud;
-		// var material = pointcloud.material;
-		// material.size = 10;
-		// material.pointColorType = Potree.PointColorType.RGB;
-		// material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
-		// material.shape = Potree.PointShape.CIRCLE;
+
+		points.add(pointcloud);
+	});
+}
+
+function loadBrain() {
+	var url = "models/" + settings.clouds.head.path + "/cloud.js";
+
+	Potree.loadPointCloud(url, "Head", function(data) {
+		var pointcloud = data.pointcloud;
 
 		points.add(pointcloud);
 	});
