@@ -54,6 +54,13 @@ function setupCanvas() {
 		document.querySelector(".orbit-toggle input").checked = false;
 	});
 
+	// Setup Lighting
+	var light = new THREE.HemisphereLight(0xff9999, 1);
+	scene.add(light);
+	var directionalLight = new THREE.DirectionalLight(0xffd6d6, 0.5);
+	directionalLight.position.set(10, 30, 0);
+	scene.add(directionalLight);
+
 	// Axes helper
 	if (settings.axes == true) {
 		var axesHelper = new THREE.AxesHelper(5);
@@ -107,7 +114,13 @@ function setupCanvas() {
 		});
 	});
 
-	loadHead();
+	if (settings.head.cloud.visible == true) {
+		loadCloudHead();
+	}
+
+	if (settings.head.mesh.visible == true) {
+		loadHead();
+	}
 
 	// Rerender the canvas as fast as possible
 	function loop() {
@@ -119,10 +132,9 @@ function setupCanvas() {
 }
 
 function loadCloudRegion(hemisphere, region_name) {
-	console.log(hemisphere, region_name);
 	var region_url =
 		"models/" +
-		settings.clouds.brain.path +
+		settings.brain.cloud.path +
 		"/" +
 		hemisphere +
 		"/" +
@@ -141,17 +153,66 @@ function loadCloudRegion(hemisphere, region_name) {
 	});
 }
 
-function loadHead() {
-	var url = "models/" + settings.clouds.head.path + "/cloud.js";
+function loadCloudHead() {
+	var url = "models/" + settings.head.cloud.path + "/cloud.js";
 
 	Potree.loadPointCloud(url, "Head", function(data) {
 		var pointcloud = data.pointcloud;
-		pointcloud.skinning = true;
-
-		console.log(pointcloud);
 
 		points.add(pointcloud);
 	});
+}
+
+function loadHead() {
+	var head_manager = new THREE.LoadingManager();
+	head_manager.onStart = function(url, itemsLoaded, itemsTotal) {
+		updateStatus("Loading head (" + itemsLoaded + "/" + itemsTotal + ")");
+	};
+
+	head_manager.onLoad = function() {
+		updateStatus("Rendering head...");
+	};
+
+	head_manager.onProgress = function(url, itemsLoaded, itemsTotal) {
+		updateStatus("Loading head (" + itemsLoaded + "/" + itemsTotal + ")");
+	};
+
+	head_manager.onError = function(url) {
+		updateStatus("Error loading head");
+	};
+
+	var loader = new THREE.GLTFLoader(head_manager);
+	loader.load(
+		"models/" + settings.head.mesh.path,
+		function(gltf) {
+			updateStatus("Rendering Head...");
+			gltf.scene.traverse(function(mesh) {
+				if (mesh.isMesh) {
+					mesh.material.roughness = settings.head.mesh.roughness;
+					mesh.material.metalness = settings.head.mesh.metalness;
+					mesh.material.wireframe = settings.head.mesh.wireframe;
+					mesh.material.color.setStyle(
+						settings.head.mesh.color.default
+					);
+					mesh.visible = true;
+
+					// Save the mesh to a global variable so we can modify it later
+					head_mesh = mesh;
+				}
+			});
+
+			// Add the head to the scene
+			scene.add(gltf.scene);
+		},
+		function(xhr) {
+			var pct = Math.round((xhr.loaded / settings.head.model_size) * 100);
+			updateStatus("Loading model of head " + pct + "%");
+		},
+		function(error) {
+			console.log(error);
+			// updateStatus("Error loading model of head");
+		}
+	);
 }
 
 function getSizes() {

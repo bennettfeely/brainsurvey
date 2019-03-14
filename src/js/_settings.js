@@ -30,11 +30,25 @@ settings = {
 		}
 	},
 
-	clouds: {
-		brain: {
+	brain: {
+		cloud: {
 			path: "LR_HighRes_v4"
+		}
+	},
+
+	head: {
+		mesh: {
+			visible: true,
+			path: "Head_02/Head_02.gltf",
+			roughness: 1,
+			metalness: 0,
+			wireframe: true,
+			color: {
+				default: "#555"
+			}
 		},
-		head: {
+		cloud: {
+			visible: false,
 			path: "Head_v3"
 		}
 	}
