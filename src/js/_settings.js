@@ -6,7 +6,7 @@ settings = {
 	orbit_speed: 3,
 
 	// Helpers
-	axes: false,
+	axes: true,
 
 	// Interactions
 	pan: false,
@@ -32,6 +32,7 @@ settings = {
 	// Materials
 	brain: {
 		model_path: "Brain_07/Brain_007.gltf",
+		cloud_path: "LR_HighRes_v4",
 		model_size: 3542464,
 		roughness: 0.15,
 		metalness: 0.25,

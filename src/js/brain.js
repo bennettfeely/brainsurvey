@@ -48,7 +48,12 @@ function initBrain() {
 	getSizes();
 
 	// Setup Camera
-	camera = new THREE.PerspectiveCamera(50, sizes.width / sizes.height, 0.1, 1000);
+	camera = new THREE.PerspectiveCamera(
+		50,
+		sizes.width / sizes.height,
+		0.1,
+		1000
+	);
 	camera.position.set(0, 5, 25);
 
 	// Setup controls
@@ -136,7 +141,7 @@ function initBrain() {
 					ray_objects.push(mesh);
 					filter_objects.push({
 						full_name: regions_obj[mesh.name].full_name,
-						region_id: mesh.name,
+						region_id: mesh.name
 					});
 
 					// We're done traversing
@@ -158,7 +163,9 @@ function initBrain() {
 			scene.add(gltf.scene);
 		},
 		function(xhr) {
-			var pct = Math.round((xhr.loaded / settings.brain.model_size) * 100);
+			var pct = Math.round(
+				(xhr.loaded / settings.brain.model_size) * 100
+			);
 			updateStatus("Loading brain " + pct + "%");
 		},
 		function(error) {
@@ -185,7 +192,8 @@ function initBrain() {
 	renderer = new THREE.WebGLRenderer({
 		alpha: true,
 		antialias: true,
-		side: THREE.DoubleSide
+		side: THREE.DoubleSide,
+		localClippingEnabled: true
 	});
 	renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -254,8 +262,7 @@ function getCanvasMousePosition(e) {
 
 		x_pos = e.touches[0].pageX;
 		y_pos = e.touches[0].pageY;
-
-	} else if (e.type = "mousemove") {
+	} else if ((e.type = "mousemove")) {
 		// Mouse events
 		is_tapping = false;
 
@@ -307,7 +314,11 @@ function onCanvasDblClick(e) {
 
 function rayCast(color) {
 	// Raycasting for hover events on brain regions
-	if (is_region_page == false && is_raycaster_paused == false && settings.slice.visible == false) {
+	if (
+		is_region_page == false &&
+		is_raycaster_paused == false &&
+		settings.slice.visible == false
+	) {
 		// Set the raycaster with current mouse and camera position
 		raycaster.setFromCamera(mouse, camera);
 
@@ -330,14 +341,22 @@ function rayCast(color) {
 				last_intersected.material.color.setStyle(color);
 
 				if (is_tapping == true) {
-					updateStatus(regions_obj[last_intersected.name].full_name, "Tap here to explore region");
-					
+					updateStatus(
+						regions_obj[last_intersected.name].full_name,
+						"Tap here to explore region"
+					);
+
 					// Switch to region when sub status is clicked
-					document.querySelector(".status-wrapper .sub-status").onclick = function() {
+					document.querySelector(
+						".status-wrapper .sub-status"
+					).onclick = function() {
 						switchRegion(last_intersected.name);
 					};
 				} else {
-					updateStatus(regions_obj[last_intersected.name].full_name, "Double click brain region to explore");
+					updateStatus(
+						regions_obj[last_intersected.name].full_name,
+						"Double click brain region to explore"
+					);
 				}
 			}
 		} else {
@@ -366,7 +385,7 @@ function setupRegionsFilter() {
 	};
 
 	var fuse = new Fuse(filter_objects, options);
-	var regions_results = document.querySelector('.regions-results');
+	var regions_results = document.querySelector(".regions-results");
 
 	document.querySelector(".regions-search").onkeyup = e => {
 		is_raycaster_paused = true;
@@ -375,21 +394,21 @@ function setupRegionsFilter() {
 		var results = fuse.search(e.target.value).slice(0, 5);
 
 		// Clear the regions results
-		regions_results.innerHTML = '';
+		regions_results.innerHTML = "";
 
 		// Iterate over the results and append them to the dropdown
 		results.forEach(function(result) {
 			console.log(result);
 			var region_result = document.createElement("div");
-				region_result.textContent = result.full_name;
-				region_result.className = "regions-result";
-				region_result.dataset.region_id = result.region_id;
+			region_result.textContent = result.full_name;
+			region_result.className = "regions-result";
+			region_result.dataset.region_id = result.region_id;
 
-				region_result.addEventListener("click", function(item){
-					var region_id = item.target.dataset.region_id;
+			region_result.addEventListener("click", function(item) {
+				var region_id = item.target.dataset.region_id;
 
-					switchRegion(region_id);
-				});
+				switchRegion(region_id);
+			});
 
 			regions_results.appendChild(region_result);
 		});
@@ -409,7 +428,7 @@ function switchRegion(region_id) {
 	document
 		.querySelector("html")
 		.classList.add("has-region-content", "has-content");
-	
+
 	// Clear the status
 	updateStatus("");
 
@@ -423,8 +442,8 @@ function switchRegion(region_id) {
 	document.querySelector(".content-wrapper .container").innerHTML = "";
 
 	// Clear the regions results
-	document.querySelector('.regions-search').value = "";
-	document.querySelector('.regions-results').innerHTML = "";
+	document.querySelector(".regions-search").value = "";
+	document.querySelector(".regions-results").innerHTML = "";
 
 	// Make all other regions transparent
 	scene.traverse(function(mesh) {
@@ -436,6 +455,10 @@ function switchRegion(region_id) {
 			if (mesh.name !== region_id && mesh.name !== "Head") {
 				mesh.material.transparent = true;
 				mesh.material.opacity = 0.1;
+			}
+
+			if (mesh.name !== "Head") {
+				mesh.visible = false;
 			}
 		}
 	});
@@ -471,12 +494,16 @@ function switchRegion(region_id) {
 				data.query.pages[article_id].title +
 				"</a> on Wikipedia.</cite>";
 
-			document.querySelector(".content-wrapper .container").innerHTML += sub_heading;
+			document.querySelector(
+				".content-wrapper .container"
+			).innerHTML += sub_heading;
 
 			var article_extract =
 				"<p>" + data.query.pages[article_id].extract + "</p>";
-			
-			document.querySelector(".content-wrapper .container").innerHTML += article_extract;
+
+			document.querySelector(
+				".content-wrapper .container"
+			).innerHTML += article_extract;
 		},
 		error: function(error) {
 			console.log(error);
@@ -487,6 +514,64 @@ function switchRegion(region_id) {
 
 	// Scroll to top of page
 	scrollTop();
+
+	// Load Potree
+	if (region_id == "L_Frontal_Pole_0" || region_id == "R_Frontal_Pole_0") {
+		updateStatus("Loading point cloud...");
+
+		console.log("region:" + region_id);
+		console.log("region:" + region_id.startsWith("L"));
+
+		console.log("cloud_path: " + settings.brain.cloud_path);
+
+		// Setup point cloud
+		points = new Potree.Group();
+		points.setPointBudget(100000);
+
+		scene.add(points);
+
+		if (region_id.startsWith("L")) {
+			var hemisphere = "left";
+		} else if (region_id.startsWith("R")) {
+			var hemisphere = "right";
+		}
+
+		var region_name = "Frontal_Pole";
+
+		console.log("hemisphere:" + hemisphere);
+
+		var region_url =
+			"models/" +
+			settings.brain.cloud_path +
+			"/" +
+			hemisphere +
+			"/" +
+			region_name +
+			"/cloud.js";
+
+		Potree.loadPointCloud(region_url, region_name, function(data) {
+			var pointcloud = data.pointcloud;
+			var material = data.pointcloud.material;
+			material.size = 3;
+			material.pointColorType = Potree.PointColorType.RGB;
+			material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
+			material.shape = Potree.PointShape.CIRCLE;
+
+			points.add(pointcloud);
+
+			points.showBoundingBox = true;
+
+			points.position.x = 5;
+			points.position.y = -2.5;
+			points.position.z = -2.5;
+
+			points.scale.x = 1.5;
+			points.scale.y = 1.5;
+			points.scale.z = 1.5;
+
+			console.log(pointcloud);
+		});
+	}
 }
 
 function initSettings() {
@@ -502,8 +587,12 @@ function initSettings() {
 
 function hemispheresToggle() {
 	// Toggle visibility of entire hemispheres
-	var left_hemisphere_toggle = document.querySelector(".left-hemisphere-toggle input");
-	var right_hemisphere_toggle = document.querySelector(".right-hemisphere-toggle input");
+	var left_hemisphere_toggle = document.querySelector(
+		".left-hemisphere-toggle input"
+	);
+	var right_hemisphere_toggle = document.querySelector(
+		".right-hemisphere-toggle input"
+	);
 
 	// Left hemisphere toggle
 	left_hemisphere_toggle.checked = settings.brain.hemispheres.left.visible;
@@ -554,30 +643,36 @@ function isolateHemispheres() {
 	// Iterate through meshes, looking for matching L_ or R_ prefixes to toggle visibility
 	scene.traverse(function(mesh) {
 		if (mesh.isMesh) {
-
 			mesh.visible = false;
 
 			// Show left hemisphere meshes
 			if (settings.brain.hemispheres.left.visible == true) {
-				if (mesh.name.startsWith("L_") || mesh.name.startsWith("Left_")) {
+				if (
+					mesh.name.startsWith("L_") ||
+					mesh.name.startsWith("Left_")
+				) {
 					mesh.visible = true;
 				}
 			}
 
 			// Show right hemisphere meshes
 			if (settings.brain.hemispheres.right.visible == true) {
-				if (mesh.name.startsWith("R_") || mesh.name.startsWith("Right_")) {
+				if (
+					mesh.name.startsWith("R_") ||
+					mesh.name.startsWith("Right_")
+				) {
 					mesh.visible = true;
 				}
 			}
 
-
-			if (settings.brain.hemispheres.left.visible == true && settings.brain.hemispheres.right.visible == true) {
+			if (
+				settings.brain.hemispheres.left.visible == true &&
+				settings.brain.hemispheres.right.visible == true
+			) {
 				if (mesh.name == "Brain_Stem_9") {
 					mesh.visible = true;
 				}
 			}
-
 
 			if (mesh.name == "Head") {
 				mesh.visible = true;
@@ -675,7 +770,7 @@ function hideSliceTool() {
 	document.querySelector(".slice-tool").classList.add("is-hidden");
 
 	// Remove the slicing
-	renderer.localClippingEnabled = false;
+	// renderer.localClippingEnabled = false;
 	renderer.clippingPlanes = [];
 
 	// Update the settings and toggle button
@@ -725,8 +820,9 @@ function slice() {
 		)
 	];
 
-	renderer.localClippingEnabled = true;
+	// renderer.localClippingEnabled = true;
 	renderer.clippingPlanes = clip_plane;
+	renderer.localClippingEnabled = true;
 }
 
 // function axesToggle() {
@@ -757,13 +853,15 @@ function slice() {
 
 function fullscreenToggle() {
 	var fullscreen = document.querySelector(".fullscreen-toggle");
-	
+
 	if (screenfull.enabled) {
-		console.log("screenfull.enabled == true")
-		var fullscreen_toggle = document.querySelector(".fullscreen-toggle input");
+		console.log("screenfull.enabled == true");
+		var fullscreen_toggle = document.querySelector(
+			".fullscreen-toggle input"
+		);
 
 		fullscreen_toggle.addEventListener("change", function() {
-			console.log("change!")
+			console.log("change!");
 			if (fullscreen_toggle.checked) {
 				screenfull.request();
 			} else {
@@ -805,7 +903,6 @@ function headToggle() {
 		saveSettings();
 	});
 }
-
 
 function loadHead() {
 	var head_manager = new THREE.LoadingManager();
@@ -880,6 +977,7 @@ function reset() {
 	// Make all regions opaque again
 	scene.traverse(function(mesh) {
 		if (mesh.isMesh) {
+			mesh.visible = true;
 			mesh.material.transparent = false;
 			mesh.material.opacity = 1;
 
@@ -892,6 +990,10 @@ function reset() {
 			}
 		}
 	});
+
+	// Remove any point clouds
+	scene.remove(points);
+	points = undefined;
 
 	// Remove has content class from html
 	document
@@ -914,10 +1016,13 @@ function reset() {
 
 function updateStatus(status, sub_status) {
 	if (sub_status !== undefined) {
-		var message = '<div class="status container">' 
-				+ status 
-				+ '<div class="sub-status">' + sub_status + '</div>'
-			+ "</div>";
+		var message =
+			'<div class="status container">' +
+			status +
+			'<div class="sub-status">' +
+			sub_status +
+			"</div>" +
+			"</div>";
 	} else {
 		var message = '<div class="status container">' + status + "</div>";
 	}

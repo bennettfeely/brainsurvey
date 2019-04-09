@@ -6,7 +6,7 @@ settings = {
 	orbit_speed: 3,
 
 	// Helpers
-	axes: false,
+	axes: true,
 
 	// Interactions
 	pan: false,
@@ -32,6 +32,7 @@ settings = {
 	// Materials
 	brain: {
 		model_path: "Brain_07/Brain_007.gltf",
+		cloud_path: "LR_HighRes_v4",
 		model_size: 3542464,
 		roughness: 0.15,
 		metalness: 0.25,
@@ -640,6 +641,7 @@ regions_obj = {
 		wiki: "Basal_ganglia"
 	}
 };
+
 // IDEA
 // get bounding box for whole brain for slice tool dimensions
 
@@ -834,7 +836,8 @@ function initBrain() {
 	renderer = new THREE.WebGLRenderer({
 		alpha: true,
 		antialias: true,
-		side: THREE.DoubleSide
+		side: THREE.DoubleSide,
+		localClippingEnabled: true
 	});
 	renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -1097,6 +1100,10 @@ function switchRegion(region_id) {
 				mesh.material.transparent = true;
 				mesh.material.opacity = 0.1;
 			}
+
+			if (mesh.name !== "Head") {
+				mesh.visible = false;
+			}
 		}
 	});
 
@@ -1151,6 +1158,64 @@ function switchRegion(region_id) {
 
 	// Scroll to top of page
 	scrollTop();
+
+	// Load Potree
+	if (region_id == "L_Frontal_Pole_0" || region_id == "R_Frontal_Pole_0") {
+		updateStatus("Loading point cloud...");
+
+		console.log("region:" + region_id);
+		console.log("region:" + region_id.startsWith("L"));
+
+		console.log("cloud_path: " + settings.brain.cloud_path);
+
+		// Setup point cloud
+		points = new Potree.Group();
+		points.setPointBudget(100000);
+
+		scene.add(points);
+
+		if (region_id.startsWith("L")) {
+			var hemisphere = "left";
+		} else if (region_id.startsWith("R")) {
+			var hemisphere = "right";
+		}
+
+		var region_name = "Frontal_Pole";
+
+		console.log("hemisphere:" + hemisphere);
+
+		var region_url =
+			"models/" +
+			settings.brain.cloud_path +
+			"/" +
+			hemisphere +
+			"/" +
+			region_name +
+			"/cloud.js";
+
+		Potree.loadPointCloud(region_url, region_name, function(data) {
+			var pointcloud = data.pointcloud;
+			var material = data.pointcloud.material;
+			material.size = 3;
+			material.pointColorType = Potree.PointColorType.RGB;
+			material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
+			material.shape = Potree.PointShape.CIRCLE;
+
+			points.add(pointcloud);
+
+			points.showBoundingBox = true;
+
+			points.position.x = 5;
+			points.position.y = -2.5;
+			points.position.z = -2.5;
+
+			points.scale.x = 1.5;
+			points.scale.y = 1.5;
+			points.scale.z = 1.5;
+
+			console.log(pointcloud);
+		});
+	}
 }
 
 function initSettings() {
@@ -1349,7 +1414,7 @@ function hideSliceTool() {
 	document.querySelector(".slice-tool").classList.add("is-hidden");
 
 	// Remove the slicing
-	renderer.localClippingEnabled = false;
+	// renderer.localClippingEnabled = false;
 	renderer.clippingPlanes = [];
 
 	// Update the settings and toggle button
@@ -1399,8 +1464,9 @@ function slice() {
 		)
 	];
 
-	renderer.localClippingEnabled = true;
+	// renderer.localClippingEnabled = true;
 	renderer.clippingPlanes = clip_plane;
+	renderer.localClippingEnabled = true;
 }
 
 // function axesToggle() {
@@ -1555,6 +1621,7 @@ function reset() {
 	// Make all regions opaque again
 	scene.traverse(function(mesh) {
 		if (mesh.isMesh) {
+			mesh.visible = true;
 			mesh.material.transparent = false;
 			mesh.material.opacity = 1;
 
@@ -1567,6 +1634,10 @@ function reset() {
 			}
 		}
 	});
+
+	// Remove any point clouds
+	scene.remove(points);
+	points = undefined;
 
 	// Remove has content class from html
 	document
