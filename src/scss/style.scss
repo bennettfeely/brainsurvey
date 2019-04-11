@@ -216,25 +216,42 @@ body {
 	display: inline-flex;
 	align-items: center;
 	font-weight: bold;
-	text-decoration: none;
-	color: $black;
-	transition: color var(--transition);
 	margin: 0 var(--large) 0 0;
 	vertical-align: middle;
 
 	.icon {
-		width: 2em;
-		height: 2em;
+		width: 3em;
+		height: 3em;
 	}
 
-	&:hover {
-		transition-duration: var(--transition-hover);
+	a {
+		color: $black;
+		text-decoration: none;
+		transition: color var(--transition);
+
+		&:hover {
+			color: $light-blue-700;
+			transition-duration: var(--transition-hover);
+		}
+
+		&:active {
+			color: $light-blue-900;
+			transition-duration: 0s;
+		}
 	}
 }
 
 .site-logo-text {
 	display: inline-block;
 	line-height: 1;
+}
+
+.site-logo-tagline {
+	display: block;
+	font-weight: 500;
+	font-size: 0.9rem;
+	margin-top: var(--small);
+	color: $grey-500;
 }
 
 .site-links {
