@@ -31,9 +31,9 @@ settings = {
 
 	// Materials
 	brain: {
-		model_path: "Brain_07/Brain_007.gltf",
-		cloud_path: "LR_HighRes_v4",
-		model_size: 3542464,
+		model_path: "Brain_08//BrainGLTF_Pointcloud/Brain_008.gltf",
+		cloud_path: "Brain_08//BrainGLTF_Pointcloud/LR_Pointcloud_v5",
+		model_size: undefined,
 		roughness: 0.15,
 		metalness: 0.25,
 		wireframe: false,

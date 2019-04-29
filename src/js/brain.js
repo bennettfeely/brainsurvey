@@ -127,6 +127,7 @@ function initBrain() {
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
 				if (mesh.isMesh) {
+					console.log(mesh);
 					i++;
 
 					// Global mesh styles
@@ -135,6 +136,9 @@ function initBrain() {
 					mesh.material.wireframe = settings.brain.wireframe;
 					mesh.material.color.setStyle(settings.brain.color.default);
 					mesh.material.side = THREE.DoubleSide;
+
+					// Rotate brain region 90 degrees
+					mesh.rotation.x = -(Math.PI / 2);
 
 					// Add mesh object to other object groupings
 					regions_obj[mesh.name].mesh = mesh;
