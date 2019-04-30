@@ -734,7 +734,7 @@ input[type="radio"] {
 	padding: var(--medium);
 	font-weight: 500;
 	border-radius: var(--radius);
-	background: transparent;
+	background: rgba(black, 0.25);
 	transition: opacity var(--transition);
 	opacity: 0.75;
 	cursor: pointer;

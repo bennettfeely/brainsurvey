@@ -34,7 +34,6 @@ function route() {
 	if (path_name !== "/") {
 		Object.keys(regions_obj).forEach(function(key) {
 			if ("/" + regions_obj[key].path == path_name) {
-				console.log("switchRegion(" + key + ")");
 				switchRegion(key);
 			}
 		});
@@ -127,7 +126,6 @@ function initBrain() {
 			i = 0;
 			gltf.scene.traverse(function(mesh) {
 				if (mesh.isMesh) {
-					console.log(mesh);
 					i++;
 
 					// Global mesh styles
@@ -136,6 +134,8 @@ function initBrain() {
 					mesh.material.wireframe = settings.brain.wireframe;
 					mesh.material.color.setStyle(settings.brain.color.default);
 					mesh.material.side = THREE.DoubleSide;
+
+					console.log(mesh.material);
 
 					// Rotate brain region 90 degrees
 					mesh.rotation.x = -(Math.PI * 0.5);
@@ -200,6 +200,8 @@ function initBrain() {
 		localClippingEnabled: true
 	});
 	renderer.setPixelRatio(window.devicePixelRatio);
+
+	console.log(renderer);
 
 	// Rendering settings
 	renderer.gammaOutput = true;
@@ -402,7 +404,6 @@ function setupRegionsFilter() {
 
 		// Iterate over the results and append them to the dropdown
 		results.forEach(function(result) {
-			console.log(result);
 			var region_result = document.createElement("div");
 			region_result.textContent = result.full_name;
 			region_result.className = "regions-result";
@@ -449,24 +450,6 @@ function switchRegion(region_id) {
 	document.querySelector(".regions-search").value = "";
 	document.querySelector(".regions-results").innerHTML = "";
 
-	// Make all other regions transparent
-	scene.traverse(function(mesh) {
-		if (mesh.isMesh) {
-			// Return all brain regions to opaque state first
-			mesh.material.transparent = false;
-			mesh.material.opacity = 1;
-
-			if (mesh.name !== region_id && mesh.name !== "Head") {
-				mesh.material.transparent = true;
-				mesh.material.opacity = 0.1;
-			}
-
-			if (mesh.name !== "Head") {
-				mesh.visible = false;
-			}
-		}
-	});
-
 	// Hide the spinner from the site
 	document.querySelector("html").classList.add("is-loaded");
 
@@ -486,9 +469,6 @@ function switchRegion(region_id) {
 		success: function(data) {
 			// Get the article id, the first object
 			var article_id = Object.keys(data.query.pages)[0];
-
-			console.log(article_id);
-			console.log(data);
 
 			// We got the summary
 			var sub_heading =
@@ -520,62 +500,56 @@ function switchRegion(region_id) {
 	scrollTop();
 
 	// Load Potree
-	if (region_id == "L_Frontal_Pole_0" || region_id == "R_Frontal_Pole_0") {
-		updateStatus("Loading point cloud...");
+	// updateStatus("Loading point cloud...");
 
-		console.log("region:" + region_id);
-		console.log("region:" + region_id.startsWith("L"));
+	// // Make all other regions transparent
+	scene.traverse(function(mesh) {
+		if (mesh.isMesh) {
+			mesh.material.transparent = true;
+			mesh.material.opacity = 0.2;
 
-		console.log("cloud_path: " + settings.brain.cloud_path);
-
-		// Setup point cloud
-		points = new Potree.Group();
-		points.setPointBudget(100000);
-
-		scene.add(points);
-
-		if (region_id.startsWith("L")) {
-			var hemisphere = "left";
-		} else if (region_id.startsWith("R")) {
-			var hemisphere = "right";
+			if (mesh.name == region_id || mesh.name !== "Head") {
+				mesh.material.transparent = false;
+				mesh.material.opacity = 1;
+			}
 		}
+	});
 
-		var region_name = "Frontal_Pole";
+	// Setup point cloud
+	// points = new Potree.Group();
+	// console.log("points!!!");
+	// console.log(points);
 
-		console.log("hemisphere:" + hemisphere);
+	// scene.add(points);
 
-		var region_url =
-			"models/" +
-			settings.brain.cloud_path +
-			"/" +
-			hemisphere +
-			"/" +
-			region_name +
-			"/cloud.js";
+	// if (region_id.startsWith("L_")) {
+	// 	var hemisphere = "left";
+	// } else if (region_id.startsWith("R_")) {
+	// 	var hemisphere = "right";
+	// }
 
-		Potree.loadPointCloud(region_url, region_name, function(data) {
-			var pointcloud = data.pointcloud;
-			var material = data.pointcloud.material;
-			material.size = 3;
-			material.pointColorType = Potree.PointColorType.RGB;
-			material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
-			material.shape = Potree.PointShape.CIRCLE;
+	// var cloud_url =
+	// 	"models/" +
+	// 	settings.brain.cloud_path +
+	// 	"/" +
+	// 	hemisphere +
+	// 	"/" +
+	// 	target_obj.cloud_name +
+	// 	"/cloud.js";
 
-			points.add(pointcloud);
+	// Potree.loadPointCloud(cloud_url, target_obj.region_id, function(data) {
+	// 	var pointcloud = data.pointcloud;
+	// 	var material = data.pointcloud.material;
+	// 	material.size = 6;
+	// 	material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
+	// 	material.shape = Potree.PointShape.CIRCLE;
 
-			points.showBoundingBox = true;
+	// 	points.add(pointcloud);
 
-			points.position.x = 5;
-			points.position.y = -2.5;
-			points.position.z = -2.5;
-
-			points.scale.x = 1.5;
-			points.scale.y = 1.5;
-			points.scale.z = 1.5;
-
-			console.log(pointcloud);
-		});
-	}
+	// 	points.position.x = settings.brain.offset.x;
+	// 	points.position.y = settings.brain.offset.y;
+	// 	points.position.z = settings.brain.offset.z;
+	// });
 }
 
 function initSettings() {
@@ -825,47 +799,24 @@ function slice() {
 	];
 
 	// renderer.localClippingEnabled = true;
-	renderer.clippingPlanes = clip_plane;
-	renderer.localClippingEnabled = true;
+	// renderer.clippingPlanes = clip_plane;
+	// renderer.localClippingEnabled = true;
+
+	var helper = new THREE.PlaneHelper(clip_plane[0], 15, 0xffff00);
+	scene.add(helper);
+	var helper = new THREE.PlaneHelper(clip_plane[1], 15, 0x00ffff);
+	scene.add(helper);
 }
-
-// function axesToggle() {
-// 	var axes_toggle = document.querySelector(".axes-toggle input");
-// 	var axesHelper = new THREE.AxesHelper(10);
-
-// 	axes_toggle.checked = settings.axes;
-// 	if (settings.axes == true) {
-// 		scene.add(axesHelper);
-// 	} else {
-// 		scene.remove(axesHelper);
-// 	}
-
-// 	axes_toggle.addEventListener("change", function() {
-// 		if (axes_toggle.checked) {
-// 			settings.axes = true;
-// 			scene.add(axesHelper);
-// 		} else {
-// 			settings.axes = false;
-// 			scene.remove(axesHelper);
-// 		}
-
-// 		scrollTop();
-
-// 		saveSettings();
-// 	});
-// }
 
 function fullscreenToggle() {
 	var fullscreen = document.querySelector(".fullscreen-toggle");
 
 	if (screenfull.enabled) {
-		console.log("screenfull.enabled == true");
 		var fullscreen_toggle = document.querySelector(
 			".fullscreen-toggle input"
 		);
 
 		fullscreen_toggle.addEventListener("change", function() {
-			console.log("change!");
 			if (fullscreen_toggle.checked) {
 				screenfull.request();
 			} else {
@@ -885,7 +836,6 @@ function headToggle() {
 	if (settings.head.visible == true) {
 		loadHead();
 		head_toggle.checked = true;
-	} else {
 	}
 
 	head_toggle.addEventListener("change", function() {
@@ -978,6 +928,9 @@ function reset() {
 	// Reset the counter
 	i = 0;
 
+	// Remove any point clouds
+	// scene.remove(points);
+
 	// Make all regions opaque again
 	scene.traverse(function(mesh) {
 		if (mesh.isMesh) {
@@ -994,10 +947,6 @@ function reset() {
 			}
 		}
 	});
-
-	// Remove any point clouds
-	scene.remove(points);
-	points = undefined;
 
 	// Remove has content class from html
 	document
