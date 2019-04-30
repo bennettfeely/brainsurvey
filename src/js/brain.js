@@ -138,7 +138,7 @@ function initBrain() {
 					mesh.material.side = THREE.DoubleSide;
 
 					// Rotate brain region 90 degrees
-					mesh.rotation.x = -(Math.PI / 2);
+					mesh.rotation.x = -(Math.PI * 0.5);
 
 					// Add mesh object to other object groupings
 					regions_obj[mesh.name].mesh = mesh;
